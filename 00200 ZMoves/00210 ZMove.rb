@@ -13,8 +13,7 @@ module Battle
       # @param ppmax [Integer] maximum number of pp the move currently has
       # @param scene [Battle::Scene] current battle scene
       # @param original_move [Battle::Move] original move linked to this Z-Move
-      def initialize(db_symbol, pp, ppmax, scene, original_move)
-        log_data(original_move.db_symbol)
+      def initialize(db_symbol, scene, original_move)
         @original_move_power = data_move(original_move.db_symbol).power
         default_initialize(db_symbol, 1, 1, scene)
       end

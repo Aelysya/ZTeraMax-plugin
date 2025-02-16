@@ -89,8 +89,7 @@ module BattleUI
             next move unless data_type(move.type).db_symbol == ZCRYSTALS[pokemon.item_db_symbol][:type]
             next move if data_move(move.db_symbol).category == :status
 
-            log_data(data_move(move.db_symbol).power)
-            Battle::Move[:s_z_move].new(ZCRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], 1, 1, @scene, move)
+            Battle::Move[:s_z_move].new(ZCRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
           end
         else
           pokemon.moveset.map!.with_index { |_, index| pokemon.original.moveset[index] }
