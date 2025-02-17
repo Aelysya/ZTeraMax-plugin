@@ -6,7 +6,6 @@ module Battle
       # @return [Integer]
       attr_reader :original_move_power
 
-      alias default_initialize initialize
       # Create a new move
       # @param db_symbol [Symbol] db_symbol of the move in the database
       # @param pp [Integer] number of pp the move currently has
@@ -15,7 +14,7 @@ module Battle
       # @param original_move [Battle::Move] original move linked to this Z-Move
       def initialize(db_symbol, scene, original_move)
         @original_move_power = data_move(original_move.db_symbol).power
-        default_initialize(db_symbol, 1, 1, scene)
+        super(db_symbol, 1, 1, scene)
       end
 
       # Get the real base power of the move (taking in account all parameter)
@@ -23,7 +22,7 @@ module Battle
       # @param target [PFM::PokemonBattler] target of the move
       # @return [Integer]
       def real_base_power(user, target)
-        power = @original_move_power
+        power = 200
         case 
         when @original_move_power <= 55
           power = 100
@@ -39,6 +38,7 @@ module Battle
         return power
       end
     end
+
     Move.register(:s_z_move, ZMove)
   end
 end

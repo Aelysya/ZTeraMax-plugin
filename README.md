@@ -1,1 +1,1 @@
-# DynZTera-plugin
+# ZTeraMax-plugin

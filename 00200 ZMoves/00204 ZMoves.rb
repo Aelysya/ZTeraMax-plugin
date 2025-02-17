@@ -1,9 +1,12 @@
 module Battle
   class Logic
-    # Logic for Z moves
+    # Logic for Z-Moves
     class ZMoves
-      # List of tools that allow Z Moves
+      # List of tools that allow Z-Moves
       Z_MOVES_TOOLS = %i[z_ring z_power_ring]
+
+      # List of Z-crystals
+      Z_CRYSTALS = %i[firium_z waterium_z]
 
       # Create the ZMoves checker
       # @param scene [Battle::Scene]
@@ -18,12 +21,15 @@ module Battle
       # @param pokemon [PFM::PokemonBattler] Pokemon that should use a Z move
       # @return [Boolean]
       def can_pokemon_use_z_move?(pokemon)
-        return true
         bag = pokemon.bag
         return false unless Z_MOVES_TOOLS.any? { |item_db_symbol| bag.contain_item?(item_db_symbol) }
         return false if pokemon.from_party? && any_z_move_player_action?
 
-        return !@used_z_moves_tool_bags.include?(bag) && pokemon.can_pokemon_use_z_move?
+        return !@used_z_moves_tool_bags.include?(bag) && pokemon_holds_z_crystal?(pokemon)
+      end
+
+      def pokemon_holds_z_crystal?(pokemon)
+        return true
       end
 
       # Mark a Pokemon used a Z move
