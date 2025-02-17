@@ -5,10 +5,26 @@ module Battle
       # List of tools that allow Z-Moves
       Z_MOVES_TOOLS = %i[z_ring z_power_ring]
 
-      # List of Z-crystals
+      # List of basic Z-crystals
       Z_CRYSTALS = {
+        normalium_z: { type: :normal, physical: :breakneck_blitz, special: :breakneck_blitz2 },
+        fightinium_z: { type: :fighting, physical: :all_out_pummeling, special: :all_out_pummeling2 },
+        flyinium_z: { type: :flying, physical: :supersonic_strike, special: :supersonic_strike2 },
+        poisonium_z: { type: :poison, physical: :acid_downpour, special: :acid_downpour2 },
+        groundium_z: { type: :ground, physical: :tectonic_rage, special: :tectonic_rage2 },
+        rockium_z: { type: :rock, physical: :continental_crush, special: :continental_crush2 },
+        buginium_z: { type: :bug, physical: :savage_spin_out, special: :savage_spin_out2 },
+        ghostium_z: { type: :ghost, physical: :never_ending_nightmare, special: :never_ending_nightmare2 },
+        steelium_z: { type: :steel, physical: :corkscrew_crash, special: :corkscrew_crash2 },
         firium_z: { type: :fire, physical: :inferno_overdrive, special: :inferno_overdrive2 },
-        waterium_z: { type: :water, physical: :hydro_vortex, special: :hydro_vortex2 }
+        waterium_z: { type: :water, physical: :hydro_vortex, special: :hydro_vortex2 },
+        grassium_z: { type: :grass, physical: :bloom_doom, special: :bloom_doom2 },
+        electrium_z: { type: :electric, physical: :gigavolt_havoc, special: :gigavolt_havoc2 },
+        psychium_z: { type: :psychic, physical: :shattered_psyche, special: :shattered_psyche2 },
+        icium_z: { type: :ice, physical: :subzero_slammer, special: :subzero_slammer2 },
+        dragonium_z: { type: :dragon, physical: :devastating_drake, special: :devastating_drake2 },
+        darkinium_z: { type: :dark, physical: :black_hole_eclipse, special: :black_hole_eclipse2 },
+        fairium_z: { type: :fairy, physical: :twinkle_tackle, special: :twinkle_tackle2 }
       }
 
       # Create the Z-Moves checker
