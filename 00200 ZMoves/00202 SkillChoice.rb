@@ -14,7 +14,6 @@ module BattleUI
 
     class SpecialButton
       module SpecialButtonZMovePlugin
-        # alias default_refresh refresh
         # Update the special button content
         # @param mechanic [Boolean]
         def refresh(mechanic = false)
@@ -79,27 +78,8 @@ module BattleUI
           @mega_button.refresh(@choice.mega_enabled)
           @choice.zmove_enabled = !@choice.zmove_enabled
           @zmove_button.refresh(@choice.zmove_enabled)
-          zmove_related_stuff(@choice.pokemon, @choice.zmove_enabled)
+          @scene.logic.z_move.update_movepool(@choice.pokemon, @choice.zmove_enabled)
           $game_system.se_play($data_system.decision_se)
-        end
-
-        ZCRYSTALS = {
-          firium_z: { type: :fire, physical: :inferno_overdrive, special: :inferno_overdrive2 },
-          waterium_z: { type: :water, physical: :hydro_vortex, special: :hydro_vortex2 }
-        }
-        def zmove_related_stuff(pokemon, zcrystal_activated)
-          return unless ZCRYSTALS.keys.include?(pokemon.item_db_symbol)
-
-          if zcrystal_activated
-            pokemon.moveset.map! do |move|
-              next move unless data_type(move.type).db_symbol == ZCRYSTALS[pokemon.item_db_symbol][:type]
-              next move if data_move(move.db_symbol).category == :status
-
-              Battle::Move[:s_z_move].new(ZCRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
-            end
-          else
-            pokemon.moveset.map!.with_index { |_, index| pokemon.original.moveset[index] }
-          end
         end
       end
 
