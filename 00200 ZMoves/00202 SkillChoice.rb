@@ -8,6 +8,13 @@ module BattleUI
         @zmove_enabled = false
         super(viewport, scene)
       end
+
+      def refresh_skill_buttons
+        @buttons.map do |button|
+          button.data = @pokemon
+          log_data(button.data)
+        end
+      end
     end
 
     prepend SkillChoiceZMovePlugin
@@ -17,7 +24,6 @@ module BattleUI
         # Update the special button content
         # @param mechanic [Boolean]
         def refresh(mechanic = false)
-          log_data(@type)
           @text.text =
             case @type
             when :descr
@@ -32,7 +38,7 @@ module BattleUI
       end
 
       prepend SpecialButtonZMovePlugin
-      
+
       alias_method :default_data, :data=
       # Set the data of the button
       # @param pokemon [PFM::PokemonBattler]
@@ -84,8 +90,9 @@ module BattleUI
             @choice.zmove_enabled = !@choice.zmove_enabled
             @zmove_button.refresh(@choice.zmove_enabled)
             @scene.logic.z_move.update_movepool(@choice.pokemon, @choice.zmove_enabled)
+            @choice.refresh_skill_buttons
           end
-          
+
           $game_system.se_play($data_system.decision_se)
         end
       end

@@ -68,17 +68,19 @@ module Battle
             Battle::Move[:s_z_move].new(Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
           end
         else
-          pokemon.moveset.map!.with_index { |_, index| pokemon.original.moveset[index] }
+          pokemon.original.moveset.map.with_index do |skill, i|
+            pokemon.moveset[i] = Battle::Move[skill.symbol].new(skill.db_symbol, skill.pp, skill.ppmax, @scene)
+          end
         end
       end
 
-      # Mark a Pokemon used a  Z-Move
+      # Mark a Pokemon used a Z-Move
       # @param pokemon [PFM::PokemonBattler]
       def mark_as_used_z_move(pokemon)
         @used_z_moves_tool_bags << pokemon.bag
       end
 
-      # Give the name of the  Z-Move tool used by the trainer
+      # Give the name of the Z-Move tool used by the trainer
       # @param pokemon [PFM::PokemonBattler]
       # @return [String]
       def mega_tool_name(pokemon)
@@ -89,7 +91,7 @@ module Battle
 
       private
 
-      # Function that checks if any action of the player is a  Z-Move
+      # Function that checks if any action of the player is a Z-Move
       # @return [Boolean]
       def any_z_move_player_action?
         @scene.player_actions.any? { |actions| actions.is_a?(Array) }
