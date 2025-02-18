@@ -1,5 +1,5 @@
 module BattleUI
-  class SkillChoice
+  class SkillChoice < GenericChoice
     module SkillChoiceZMovePlugin
       # Create a new SkillChoice UI
       # @param viewport [Viewport]
@@ -12,11 +12,12 @@ module BattleUI
 
     prepend SkillChoiceZMovePlugin
 
-    class SpecialButton
+    class SpecialButton < UI::SpriteStack
       module SpecialButtonZMovePlugin
         # Update the special button content
         # @param mechanic [Boolean]
         def refresh(mechanic = false)
+          log_data(@type)
           @text.text =
             case @type
             when :descr
@@ -61,7 +62,7 @@ module BattleUI
       end
     end
 
-    class SubChoice
+    class SubChoice < UI::SpriteStack
       module SubChoiceZMovePlugin
         # Reset the sub choice
         def reset
@@ -74,11 +75,17 @@ module BattleUI
         def action_y
           return $game_system.se_play($data_system.buzzer_se) unless @mega_button.visible || @zmove_button.visible
 
-          @choice.mega_enabled = !@choice.mega_enabled
-          @mega_button.refresh(@choice.mega_enabled)
-          @choice.zmove_enabled = !@choice.zmove_enabled
-          @zmove_button.refresh(@choice.zmove_enabled)
-          @scene.logic.z_move.update_movepool(@choice.pokemon, @choice.zmove_enabled)
+          if @mega_button.visible
+            @choice.mega_enabled = !@choice.mega_enabled
+            @mega_button.refresh(@choice.mega_enabled)
+          end
+
+          if @zmove_button.visible
+            @choice.zmove_enabled = !@choice.zmove_enabled
+            @zmove_button.refresh(@choice.zmove_enabled)
+            @scene.logic.z_move.update_movepool(@choice.pokemon, @choice.zmove_enabled)
+          end
+          
           $game_system.se_play($data_system.decision_se)
         end
       end
