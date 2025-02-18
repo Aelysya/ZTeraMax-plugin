@@ -61,15 +61,17 @@ module Battle
         return unless pokemon_holds_z_crystal?(pokemon)
 
         if z_crystal_activated
-          pokemon.moveset.map! do |move|
+          pokemon.moveset.map.with_index do |move, i|
+            pokemon.original.moveset[i] = Battle::Move[move.symbol].new(move.db_symbol, move.pp, move.ppmax, @scene)
+
             next move unless data_type(move.type).db_symbol == Z_CRYSTALS[pokemon.item_db_symbol][:type]
             next move if data_move(move.db_symbol).category == :status
 
-            Battle::Move[:s_z_move].new(Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
+            pokemon.moveset[i] = Battle::Move[:s_z_move].new(Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
           end
         else
-          pokemon.original.moveset.map.with_index do |skill, i|
-            pokemon.moveset[i] = Battle::Move[skill.symbol].new(skill.db_symbol, skill.pp, skill.ppmax, @scene)
+          pokemon.original.moveset.map.with_index do |move, i|
+            pokemon.moveset[i] = Battle::Move[move.symbol].new(move.db_symbol, move.pp, move.ppmax, @scene)
           end
         end
       end
