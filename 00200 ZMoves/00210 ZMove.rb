@@ -61,14 +61,52 @@ module Battle
         return power
       end
 
+      # Modified method calculating the damages done by the actual move by adding Z-move power calculation if target is protected
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param target [PFM::PokemonBattler] target of the move
+      # @return [Integer]
+      def damages(user, target)
+        # rubocop:disable Layout/ExtraSpacing
+        # rubocop:disable Style/Semicolon
+        # rubocop:disable Style/SpaceBeforeSemicolon
+        log_data("# damages(#{user}, #{target}) for #{db_symbol}")
+        # Reset the effectiveness
+        @effectiveness = 1
+        @critical = logic.calc_critical_hit(user, target, critical_rate)                   ; log_data("@critical = #{@critical} # critical_rate = #{critical_rate}")
+        damage = user.level * 2 / 5 + 2                                                    ; log_data("damage = #{damage} # #{user.level} * 2 / 5 + 2")
+        damage = (damage * calc_base_power(user, target)).floor                            ; log_data("damage = #{damage} # after calc_base_power")
+        damage = (damage * calc_sp_atk(user, target)).floor / 50                           ; log_data("damage = #{damage} # after calc_sp_atk / 50")
+        damage = (damage / calc_sp_def(user, target)).floor                                ; log_data("damage = #{damage} # after calc_sp_def")
+        damage = (damage * calc_mod1(user, target)).floor + 2                              ; log_data("damage = #{damage} # after calc_mod1 + 2")
+        damage = (damage * calc_ch(user, target)).floor                                    ; log_data("damage = #{damage} # after calc_ch")
+        damage = (damage * calc_mod2(user, target)).floor                                  ; log_data("damage = #{damage} # after calc_mod2")
+        damage *= logic.move_damage_rng.rand(calc_r_range)
+        damage /= 100                                                                      ; log_data("damage = #{damage} # after rng")
+        types = definitive_types(user, target)
+        damage = (damage * calc_stab(user, types)).floor                                   ; log_data("damage = #{damage} # after stab")
+        damage = (damage * calc_type_n_multiplier(target, :type1, types)).floor            ; log_data("damage = #{damage} # after type1")
+        damage = (damage * calc_type_n_multiplier(target, :type2, types)).floor            ; log_data("damage = #{damage} # after type2")
+        damage = (damage * calc_type_n_multiplier(target, :type3, types)).floor            ; log_data("damage = #{damage} # after type3")
+        damage = (damage * calc_mod3(user, target)).floor                                  ; log_data("damage = #{damage} # after mod3")
+        damage = (damage * calc_z_move(target)).floor                                      ; log_data("damage = #{damage} # after z_move")
+        target_hp = target.effects.get(:substitute).hp if target.effects.has?(:substitute) && !user.has_ability?(:infiltrator) && !authentic?
+        target_hp ||= target.hp
+        damage = damage.clamp(1, target_hp)                                                ; log_data("damage = #{damage} # after clamp")
+
+        return damage
+        # rubocop:enable Layout/ExtraSpacing
+        # rubocop:enable Style/Semicolon
+        # rubocop:enable Style/SpaceBeforeSemicolon
+      end
+
+      # List of moves decreasing the Z-Moves damage to 25%
       DECREASING_DAMAGE_MOVES = %i[protect detect spiky_shield baneful_bunker burning_bulwark king_s_shield mat_block obstruct silk_trap]
 
-      def damages(user, target)
-        base_damage = super(user, target)
-
+      def calc_z_move(target)
         last_move = target.successful_move_history.last
-        return base_damage/4 if last_move.current_turn? && DECREASING_DAMAGE_MOVES.include?(last_move.move.db_symbol) # If target is under protect, deal only 25% of damages
-        return base_damage
+
+        return 0.25 if last_move.current_turn? && DECREASING_DAMAGE_MOVES.include?(last_move.move.db_symbol)
+        return 1
       end
     end
 
