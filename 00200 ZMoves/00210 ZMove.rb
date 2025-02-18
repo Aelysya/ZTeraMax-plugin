@@ -14,7 +14,6 @@ module Battle
       # @param original_move [Battle::Move] original move linked to this Z-Move
       def initialize(db_symbol, scene, original_move)
         @original_move = original_move
-        original_move.real_base_power
         super(db_symbol, 1, 1, scene)
       end
 
@@ -60,6 +59,16 @@ module Battle
         log_data("power = #{power} # after #{self.class} real_base_power")
 
         return power
+      end
+
+      DECREASING_DAMAGE_MOVES = %i[protect detect spiky_shield baneful_bunker burning_bulwark king_s_shield mat_block obstruct silk_trap]
+
+      def damages(user, target)
+        base_damage = super(user, target)
+
+        last_move = target.successful_move_history.last
+        return base_damage/4 if last_move.current_turn? && DECREASING_DAMAGE_MOVES.include?(last_move.move.db_symbol) # If target is under protect, deal only 25% of damages
+        return base_damage
       end
     end
 
