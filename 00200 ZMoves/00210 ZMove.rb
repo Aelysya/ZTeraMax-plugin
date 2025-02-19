@@ -31,35 +31,62 @@ module Battle
         horn_drill: 180,
         sheer_cold: 180,
       }
-
-      # Get the real base power of the move (taking in account all parameter)
+      
+      # Calculates the real base power of a move considering Z-Move exceptions and original move power.
+      #
+      # @param user [PFM::PokemonBattler] The user of the move.
+      # @param target [PFM::PokemonBattler] The target of the move.
+      # @return [Integer] The calculated base power of the move.
       # @see https://bulbapedia.bulbagarden.net/wiki/Z-Move#Power
-      # @param user [PFM::PokemonBattler] user of the move
-      # @param target [PFM::PokemonBattler] target of the move
-      # @return [Integer]
+      
+      # The method first retrieves the original power of the move. If the move is listed in the
+      # Z_MOVES_POWER_EXCEPTIONS hash, it uses the corresponding power value. Otherwise, it determines
+      # the power based on the original power range:
+      # - 0..59: 100
+      # - 60..69: 120
+      # - 70..79: 140
+      # - 80..89: 160
+      # - 90..99: 175
+      # - 100..109: 180
+      # - 110..119: 185
+      # - 120..129: 190
+      # - 130..139: 195
+      # - 140 and above: 200
+      #
+      # The calculated power is then logged and returned.
       def real_base_power(user, target)
         original_power = @original_move.real_base_power(user, target)
-
-        # @original_move_power < 60
-        power = 100
-
+      
         if Z_MOVES_POWER_EXCEPTIONS.key?(@original_move.db_symbol)
           power = Z_MOVES_POWER_EXCEPTIONS[@original_move.db_symbol]
         else
-          power = 120 if original_power >= 60  && original_power <= 69
-          power = 140 if original_power >= 70  && original_power <= 79
-          power = 160 if original_power >= 80  && original_power <= 89
-          power = 175 if original_power >= 90  && original_power <= 99
-          power = 180 if original_power >= 100 && original_power <= 109
-          power = 185 if original_power >= 110 && original_power <= 119
-          power = 190 if original_power >= 120 && original_power <= 129
-          power = 195 if original_power >= 130 && original_power <= 139
-          power = 200 if original_power >= 140
+          case original_power
+          when 0..59
+            power = 100
+          when 60..69
+            power = 120
+          when 70..79
+            power = 140
+          when 80..89
+            power = 160
+          when 90..99
+            power = 175
+          when 100..109
+            power = 180
+          when 110..119
+            power = 185
+          when 120..129
+            power = 190
+          when 130..139
+            power = 195
+          else
+            power = 200
+          end
         end
+      
         log_data("power = #{power} # after #{self.class} real_base_power")
-
-        return power
-      end
+        power
+      end      
 
       # Modified method calculating the damages done by the actual move by adding Z-move power calculation if target is protected
       # @param user [PFM::PokemonBattler] user of the move
