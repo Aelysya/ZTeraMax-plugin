@@ -29,16 +29,16 @@ module Battle
         fissure: 180,
         guillotine: 180,
         horn_drill: 180,
-        sheer_cold: 180,
+        sheer_cold: 180
       }
-      
+
       # Calculates the real base power of a move considering Z-Move exceptions and original move power.
       #
       # @param user [PFM::PokemonBattler] The user of the move.
       # @param target [PFM::PokemonBattler] The target of the move.
       # @return [Integer] The calculated base power of the move.
       # @see https://bulbapedia.bulbagarden.net/wiki/Z-Move#Power
-      
+
       # The method first retrieves the original power of the move. If the move is listed in the
       # Z_MOVES_POWER_EXCEPTIONS hash, it uses the corresponding power value. Otherwise, it determines
       # the power based on the original power range:
@@ -55,8 +55,8 @@ module Battle
       #
       # The calculated power is then logged and returned.
       def real_base_power(user, target)
-        original_power = @original_move.real_base_power(user, target)
-      
+        original_power = power = @original_move.real_base_power(user, target)
+
         if Z_MOVES_POWER_EXCEPTIONS.key?(@original_move.db_symbol)
           power = Z_MOVES_POWER_EXCEPTIONS[@original_move.db_symbol]
         else
@@ -83,10 +83,10 @@ module Battle
             power = 200
           end
         end
-      
+
         log_data("power = #{power} # after #{self.class} real_base_power")
         power
-      end      
+      end
 
       # Modified method calculating the damages done by the actual move by adding Z-move power calculation if target is protected
       # @param user [PFM::PokemonBattler] user of the move

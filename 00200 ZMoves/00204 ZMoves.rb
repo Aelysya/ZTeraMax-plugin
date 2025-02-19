@@ -85,7 +85,7 @@ module Battle
       # Give the name of the Z-Move tool used by the trainer
       # @param pokemon [PFM::PokemonBattler]
       # @return [String]
-      def mega_tool_name(pokemon)
+      def z_move_tool_name(pokemon)
         bag = pokemon.bag
         symbol = Z_MOVES_TOOLS.find { |item_db_symbol| bag.contain_item?(item_db_symbol) }
         return data_item(symbol || 0).name
