@@ -6,7 +6,7 @@ module Battle
       Z_MOVES_TOOLS = %i[z_ring z_power_ring]
 
       # List of basic Z-crystals
-      Z_CRYSTALS = {
+      TYPE_Z_CRYSTALS = {
         normalium_z: { type: :normal, physical: :breakneck_blitz, special: :breakneck_blitz2 },
         fightinium_z: { type: :fighting, physical: :all_out_pummeling, special: :all_out_pummeling2 },
         flyinium_z: { type: :flying, physical: :supersonic_strike, special: :supersonic_strike2 },
@@ -27,6 +27,37 @@ module Battle
         fairium_z: { type: :fairy, physical: :twinkle_tackle, special: :twinkle_tackle2 }
       }
 
+      SIGNATURE_Z_CRYSTALS = {
+        aloraichium_z: [{ specie: :raichu, forms: [1], base_move: :thunderbolt, zmove: :stoked_sparksurfer, be_method: :s_basic }],
+        decidium_z: [{ specie: :decidueye, forms: [0], base_move: :spirit_shackle, zmove: :sinister_arrow_raid, be_method: :s_basic }],
+        eevium_z: [{ specie: :eevee, forms: [0], base_move: :last_resort, zmove: :extreme_evoboost, be_method: :s_basic }],
+        incinium_z: [{ specie: :incineroar, forms: [0], base_move: :darkest_lariat, zmove: :malicious_moonsault, be_method: :s_basic }],
+        kommonium_z: [{ specie: :kommo_o, forms: [0], base_move: :clanging_scales, zmove: :clangorous_soulblaze, be_method: :s_basic }],
+        lunalium_z: [
+          { specie: :lunala, forms: [0], base_move: :moongeist_beam, zmove: :menacing_moonraze_maelstrom, be_method: :s_basic },
+          { specie: :necrozma, forms: [2], base_move: :moongeist_beam, zmove: :menacing_moonraze_maelstrom, be_method: :s_basic }
+        ],
+        lycanium_z: [{ specie: :lycanroc, forms: [0, 1, 2], base_move: :stone_edge, zmove: :splintered_stormshards, be_method: :s_basic }],
+        marshadium_z: [{ specie: :marshadow, forms: [0], base_move: :spectral_thief, zmove: :soul_stealing_7_star_strike, be_method: :s_basic }],
+        mewnium_z: [{ specie: :mew, forms: [0], base_move: :psychic, zmove: :genesis_supernova, be_method: :s_basic }],
+        mimikium_z: [{ specie: :mimikyu, forms: [0], base_move: :play_rough, zmove: :let_s_snuggle_forever, be_method: :s_basic }],
+        pikanium_z: [{ specie: :pikachu, forms: [0], base_move: :volt_tackle, zmove: :catastropika, be_method: :s_basic }],
+        pikashunium_z: [{ specie: :pikachu, forms: [7], base_move: :thunderbolt, zmove: :s10_000_000_volt_thunderbolt, be_method: :s_basic }],
+        primarium_z: [{ specie: :primarina, forms: [0], base_move: :sparkling_aria, zmove: :oceanic_operetta, be_method: :s_basic }],
+        snorlium_z: [{ specie: :snorlax, forms: [0], base_move: :giga_impact, zmove: :pulverizing_pancake, be_method: :s_basic }],
+        solganium_z: [
+          { specie: :solgaleo, forms: [0], base_move: :sunsteel_strike, zmove: :searing_sunraze_smash, be_method: :s_basic },
+          { specie: :necrozma, forms: [1], base_move: :moongeist_beam, zmove: :searing_sunraze_smash, be_method: :s_basic }
+        ],
+        tapunium_z: [
+          { specie: :tapu_koko, forms: [0], base_move: :nature_s_madness, zmove: :guardian_of_alola, be_method: :s_basic },
+          { specie: :tapu_lele, forms: [0], base_move: :nature_s_madness, zmove: :guardian_of_alola, be_method: :s_basic },
+          { specie: :tapu_bulu, forms: [0], base_move: :nature_s_madness, zmove: :guardian_of_alola, be_method: :s_basic },
+          { specie: :tapu_fini, forms: [0], base_move: :nature_s_madness, zmove: :guardian_of_alola, be_method: :s_basic }
+        ],
+        ultranecrozium_z: [{ specie: :raichu, forms: [0], base_move: :photon_geyser, zmove: :light_that_burns_the_sky, be_method: :s_basic }]
+      }
+
       # Create the Z-Moves checker
       # @param scene [Battle::Scene]
       def initialize(scene)
@@ -37,42 +68,60 @@ module Battle
       end
 
       # Test if a Pokemon currently holds a Z-Crystal
-      # @param pokemon [PFM::PokemonBattler] Pokemon on which to verify the held item
+      # @param pokemon [PFM::PokemonBattler]
       # @return [Boolean]
-      def pokemon_holds_z_crystal?(pokemon)
-        return Z_CRYSTALS.keys.include?(pokemon.item_db_symbol)
+      def pokemon_holds_valid_z_crystal?(pokemon)
+        return true if TYPE_Z_CRYSTALS.keys.include?(pokemon.item_db_symbol)
+        return false unless SIGNATURE_Z_CRYSTALS.keys.include?(pokemon.item_db_symbol)
+
+        crystal_data = SIGNATURE_Z_CRYSTALS[pokemon.item_db_symbol]
+
+        # Verify the Pokémon holds the correct crystal and has a valid form
+        valid = crystal_data.find do |entry|
+          entry[:specie] == pokemon.db_symbol && entry[:forms].include?(pokemon.form)
+        end
+        return valid
       end
 
       # Test if a Pokemon can use a Z-Move
-      # @param pokemon [PFM::PokemonBattler] Pokemon that should use a Z-Move
+      # @param pokemon [PFM::PokemonBattler]
       # @return [Boolean]
       def can_pokemon_use_z_move?(pokemon)
         bag = pokemon.bag
         return false unless Z_MOVES_TOOLS.any? { |item_db_symbol| bag.contain_item?(item_db_symbol) }
         return false if pokemon.from_party? && any_z_move_player_action?
-        return false if [30..31].include?(pokemon.form) # Pokémon is transformed in a Mega-Pokémon
+        return false if [30, 31].include?(pokemon.form) # Pokémon is transformed in a Mega-Pokémon
 
-        return !@used_z_moves_tool_bags.include?(bag) && pokemon_holds_z_crystal?(pokemon)
+        return !@used_z_moves_tool_bags.include?(bag) && pokemon_holds_valid_z_crystal?(pokemon)
       end
 
       # Refresh the moveset of the Pokémon to replace basic moves by Z-Moves, or to revert it to its original state
-      # @param pokemon [PFM::PokemonBattler] Pokemon that moveset should be refreshed
-      # @param z_crystal_activated [Boolean] Whether to set the moveset to the Z-Move or the original state
+      # @param pokemon [PFM::PokemonBattler]
+      # @param z_crystal_activated [Boolean] Whether to set the moveset to the Z-Move state or the original state
       def update_moveset(pokemon, z_crystal_activated)
-        return unless pokemon_holds_z_crystal?(pokemon)
+        return unless pokemon_holds_valid_z_crystal?(pokemon)
+
+        z_type = TYPE_Z_CRYSTALS.keys.include?(pokemon.item_db_symbol)
 
         if z_crystal_activated
           pokemon.moveset.map.with_index do |move, i|
             pokemon.original_moveset[i] = Battle::Move[move.symbol].new(move.db_symbol, move.pp, move.ppmax, @scene)
 
-            next move unless data_type(move.type).db_symbol == Z_CRYSTALS[pokemon.item_db_symbol][:type]
             next move if data_move(move.db_symbol).category == :status
 
-            pokemon.moveset[i] = Battle::Move[:s_z_move].new(Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
+            if z_type
+              pokemon.moveset[i] = replace_with_type_z_move(pokemon, move)
+            else
+              pokemon.moveset[i] = replace_with_signature_z_move(pokemon, move)
+            end
+
+            # next move unless data_type(move.type).db_symbol == TYPE_Z_CRYSTALS[pokemon.item_db_symbol][:type]
+
+            # pokemon.moveset[i] = Battle::Move[:s_z_move].new(TYPE_Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
           end
         else
           pokemon.original_moveset.map.with_index do |move, i|
-            pokemon.moveset[i] = Battle::Move[move.symbol].new(move.db_symbol, move.pp, move.ppmax, @scene)
+            pokemon.moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene)
           end
         end
       end
@@ -93,6 +142,23 @@ module Battle
       end
 
       private
+
+      def replace_with_type_z_move(pokemon, move)
+        return move unless data_type(move.type).db_symbol == TYPE_Z_CRYSTALS[pokemon.item_db_symbol][:type]
+
+        return Battle::Move[:s_z_move].new(TYPE_Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
+      end
+
+      def replace_with_signature_z_move(pokemon, move)
+        crystal_data = SIGNATURE_Z_CRYSTALS[pokemon.item_db_symbol]
+
+        data = crystal_data.find do |entry|
+          entry[:specie] == pokemon.db_symbol && entry[:forms].include?(pokemon.form)
+        end
+
+        z_pp = move.pp == 0 ? 0 : 1
+        return move.db_symbol == data[:base_move] ? Battle::Move[data[:be_method]].new(data[:zmove], z_pp, 1, @scene) : move
+      end
 
       # Function that checks if any action of the player is a Z-Move
       # @return [Boolean]
