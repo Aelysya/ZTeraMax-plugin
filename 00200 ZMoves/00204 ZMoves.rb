@@ -50,6 +50,7 @@ module Battle
         bag = pokemon.bag
         return false unless Z_MOVES_TOOLS.any? { |item_db_symbol| bag.contain_item?(item_db_symbol) }
         return false if pokemon.from_party? && any_z_move_player_action?
+        return false if [30..31].include?(pokemon.form)
 
         return !@used_z_moves_tool_bags.include?(bag) && pokemon_holds_z_crystal?(pokemon)
       end
