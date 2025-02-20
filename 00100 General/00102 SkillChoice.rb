@@ -10,9 +10,8 @@ module BattleUI
       end
 
       def refresh_skill_buttons
-        @buttons.map do |button|
+        @buttons.each do |button|
           button.data = @pokemon
-          log_data(button.data)
         end
       end
     end
@@ -21,18 +20,12 @@ module BattleUI
 
     class SpecialButton < UI::SpriteStack
       module SpecialButtonZMovePlugin
+        BUTTON_TEXT = { descr: 'Description', mega: 'Mega evolution', zmove: 'Z-Move' }
+
         # Update the special button content
         # @param mechanic [Boolean]
         def refresh(mechanic = false)
-          @text.text =
-            case @type
-            when :descr
-              'Description'
-            when :mega
-              'Mega evolution'
-            when :zmove
-              'Z-Move'
-            end
+          @text.text = BUTTON_TEXT[@type]
           @background.set_bitmap(mechanic ? 'battle/button_mega_activated' : 'battle/button_mega', :interface) if @type != :descr
         end
       end
