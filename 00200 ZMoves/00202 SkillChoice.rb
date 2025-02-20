@@ -89,7 +89,7 @@ module BattleUI
           if @zmove_button.visible
             @choice.zmove_enabled = !@choice.zmove_enabled
             @zmove_button.refresh(@choice.zmove_enabled)
-            @scene.logic.z_move.update_movepool(@choice.pokemon, @choice.zmove_enabled)
+            @scene.logic.z_move.update_moveset(@choice.pokemon, @choice.zmove_enabled)
             @choice.refresh_skill_buttons
           end
 

@@ -54,15 +54,15 @@ module Battle
         return !@used_z_moves_tool_bags.include?(bag) && pokemon_holds_z_crystal?(pokemon)
       end
 
-      # Refresh the movepool of the Pokémon to replace basic moves by Z-Moves, or to revert it to its original state
-      # @param pokemon [PFM::PokemonBattler] Pokemon that movepool should be refreshed
-      # @param z_crystal_activated [Boolean] Whether to set the movepool to the Z-Move or the original state
-      def update_movepool(pokemon, z_crystal_activated)
+      # Refresh the moveset of the Pokémon to replace basic moves by Z-Moves, or to revert it to its original state
+      # @param pokemon [PFM::PokemonBattler] Pokemon that moveset should be refreshed
+      # @param z_crystal_activated [Boolean] Whether to set the moveset to the Z-Move or the original state
+      def update_moveset(pokemon, z_crystal_activated)
         return unless pokemon_holds_z_crystal?(pokemon)
 
         if z_crystal_activated
           pokemon.moveset.map.with_index do |move, i|
-            pokemon.original.moveset[i] = Battle::Move[move.symbol].new(move.db_symbol, move.pp, move.ppmax, @scene)
+            pokemon.original_moveset[i] = Battle::Move[move.symbol].new(move.db_symbol, move.pp, move.ppmax, @scene)
 
             next move unless data_type(move.type).db_symbol == Z_CRYSTALS[pokemon.item_db_symbol][:type]
             next move if data_move(move.db_symbol).category == :status
@@ -70,7 +70,7 @@ module Battle
             pokemon.moveset[i] = Battle::Move[:s_z_move].new(Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
           end
         else
-          pokemon.original.moveset.map.with_index do |move, i|
+          pokemon.original_moveset.map.with_index do |move, i|
             pokemon.moveset[i] = Battle::Move[move.symbol].new(move.db_symbol, move.pp, move.ppmax, @scene)
           end
         end

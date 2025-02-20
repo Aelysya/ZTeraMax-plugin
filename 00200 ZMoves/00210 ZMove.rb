@@ -14,7 +14,8 @@ module Battle
       # @param original_move [Battle::Move] original move linked to this Z-Move
       def initialize(db_symbol, scene, original_move)
         @original_move = original_move
-        super(db_symbol, 1, 1, scene)
+        pp = original_move.pp == 0 ? 0 : 1
+        super(db_symbol, pp, 1, scene)
       end
 
       # List of exceptions for the power calculation
@@ -131,9 +132,37 @@ module Battle
 
       def calc_z_move(target)
         last_move = target.successful_move_history.last
+        modifier = last_move.current_turn? && DECREASING_DAMAGE_MOVES.include?(last_move.move.db_symbol) ? 0.25 : 1
 
-        return 0.25 if last_move.current_turn? && DECREASING_DAMAGE_MOVES.include?(last_move.move.db_symbol)
-        return 1
+        return modifier
+      end
+
+      # Internal procedure of the move
+      # @param user [PFM::PokemonBattler]
+      # @param targets [Array<PFM::PokemonBattler>] expected targets
+      # @note resets the user's moveset to the original and decreases the original move's PP
+      def proceed_internal(user, targets)
+        super(user, targets)
+
+        z_move_position = find_z_move_position(user)
+        user.original_moveset[z_move_position].pp -= 1
+        user.original_moveset[z_move_position].pp -= 1 if @logic.foes_of(user).any? { |foe| foe.alive? && foe.has_ability?(:pressure) }
+
+        user.original_moveset.map.with_index do |move, i|
+          user.moveset[i] = Battle::Move[move.symbol].new(move.db_symbol, move.pp, move.ppmax, @scene)
+        end
+      end
+
+      # Find the Z-Move position in the moveset of the Pokemon
+      # @param pokemon [PFM::PokemonBattler]
+      # @return [Integer]
+      def find_z_move_position(pokemon)
+        return 0 if pokemon.move_history.empty?
+
+        pokemon.moveset.each_with_index do |move, i|
+          return i if move && move.id == pokemon.move_history.last.move.id && move.pp == 0
+        end
+        return 0
       end
     end
 
