@@ -5,6 +5,7 @@ module Battle
       # List of tools that allow Z-Moves
       Z_MOVES_TOOLS = %i[z_ring z_power_ring].freeze
 
+      # List of basic Z-crystals
       TYPE_Z_CRYSTALS = {
         normalium_z: { type: :normal, physical: :breakneck_blitz, special: :breakneck_blitz2 },
         fightinium_z: { type: :fighting, physical: :all_out_pummeling, special: :all_out_pummeling2 },
@@ -26,7 +27,7 @@ module Battle
         fairium_z: { type: :fairy, physical: :twinkle_tackle, special: :twinkle_tackle2 }
       }.freeze
 
-      # List of basic Z-crystals
+      
       SIGNATURE_Z_CRYSTALS = {
         aloraichium_z: [{ specie: :raichu, forms: [1], base_move: :thunderbolt, zmove: :stoked_sparksurfer, be_method: :s_basic }],
         decidium_z: [{ specie: :decidueye, forms: [0], base_move: :spirit_shackle, zmove: :sinister_arrow_raid, be_method: :s_basic }],
@@ -87,7 +88,7 @@ module Battle
         return false if pokemon.from_party? && any_z_move_player_action?
         return false if [30, 31].include?(pokemon.form)
 
-        !@used_z_moves_tool_bags.include?(pokemon.bag) && pokemon_holds_valid_z_crystal?(pokemon)
+        return !@used_z_moves_tool_bags.include?(pokemon.bag) && pokemon_holds_valid_z_crystal?(pokemon)
       end
 
       # Refresh the moveset of the Pokémon to replace basic moves by Z-Moves, or to revert it to its original state
@@ -95,18 +96,25 @@ module Battle
       # @param z_crystal_activated [Boolean] Whether to set the moveset to the Z-Move state or the original state
       def update_moveset(pokemon, z_crystal_activated)
         return unless pokemon_holds_valid_z_crystal?(pokemon)
-
+      
         z_type = TYPE_Z_CRYSTALS.key?(pokemon.item_db_symbol)
-        
-        pokemon.moveset.each_with_index do |move, i|
-          pokemon.original_moveset[i] = Battle::Move[move.symbol].new(move.db_symbol, move.pp, move.ppmax, @scene)
-          next if data_move(move.db_symbol).category == :status
-
-          pokemon.moveset[i] = if z_type
-                                 replace_with_type_z_move(pokemon, move)
-                               else
-                                 replace_with_signature_z_move(pokemon, move)
-                               end
+      
+        if z_crystal_activated
+          pokemon.moveset.each_with_index do |move, i|
+            # Sauvegarde du move original
+            pokemon.original_moveset[i] = Battle::Move.new(move.db_symbol, move.pp, move.ppmax, @scene)
+      
+            # Si c'est un move de statut, on le laisse tel quel
+            next if data_move(move.db_symbol).category == :status
+      
+            # Remplacement du move par le Z-Move correspondant
+            pokemon.moveset[i] = z_type ? replace_with_type_z_move(pokemon, move) : replace_with_signature_z_move(pokemon, move)
+          end
+        else
+          # Restauration des attaques d'origine
+          pokemon.original_moveset.each_with_index do |move, i|
+            pokemon.moveset[i] = Battle::Move.new(move.db_symbol, move.pp, move.ppmax, @scene)
+          end
         end
       end
 
@@ -121,7 +129,7 @@ module Battle
       # @return [String]
       def z_move_tool_name(pokemon)
         symbol = Z_MOVES_TOOLS.find { |tool| pokemon.bag.contain_item?(tool) }
-        data_item(symbol || 0).name
+        return data_item(symbol || 0).name
       end
 
       private
@@ -129,7 +137,7 @@ module Battle
       def replace_with_type_z_move(pokemon, move)
         return move unless data_type(move.type).db_symbol == TYPE_Z_CRYSTALS[pokemon.item_db_symbol][:type]
         
-        Battle::Move[:s_type_z_move].new(TYPE_Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
+        return Battle::Move[:s_type_z_move].new(TYPE_Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
       end
 
       def replace_with_signature_z_move(pokemon, move)
@@ -138,7 +146,7 @@ module Battle
         
         return move unless move.db_symbol == data[:base_move]
         
-        Battle::Move[data[:be_method]].new(data[:zmove], move.pp.positive? ? 1 : 0, 1, @scene)
+        return Battle::Move[data[:be_method]].new(data[:zmove], move.pp.positive? ? 1 : 0, 1, @scene)
       end
 
       # Function that checks if any action of the player is a Z-Move
