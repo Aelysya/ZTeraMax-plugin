@@ -32,7 +32,7 @@ module BattleUI
 
       prepend SpecialButtonZMovePlugin
 
-      alias_method :default_data, :data=
+      alias default_data data=
       # Set the data of the button
       # @param pokemon [PFM::PokemonBattler]
       def data=(pokemon)
