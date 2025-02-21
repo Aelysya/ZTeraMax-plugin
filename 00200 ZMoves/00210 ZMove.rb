@@ -1,5 +1,13 @@
 module Battle
   class Move
+    # Get the move name sliced to fit in the move button
+    # @return [String]
+    def sliced_name
+      return name if name.size <= 15
+
+      return name.slice(0..12) << '...'
+    end
+
     class ZMove < Basic
       # Internal procedure of the move
       # @param user [PFM::PokemonBattler]
