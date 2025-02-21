@@ -1,0 +1,27 @@
+module Battle
+  class Scene
+    # Method that asks the target of the choosen move
+    def target_choice
+      launcher, skill, target_bank, target_position, mega, zmove = @visual.show_target_choice
+      effect = launcher&.effects&.get(&:force_next_move?)
+      if launcher && skill
+        action_class = effect ? effect.action_class : Actions::Attack
+        next_action = action_class.new(self, skill, launcher, target_bank, target_position)
+        if mega
+          @player_actions << [next_action, Actions::Mega.new(self, launcher)]
+        elsif zmove
+          @player_actions << [next_action, Actions::ZMove.new(self, launcher)]
+        else
+          @player_actions << next_action
+        end
+        log_debug("Action : #{@player_actions.last}") if debug? # To prevent useless overhead outside debug
+        @next_update = can_player_make_another_action_choice? ? :player_action_choice : :trigger_all_AI
+      else
+        # If the player canceled we return to the player action
+        @next_update = effect ? :player_action_choice : :skill_choice
+      end
+    ensure
+      @skip_frame = true
+    end
+  end
+end

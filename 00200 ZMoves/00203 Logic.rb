@@ -10,7 +10,14 @@ module Battle
       def initialize(scene)
         # ZMove helper
         @z_move = ZMoves.new(scene)
+        @used_z_tool_bags = []
         super(scene)
+      end
+
+      # Mark a pokemon's team as Z-Move consumed
+      # @param pokemon [PFM::PokemonBattler]
+      def mark_as_z_move_used(pokemon)
+        @used_z_moves_tool_bags << pokemon.bag
       end
     end
 
