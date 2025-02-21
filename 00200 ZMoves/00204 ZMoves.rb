@@ -27,7 +27,6 @@ module Battle
         fairium_z: { type: :fairy, physical: :twinkle_tackle, special: :twinkle_tackle2 }
       }.freeze
 
-      
       # List of Signature Z-crystals
       SIGNATURE_Z_CRYSTALS = {
         aloraichium_z: [{ specie: :raichu, forms: [1], base_move: :thunderbolt, zmove: :stoked_sparksurfer, be_method: :s_basic }],
@@ -183,7 +182,6 @@ module Battle
         
         return Battle::Move[data[:be_method]].new(data[:zmove], move.pp.positive? ? 1 : 0, 1, @scene)
       end
-
       
       # Checks if there are any player actions in the scene that are arrays.
       #
