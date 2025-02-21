@@ -10,6 +10,7 @@ module BattleUI
       end
 
       def refresh_skill_buttons
+        @info.data = pokemon
         @buttons.each do |button|
           button.data = @pokemon
         end
