@@ -27,7 +27,8 @@ module Battle
         fairium_z: { type: :fairy, physical: :twinkle_tackle, special: :twinkle_tackle2 }
       }.freeze
 
-      # List of signature Z-crystals
+      
+      # List of Signature Z-crystals
       SIGNATURE_Z_CRYSTALS = {
         aloraichium_z: [{ specie: :raichu, forms: [1], base_move: :thunderbolt, zmove: :stoked_sparksurfer, be_method: :s_basic }],
         decidium_z: [{ specie: :decidueye, forms: [0], base_move: :spirit_shackle, zmove: :sinister_arrow_raid, be_method: :s_basic }],
@@ -63,14 +64,16 @@ module Battle
       # @param scene [Battle::Scene]
       def initialize(scene)
         @scene = scene
-        # List of bags that already used a Z-Move
-        # @type [Array<PFM::Bag>]
         @used_z_moves_tool_bags = []
       end
 
-      # Test if a Pokemon currently holds a Z-Crystal
-      # @param pokemon [PFM::PokemonBattler]
-      # @return [Boolean]
+      # Checks if a given Pokémon holds a valid Z-Crystal.
+      #
+      # A Z-Crystal is considered valid if it is either a type-specific Z-Crystal
+      # or a signature Z-Crystal that matches the Pokémon's species and form.
+      #
+      # @param pokemon [Pokemon] The Pokémon to check.
+      # @return [Boolean] True if the Pokémon holds a valid Z-Crystal, false otherwise.
       def pokemon_holds_valid_z_crystal?(pokemon)
         return true if TYPE_Z_CRYSTALS.key?(pokemon.item_db_symbol)
         return false unless SIGNATURE_Z_CRYSTALS.key?(pokemon.item_db_symbol)
@@ -80,9 +83,16 @@ module Battle
         end
       end
 
-      # Test if a Pokemon can use a Z-Move
-      # @param pokemon [PFM::PokemonBattler]
-      # @return [Boolean]
+      # Determines if a given Pokémon can use a Z-Move.
+      #
+      # A Pokémon can use a Z-Move if the following conditions are met:
+      # - The Pokémon's bag contains at least one Z-Move tool.
+      # - The Pokémon is not from the party or no Z-Move player action is currently being performed.
+      # - The Pokémon's form is not 30 or 31.
+      # - The Pokémon's bag has not already used a Z-Move tool and the Pokémon holds a valid Z-Crystal.
+      #
+      # @param pokemon [Pokemon] The Pokémon to check.
+      # @return [Boolean] True if the Pokémon can use a Z-Move, false otherwise.
       def can_pokemon_use_z_move?(pokemon)
         return false unless Z_MOVES_TOOLS.any? { |tool| pokemon.bag.contain_item?(tool) }
         return false if pokemon.from_party? && any_z_move_player_action?
@@ -91,42 +101,52 @@ module Battle
         return !@used_z_moves_tool_bags.include?(pokemon.bag) && pokemon_holds_valid_z_crystal?(pokemon)
       end
 
-      # Refresh the moveset of the Pokémon to replace basic moves by Z-Moves, or to revert it to its original state
-      # @param pokemon [PFM::PokemonBattler]
-      # @param z_crystal_activated [Boolean] Whether to set the moveset to the Z-Move state or the original state
+      # Updates the moveset of a given Pokémon based on whether a Z-Crystal is activated.
+      #
+      # @param pokemon [Pokemon] The Pokémon whose moveset is to be updated.
+      # @param z_crystal_activated [Boolean] Indicates whether the Z-Crystal is activated.
+      #
+      # @return [void]
+      #
+      # If the Pokémon holds a valid Z-Crystal and the Z-Crystal is activated, this method will:
+      # - Save the original moveset.
+      # - Replace each non-status move with the corresponding Z-Move.
+      #
+      # If the Z-Crystal is not activated, this method will:
+      # - Restore the original moveset.
       def update_moveset(pokemon, z_crystal_activated)
         return unless pokemon_holds_valid_z_crystal?(pokemon)
-
+      
         z_type = TYPE_Z_CRYSTALS.key?(pokemon.item_db_symbol)
-
+      
         if z_crystal_activated
           pokemon.moveset.each_with_index do |move, i|
-            # Sauvegarde du move original
             pokemon.original_moveset[i] = Battle::Move.new(move.db_symbol, move.pp, move.ppmax, @scene)
-
-            # Si c'est un move de statut, on le laisse tel quel
+      
             next if data_move(move.db_symbol).category == :status
-
-            # Remplacement du move par le Z-Move correspondant
+      
             pokemon.moveset[i] = z_type ? replace_with_type_z_move(pokemon, move) : replace_with_signature_z_move(pokemon, move)
           end
         else
-          # Restauration des attaques d'origine
           pokemon.original_moveset.each_with_index do |move, i|
             pokemon.moveset[i] = Battle::Move.new(move.db_symbol, move.pp, move.ppmax, @scene)
           end
         end
       end
 
-      # Mark a pokemon's team as Z-Move consumed
-      # @param pokemon [PFM::PokemonBattler]
+
+      # Marks the given Pokémon's bag as having used a Z-Move.
+      #
+      # @param pokemon [Pokemon] The Pokémon that has used a Z-Move.
+      # @return [void]
       def mark_as_z_move_used(pokemon)
         @used_z_moves_tool_bags << pokemon.bag
       end
 
-      # Give the name of the Z-Move tool used by the trainer
-      # @param pokemon [PFM::PokemonBattler]
-      # @return [String]
+      # Determines the name of the Z-Move tool that a given Pokémon has in its bag.
+      #
+      # @param pokemon [Pokemon] The Pokémon whose bag is being checked for Z-Move tools.
+      # @return [String] The name of the Z-Move tool if found, otherwise the name of the item with ID 0.
       def z_move_tool_name(pokemon)
         symbol = Z_MOVES_TOOLS.find { |tool| pokemon.bag.contain_item?(tool) }
         return data_item(symbol || 0).name
@@ -134,23 +154,40 @@ module Battle
 
       private
 
+      # Replaces a Pokémon's move with its corresponding Z-Move if the Pokémon is holding the correct Z-Crystal.
+      #
+      # @param pokemon [Pokemon] The Pokémon whose move is to be replaced.
+      # @param move [Move] The move to be potentially replaced with a Z-Move.
+      # @return [Move] The original move if the Pokémon is not holding the correct Z-Crystal, 
+      # otherwise the corresponding Z-Move.
       def replace_with_type_z_move(pokemon, move)
         return move unless data_type(move.type).db_symbol == TYPE_Z_CRYSTALS[pokemon.item_db_symbol][:type]
-
+        
         return Battle::Move[:s_type_z_move].new(TYPE_Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
       end
 
+      # Replaces a Pokémon's move with its signature Z-Move if conditions are met.
+      #
+      # @param pokemon [Pokemon] The Pokémon whose move is to be replaced.
+      # @param move [Move] The move to be potentially replaced.
+      # @return [Move] The original move or the signature Z-Move if conditions are met.
+      #
+      # The method checks if the Pokémon is holding a signature Z-Crystal and if the move
+      # matches the base move required for the Z-Move transformation. If both conditions
+      # are satisfied, it returns the corresponding Z-Move; otherwise, it returns the original move.
       def replace_with_signature_z_move(pokemon, move)
         crystal_data = SIGNATURE_Z_CRYSTALS[pokemon.item_db_symbol]
         data = crystal_data.find { |entry| entry[:specie] == pokemon.db_symbol && entry[:forms].include?(pokemon.form) }
-
+        
         return move unless move.db_symbol == data[:base_move]
-
+        
         return Battle::Move[data[:be_method]].new(data[:zmove], move.pp.positive? ? 1 : 0, 1, @scene)
       end
 
-      # Function that checks if any action of the player is a Z-Move
-      # @return [Boolean]
+      
+      # Checks if there are any player actions in the scene that are arrays.
+      #
+      # @return [Boolean] true if any player action is an array, false otherwise.
       def any_z_move_player_action?
         @scene.player_actions.any? { |action| action.is_a?(Array) }
       end
