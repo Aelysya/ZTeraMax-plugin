@@ -126,6 +126,12 @@ module Battle
         end
       end
 
+      # Mark a pokemon's team as Z-Move consumed
+      # @param pokemon [PFM::PokemonBattler]
+      def mark_as_z_move_used(pokemon)
+        @used_z_moves_tool_bags << pokemon.bag
+      end
+
       # Give the name of the Z-Move tool used by the trainer
       # @param pokemon [PFM::PokemonBattler]
       # @return [String]
