@@ -15,17 +15,16 @@ module Battle
       # @note resets the user's moveset to the original and decreases the original move's PP
       def proceed_internal(user, targets)
         super(user, targets)
-      
+
         z_move_position = find_z_move_position(user)
         original_move = user.original_moveset[z_move_position]
-        
+
         original_move.pp -= @logic.foes_of(user).any? { |foe| foe.alive? && foe.has_ability?(:pressure) } ? 2 : 1
-      
+
         user.original_moveset.each_with_index do |move, i|
           user.moveset[i] = Battle::Move.new(move.db_symbol, move.pp, move.ppmax, @scene)
         end
       end
-      
 
       # Find the Z-Move position in the moveset of the Pokemon
       # @param pokemon [PFM::PokemonBattler]

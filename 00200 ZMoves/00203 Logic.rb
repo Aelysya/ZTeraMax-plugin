@@ -10,7 +10,6 @@ module Battle
       def initialize(scene)
         # ZMove helper
         @z_move = ZMoves.new(scene)
-        @used_z_tool_bags = []
         super(scene)
       end
     end

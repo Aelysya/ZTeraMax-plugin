@@ -59,7 +59,7 @@ module Battle
         ultranecrozium_z: [{ specie: :raichu, forms: [0], base_move: :photon_geyser, zmove: :light_that_burns_the_sky, be_method: :s_photon_geyser }]
       }.freeze
 
-      # Create the Z-Moves checker
+      # Create the Z-Moves logic
       # @param scene [Battle::Scene]
       def initialize(scene)
         @scene = scene
@@ -85,10 +85,10 @@ module Battle
       # Determines if a given Pokémon can use a Z-Move.
       #
       # A Pokémon can use a Z-Move if the following conditions are met:
-      # - The Pokémon's bag contains at least one Z-Move tool.
-      # - The Pokémon is not from the party or no Z-Move player action is currently being performed.
-      # - The Pokémon's form is not 30 or 31.
-      # - The Pokémon's bag has not already used a Z-Move tool and the Pokémon holds a valid Z-Crystal.
+      # - The Player's bag contains at least one Z-Move tool.
+      # - The Pokémon is in the party and Z-Move command has been issued (in case of duo battle).
+      # - The Pokémon is not mega-evolved or under primal resurgence.
+      # - The Player has not already used a Z-Move during the battle.
       #
       # @param pokemon [Pokemon] The Pokémon to check.
       # @return [Boolean] True if the Pokémon can use a Z-Move, false otherwise.
@@ -100,30 +100,23 @@ module Battle
         return !@used_z_moves_tool_bags.include?(pokemon.bag) && pokemon_holds_valid_z_crystal?(pokemon)
       end
 
-      # Updates the moveset of a given Pokémon based on whether a Z-Crystal is activated.
+      # Updates the moveset of a given Pokémon
       #
       # @param pokemon [Pokemon] The Pokémon whose moveset is to be updated.
-      # @param z_crystal_activated [Boolean] Indicates whether the Z-Crystal is activated.
+      # @param z_crystal_activated [Boolean] Whether to set the moveset to the Z-Move state or the original state.
       #
       # @return [void]
-      #
-      # If the Pokémon holds a valid Z-Crystal and the Z-Crystal is activated, this method will:
-      # - Save the original moveset.
-      # - Replace each non-status move with the corresponding Z-Move.
-      #
-      # If the Z-Crystal is not activated, this method will:
-      # - Restore the original moveset.
       def update_moveset(pokemon, z_crystal_activated)
         return unless pokemon_holds_valid_z_crystal?(pokemon)
-      
+
         z_type = TYPE_Z_CRYSTALS.key?(pokemon.item_db_symbol)
-      
+
         if z_crystal_activated
           pokemon.moveset.each_with_index do |move, i|
             pokemon.original_moveset[i] = Battle::Move.new(move.db_symbol, move.pp, move.ppmax, @scene)
-      
+
             next if data_move(move.db_symbol).category == :status
-      
+
             pokemon.moveset[i] = z_type ? replace_with_type_z_move(pokemon, move) : replace_with_signature_z_move(pokemon, move)
           end
         else
@@ -133,8 +126,7 @@ module Battle
         end
       end
 
-
-      # Marks the given Pokémon's bag as having used a Z-Move.
+      # Marks the given Player as having used a Z-Move.
       #
       # @param pokemon [Pokemon] The Pokémon that has used a Z-Move.
       # @return [void]
@@ -142,10 +134,10 @@ module Battle
         @used_z_moves_tool_bags << pokemon.bag
       end
 
-      # Determines the name of the Z-Move tool that a given Pokémon has in its bag.
+      # Determines the name of the Z-Move tool used to allow a Z-Move.
       #
-      # @param pokemon [Pokemon] The Pokémon whose bag is being checked for Z-Move tools.
-      # @return [String] The name of the Z-Move tool if found, otherwise the name of the item with ID 0.
+      # @param pokemon [Pokemon] The Pokémon from which to check the trainer's bag is being checked for Z-Move tools.
+      # @return [String] The name of the Z-Move tool if found
       def z_move_tool_name(pokemon)
         symbol = Z_MOVES_TOOLS.find { |tool| pokemon.bag.contain_item?(tool) }
         return data_item(symbol || 0).name
@@ -157,11 +149,10 @@ module Battle
       #
       # @param pokemon [Pokemon] The Pokémon whose move is to be replaced.
       # @param move [Move] The move to be potentially replaced with a Z-Move.
-      # @return [Move] The original move if the Pokémon is not holding the correct Z-Crystal, 
-      # otherwise the corresponding Z-Move.
+      # @return [Move] The original move if the Pokémon is not holding the correct Z-Crystal, otherwise the corresponding Z-Move.
       def replace_with_type_z_move(pokemon, move)
         return move unless data_type(move.type).db_symbol == TYPE_Z_CRYSTALS[pokemon.item_db_symbol][:type]
-        
+
         return Battle::Move[:s_type_z_move].new(TYPE_Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
       end
 
@@ -170,24 +161,30 @@ module Battle
       # @param pokemon [Pokemon] The Pokémon whose move is to be replaced.
       # @param move [Move] The move to be potentially replaced.
       # @return [Move] The original move or the signature Z-Move if conditions are met.
-      #
-      # The method checks if the Pokémon is holding a signature Z-Crystal and if the move
-      # matches the base move required for the Z-Move transformation. If both conditions
-      # are satisfied, it returns the corresponding Z-Move; otherwise, it returns the original move.
       def replace_with_signature_z_move(pokemon, move)
         crystal_data = SIGNATURE_Z_CRYSTALS[pokemon.item_db_symbol]
         data = crystal_data.find { |entry| entry[:specie] == pokemon.db_symbol && entry[:forms].include?(pokemon.form) }
-        
+
         return move unless move.db_symbol == data[:base_move]
-        
+
         return Battle::Move[data[:be_method]].new(data[:zmove], move.pp.positive? ? 1 : 0, 1, @scene)
       end
-      
-      # Checks if there are any player actions in the scene that are arrays.
+
+      # Checks if there are any player actions in the scene that are Z-Move commands.
       #
-      # @return [Boolean] true if any player action is an array, false otherwise.
+      # @return [Boolean] true if any player action is an Z-Move command, false otherwise.
       def any_z_move_player_action?
-        @scene.player_actions.any? { |action| action.is_a?(Array) }
+        @scene.player_actions.any? { |action| action.is_a?(Actions::ZMove) }
+      end
+    end
+
+    class MegaEvolve
+      private
+
+      # Function that checks if any action of the player is a mega evolve
+      # @return [Boolean]
+      def any_mega_player_action?
+        @scene.player_actions.any? { |actions| actions.is_a?(Actions::Mega) }
       end
     end
   end
