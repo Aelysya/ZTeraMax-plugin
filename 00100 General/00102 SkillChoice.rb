@@ -49,16 +49,17 @@ module BattleUI
           end
       end
 
-      alias_method :default_visible, :visible=
+      alias default_visible visible=
       # Set the visibility of the button
       # @param visible [Boolean]
       def visible=(visible)
         super(visible &&
           (@type == :descr ||
           (@data &&
-            (@scene.logic.mega_evolve.can_pokemon_mega_evolve?(@data) ||
-            @scene.logic.z_move.can_pokemon_use_z_move?(@data)))
+            @type == :mega && @scene.logic.mega_evolve.can_pokemon_mega_evolve?(@data) ||
+            @type == :zmove && @scene.logic.z_move.can_pokemon_use_z_move?(@data)
           ))
+          )
       end
     end
 
