@@ -27,7 +27,7 @@ module Battle
         fairium_z: { type: :fairy, physical: :twinkle_tackle, special: :twinkle_tackle2 }
       }.freeze
 
-      
+      # List of signature Z-crystals
       SIGNATURE_Z_CRYSTALS = {
         aloraichium_z: [{ specie: :raichu, forms: [1], base_move: :thunderbolt, zmove: :stoked_sparksurfer, be_method: :s_basic }],
         decidium_z: [{ specie: :decidueye, forms: [0], base_move: :spirit_shackle, zmove: :sinister_arrow_raid, be_method: :s_basic }],
@@ -96,17 +96,17 @@ module Battle
       # @param z_crystal_activated [Boolean] Whether to set the moveset to the Z-Move state or the original state
       def update_moveset(pokemon, z_crystal_activated)
         return unless pokemon_holds_valid_z_crystal?(pokemon)
-      
+
         z_type = TYPE_Z_CRYSTALS.key?(pokemon.item_db_symbol)
-      
+
         if z_crystal_activated
           pokemon.moveset.each_with_index do |move, i|
             # Sauvegarde du move original
             pokemon.original_moveset[i] = Battle::Move.new(move.db_symbol, move.pp, move.ppmax, @scene)
-      
+
             # Si c'est un move de statut, on le laisse tel quel
             next if data_move(move.db_symbol).category == :status
-      
+
             # Remplacement du move par le Z-Move correspondant
             pokemon.moveset[i] = z_type ? replace_with_type_z_move(pokemon, move) : replace_with_signature_z_move(pokemon, move)
           end
@@ -136,16 +136,16 @@ module Battle
 
       def replace_with_type_z_move(pokemon, move)
         return move unless data_type(move.type).db_symbol == TYPE_Z_CRYSTALS[pokemon.item_db_symbol][:type]
-        
+
         return Battle::Move[:s_type_z_move].new(TYPE_Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
       end
 
       def replace_with_signature_z_move(pokemon, move)
         crystal_data = SIGNATURE_Z_CRYSTALS[pokemon.item_db_symbol]
         data = crystal_data.find { |entry| entry[:specie] == pokemon.db_symbol && entry[:forms].include?(pokemon.form) }
-        
+
         return move unless move.db_symbol == data[:base_move]
-        
+
         return Battle::Move[data[:be_method]].new(data[:zmove], move.pp.positive? ? 1 : 0, 1, @scene)
       end
 
