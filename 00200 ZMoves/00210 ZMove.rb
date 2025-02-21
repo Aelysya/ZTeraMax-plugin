@@ -1,5 +1,20 @@
 module Battle
   class Move
+    class TerrainMove < Move
+      TERRAIN_MOVES.merge!(genesis_supernova: :psychic_terrain)
+    end
+
+    class GuardianOfAlola < SuperFang
+      def damages(user, target)
+        @critical = false
+        @effectiveness = 1
+        log_data("Forced HP Move: #{(target.hp / 4 * 3).clamp(1, Float::INFINITY)} HP")
+        return (target.hp / 4 * 3).clamp(1, Float::INFINITY)
+      end
+    end
+
+    Move.register(:s_guardian_of_alola, GuardianOfAlola)
+
     # Class managing type-specific Z-Moves
     class ZMove < Basic
       # Original move linked to this Z-Move
