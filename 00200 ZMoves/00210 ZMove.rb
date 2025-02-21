@@ -125,7 +125,7 @@ module Battle
         end
 
         log_data("power = #{power} # after #{self.class} real_base_power")
-        power
+        return power
       end
     end
     Move.register(:s_type_z_move, TypeZMove)
