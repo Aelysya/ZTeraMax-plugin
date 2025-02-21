@@ -1,22 +1,38 @@
 module Battle
   class Move
-    class TerrainMove < Move
-      TERRAIN_MOVES.merge!(genesis_supernova: :psychic_terrain)
-    end
+    class ZMove < Basic
+      # Internal procedure of the move
+      # @param user [PFM::PokemonBattler]
+      # @param targets [Array<PFM::PokemonBattler>] expected targets
+      # @note resets the user's moveset to the original and decreases the original move's PP
+      def proceed_internal(user, targets)
+        super(user, targets)
 
-    class GuardianOfAlola < SuperFang
-      def damages(user, target)
-        @critical = false
-        @effectiveness = 1
-        log_data("Forced HP Move: #{(target.hp / 4 * 3).clamp(1, Float::INFINITY)} HP")
-        return (target.hp / 4 * 3).clamp(1, Float::INFINITY)
+        z_move_position = find_z_move_position(user)
+        user.original_moveset[z_move_position].pp -= 1
+        user.original_moveset[z_move_position].pp -= 1 if @logic.foes_of(user).any? { |foe| foe.alive? && foe.has_ability?(:pressure) }
+
+        user.original_moveset.map.with_index do |move, i|
+          user.moveset[i] = Battle::Move[move.symbol].new(move.db_symbol, move.pp, move.ppmax, @scene)
+        end
+      end
+
+      # Find the Z-Move position in the moveset of the Pokemon
+      # @param pokemon [PFM::PokemonBattler]
+      # @return [Integer]
+      def find_z_move_position(pokemon)
+        return 0 if pokemon.move_history.empty?
+
+        pokemon.moveset.each_with_index do |move, i|
+          return i if move && move.id == pokemon.move_history.last.move.id && move.pp == 0
+        end
+        return 0
       end
     end
-
-    Move.register(:s_guardian_of_alola, GuardianOfAlola)
+    Move.register(:s_z_move, ZMove)
 
     # Class managing type-specific Z-Moves
-    class ZMove < Basic
+    class TypeZMove < ZMove
       # Original move linked to this Z-Move
       # @return [Integer]
       attr_reader :original_move
@@ -103,36 +119,27 @@ module Battle
         log_data("power = #{power} # after #{self.class} real_base_power")
         power
       end
+    end
+    Move.register(:s_type_z_move, TypeZMove)
 
-      # Internal procedure of the move
-      # @param user [PFM::PokemonBattler]
-      # @param targets [Array<PFM::PokemonBattler>] expected targets
-      # @note resets the user's moveset to the original and decreases the original move's PP
-      def proceed_internal(user, targets)
-        super(user, targets)
-
-        z_move_position = find_z_move_position(user)
-        user.original_moveset[z_move_position].pp -= 1
-        user.original_moveset[z_move_position].pp -= 1 if @logic.foes_of(user).any? { |foe| foe.alive? && foe.has_ability?(:pressure) }
-
-        user.original_moveset.map.with_index do |move, i|
-          user.moveset[i] = Battle::Move[move.symbol].new(move.db_symbol, move.pp, move.ppmax, @scene)
-        end
-      end
-
-      # Find the Z-Move position in the moveset of the Pokemon
-      # @param pokemon [PFM::PokemonBattler]
-      # @return [Integer]
-      def find_z_move_position(pokemon)
-        return 0 if pokemon.move_history.empty?
-
-        pokemon.moveset.each_with_index do |move, i|
-          return i if move && move.id == pokemon.move_history.last.move.id && move.pp == 0
-        end
-        return 0
+    class GuardianOfAlola < ZMove
+      def damages(user, target)
+        @critical = false
+        @effectiveness = 1
+        log_data("Forced HP Move: #{(target.hp / 4 * 3).clamp(1, Float::INFINITY)} HP")
+        return (target.hp / 4 * 3).clamp(1, Float::INFINITY)
       end
     end
+    Move.register(:s_guardian_of_alola, GuardianOfAlola)
 
-    Move.register(:s_z_move, ZMove)
+    class GenesisSupernova < ZMove
+      # Sets terrain to psychic terrain
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
+      def deal_effect(user, actual_targets)
+        logic.fterrain_change_handler.fterrain_change_with_process(:psychic_terrain, 5)
+      end
+    end
+    Move.register(:s_genesis_supernova, GenesisSupernova)
   end
 end
