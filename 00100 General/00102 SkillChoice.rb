@@ -37,7 +37,8 @@ module BattleUI
         # @param mechanic [Boolean]
         def refresh(mechanic = false)
           @text.text = BUTTON_TEXT[@type]
-          @background.set_bitmap(mechanic ? 'battle/button_mega_activated' : 'battle/button_mega', :interface) if @type != :descr
+          @background.set_bitmap(mechanic ? 'battle/button_mega_activated' : 'battle/button_mega', :interface) if @type == :mega
+          @background.set_bitmap(mechanic ? 'battle/button_zmove_activated' : 'battle/button_zmove', :interface) if @type == :zmove
         end
       end
 
