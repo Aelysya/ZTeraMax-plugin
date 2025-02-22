@@ -9,6 +9,23 @@ module Battle
     end
 
     class ZMove < Basic
+      # Show the move usage message
+      # @param user [PFM::PokemonBattler] user of the move
+      def usage_message(user)
+        @scene.visual.hide_team_info
+        pre_z_move_message(user)
+        message = parse_text_with_pokemon(8999 - Studio::Text::CSV_BASE, 12, user, PFM::Text::PKNAME[0] => user.given_name, PFM::Text::MOVE[0] => name)
+        scene.display_message_and_wait(message)
+        PFM::Text.reset_variables
+      end
+
+      # Get the pre Z-Move message
+      # @return [String]
+      def pre_z_move_message(user)
+        @scene.display_message_and_wait(parse_text_with_pokemon(100, 0, user, PFM::Text::PKNICK[0] => user.given_name))
+        @scene.display_message_and_wait(parse_text_with_pokemon(100, 1, user, PFM::Text::PKNICK[0] => user.given_name))
+      end
+
       # Internal procedure of the move
       # @param user [PFM::PokemonBattler]
       # @param targets [Array<PFM::PokemonBattler>] expected targets
