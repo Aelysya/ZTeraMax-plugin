@@ -115,9 +115,11 @@ module Battle
           pokemon.moveset.each_with_index do |move, i|
             pokemon.original_moveset[i] = Battle::Move.new(move.db_symbol, move.pp, move.ppmax, @scene)
 
-            next if data_move(move.db_symbol).category == :status
-
-            pokemon.moveset[i] = z_type ? replace_with_type_z_move(pokemon, move) : replace_with_signature_z_move(pokemon, move)
+            if move.status? && z_type
+              pokemon.moveset[i] = replace_with_status_z_move(pokemon, move)
+            else
+              pokemon.moveset[i] = z_type ? replace_with_type_z_move(pokemon, move) : replace_with_signature_z_move(pokemon, move)
+            end
           end
         else
           pokemon.original_moveset.each_with_index do |move, i|
@@ -154,6 +156,20 @@ module Battle
         return move unless data_type(move.type).db_symbol == TYPE_Z_CRYSTALS[pokemon.item_db_symbol][:type]
 
         return Battle::Move[:s_type_z_move].new(TYPE_Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
+      end
+
+      # Replaces a Pokémon's status move with its corresponding Z-Move if the Pokémon is holding the correct Z-Crystal.
+      #
+      # @param pokemon [Pokemon] The Pokémon whose move is to be replaced.
+      # @param move [Move] The move to be potentially replaced with a Z-Move.
+      # @return [Move] The original move if the Pokémon is not holding the correct Z-Crystal, otherwise the corresponding Z-Move.
+      def replace_with_status_z_move(pokemon, move)
+        return move unless data_type(move.type).db_symbol == TYPE_Z_CRYSTALS[pokemon.item_db_symbol][:type]
+
+        replacement_move = Battle::Move[move.be_method].new(move.db_symbol, move.pp.positive? ? 1 : 0, 1, @scene)
+        replacement_move.is_z = true
+
+        return replacement_move
       end
 
       # Replaces a Pokémon's move with its signature Z-Move if conditions are met.

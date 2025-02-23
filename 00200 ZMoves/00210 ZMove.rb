@@ -1,11 +1,13 @@
 module Battle
   class Move
-    # Get the move name sliced to fit in the move button
+    # Get the move name sliced to fit in the move button, also add a Z- prefix if the move is a Z-Move
     # @return [String]
     def sliced_name
-      return name if name.size <= 15
+      processed_name = name
+      processed_name = 'Z-' << name if is_z
+      return processed_name if processed_name.size <= 15
 
-      return name.slice(0..12) << '...'
+      return processed_name.slice(0..12) << '...'
     end
 
     class ZMove < Basic
@@ -19,17 +21,19 @@ module Battle
         PFM::Text.reset_variables
       end
 
-      # Get the pre Z-Move message
+      # Display messages before using a Z-Move
       # @return [String]
       def pre_z_move_message(user)
         @scene.display_message_and_wait(parse_text_with_pokemon(100, 0, user, PFM::Text::PKNICK[0] => user.given_name))
         @scene.display_message_and_wait(parse_text_with_pokemon(100, 1, user, PFM::Text::PKNICK[0] => user.given_name))
       end
 
+      # List of move-copying moves that should not be reverted after using them as Z-Moves
+      NO_REVERT_Z_MOVES = %i[mimic sketch].freeze
+
       # Internal procedure of the move
       # @param user [PFM::PokemonBattler]
       # @param targets [Array<PFM::PokemonBattler>] expected targets
-      # @note resets the user's moveset to the original and decreases the original move's PP
       def proceed_internal(user, targets)
         super(user, targets)
 
@@ -39,7 +43,7 @@ module Battle
         original_move.pp -= @logic.foes_of(user).any? { |foe| foe.alive? && foe.has_ability?(:pressure) } ? 2 : 1
 
         user.original_moveset.each_with_index do |move, i|
-          user.moveset[i] = Battle::Move.new(move.db_symbol, move.pp, move.ppmax, @scene)
+          user.moveset[i] = Battle::Move.new(move.db_symbol, move.pp, move.ppmax, @scene) unless NO_REVERT_Z_MOVES.include?(move.db_symbol)
         end
       end
 
