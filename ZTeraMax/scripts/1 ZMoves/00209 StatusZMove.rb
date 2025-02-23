@@ -3,6 +3,13 @@ module Battle
     module MoveZMovePlugin
       module_function
 
+      # Function that handles the Z-effect of increasing one of the user's stats by 1 stage
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param scene [PFM::Battle::Scene] scene of the battle
+      def apply_stat_change(stat, value, user, scene)
+        scene.logic.stat_change_handler.stat_change_with_process(stat, value, user, user, self)
+      end
+
       # Function that handles the Z-effect of increasing all user's stats by 1 stage
       # @param user [PFM::PokemonBattler] user of the move
       # @param scene [PFM::Battle::Scene] scene of the battle

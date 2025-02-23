@@ -78,13 +78,8 @@ module Battle
       # rubocop:disable Layout/HashAlignment
       # rubocop:disable Naming/VariableNumber
       # List of status moves that have an effect when used with a Z-Crystal
-
-      def self.apply_stat_change(stat, value, user, scene)
-        scene.logic.stat_change_handler.stat_change_with_process(stat, value, user, user, self)
-      end
-  
       Z_STATUS_MOVES_EFFECTS_NEW = {
-        # attack
+        # Attack
         **[
           :tail_whip,
           :leer,
@@ -104,11 +99,10 @@ module Battle
           :laser_focus,
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:atk, 1, user, scene) }
-        end
-  
-        splash: ->(user, scene) { apply_stat_change(:atk, 3, user, scene) }
-  
-        # defense
+        end,
+        splash: ->(user, scene) { apply_stat_change(:atk, 3, user, scene) },
+
+        # Defense
         **[
           :growl,
           :roar,
@@ -146,8 +140,8 @@ module Battle
           :tearful_look
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:dfe, 1, user, scene) }
-        end
-  
+        end,
+
         # Special Attack
         **[
           :growth,
@@ -172,11 +166,11 @@ module Battle
           :instruct
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:ats, 1, user, scene) }
-        end
-  
-        psycho_shift: ->(user, scene) { apply_stat_change(:ats, 2, user, scene) }
-        heal_block: ->(user, scene) { apply_stat_change(:ats, 2, user, scene) }
-      
+        end,
+
+        psycho_shift: ->(user, scene) { apply_stat_change(:ats, 2, user, scene) },
+        heal_block: ->(user, scene) { apply_stat_change(:ats, 2, user, scene) },
+
         # Special Defense
         **[
           :whirlwind,
@@ -203,8 +197,8 @@ module Battle
           :spotlight
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:dfs, 1, user, scene) }
-        end
-  
+        end,
+
         **[
           :magic_coat,
           :imprison,
@@ -213,8 +207,8 @@ module Battle
           :powder
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:dfs, 2, user, scene) }
-        end
-        
+        end,
+
         # Speed
         **[
           :sing,
@@ -250,7 +244,7 @@ module Battle
           :aurora_veil
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:spd, 1, user, scene) }
-        end
+        end,
   
         **[
           :trick,
@@ -261,8 +255,8 @@ module Battle
           :bestow
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:spd, 2, user, scene) }
-        end
-  
+        end,
+
         # Accuracy
         **[
           :mimic,
@@ -273,8 +267,8 @@ module Battle
           :trick_room
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:acc, 1, user, scene) }
-        end
-  
+        end,
+
         # Evasion
         **[
           :sand_attack,
@@ -287,8 +281,8 @@ module Battle
           :magnet_rise
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:eva, 1, user, scene) }
-        end
-  
+        end,
+
         # All basic stats
         **[
           :conversion,
@@ -302,8 +296,8 @@ module Battle
           :purify
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { increase_all_stats(user, scene) }
-        end
-  
+        end,
+
         # Reset decreased stats
         **[
           :swords_dance,
@@ -357,12 +351,12 @@ module Battle
           :floral_healing
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { reset_decreased_stats(user, scene) }
-        end
-  
+        end,
+
         # Focus attention
         destiny_bond: ->(user, scene) { focus_attention(user, scene) },
         grudge:       ->(user, scene) { focus_attention(user, scene) },
-  
+
         # Boost crit ratio
         **[
           :foresight,
@@ -371,8 +365,8 @@ module Battle
           :heart_swap
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { boost_crit_ratio(user, scene) }
-        end
-  
+        end,
+
         # Full heal
         **[
           :mist,
@@ -389,15 +383,17 @@ module Battle
           :aromatherapy
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) {  scene.logic.damage_handler.heal(user, user.max_hp, false) }
-        end
-  
+        end,
+
         curse:        ->(user, scene) { z_curse(user, scene) },
         memento:      ->(user, scene) { user.effects.add(Effects::ZHealNextAlly.new(scene.logic, user)) },
         parting_shot: ->(user, scene) { user.effects.add(Effects::ZHealNextAlly.new(scene.logic, user)) }
       }
+      # rubocop:enable Layout/HashAlignment
+      # rubocop:enable Naming/VariableNumber
     end
     prepend MoveZMovePlugin
-  end 
+  end
 end
 
 module PFM
