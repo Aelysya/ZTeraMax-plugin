@@ -1,0 +1,15 @@
+---
+!ruby/object:PluginManager::Config
+name: ZTeraMax
+authors:
+  - Aelysya
+  - Lexio
+  - Ota
+version: 0.1.0.0
+deps: []
+retry_psdk_compatibility_after_plugin_load: false
+added_files:
+  - Data/Text/Dialogs/120000.csv
+  - graphics/interface/battle/boss/button_zmove.png
+  - graphics/interface/battle/boss/button_zmove_activated.png
+
