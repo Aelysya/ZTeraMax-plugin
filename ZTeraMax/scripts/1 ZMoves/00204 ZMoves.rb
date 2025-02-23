@@ -79,8 +79,6 @@ module Battle
         @used_z_moves_tool_bags << pokemon.bag
       end
 
-      private
-
       # Replaces a Pokémon's move with its corresponding Z-Move if the Pokémon is holding the correct Z-Crystal.
       #
       # @param pokemon [Pokemon] The Pokémon whose move is to be replaced.
@@ -108,6 +106,8 @@ module Battle
 
         return replacement_move
       end
+
+      private
 
       # Replaces a Pokémon's move with its signature Z-Move if conditions are met.
       #
