@@ -3,6 +3,7 @@ module Battle
     # Handler responsive of answering properly item changes requests
     class ItemChangeHandler < ChangeHandlerBase
       module ItemChangeHandlerZMovePlugin
+        # List of item that cannot be manipulated during battle (Knock off, Trick, etc...)
         PROTECTED_ITEMS += %i[normalium_z fightinium_z flyinium_z poisonium_z groundium_z rockium_z buginium_z
                               ghostium_z steelium_z firium_z waterium_z grassium_z electrium_z psychium_z
                               icium_z dragonium_z darkinium_z fairium_z aloraichium_z decidium_z eevium_z

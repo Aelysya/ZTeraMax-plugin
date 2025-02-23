@@ -3,7 +3,7 @@ module Battle
     # Logic for Z-Moves
     class ZMoves
       # List of tools that allow Z-Moves
-      Z_MOVES_TOOLS = %i[z_ring z_power_ring].freeze
+      Z_MOVES_TOOLS = %i[z_ring z_power_ring]
 
       # List of basic Z-crystals
       TYPE_Z_CRYSTALS = {
@@ -25,9 +25,9 @@ module Battle
         dragonium_z: { type: :dragon, physical: :devastating_drake, special: :devastating_drake2 },
         darkinium_z: { type: :dark, physical: :black_hole_eclipse, special: :black_hole_eclipse2 },
         fairium_z: { type: :fairy, physical: :twinkle_tackle, special: :twinkle_tackle2 }
-      }.freeze
+      }
 
-      # List of Signature Z-crystals
+      # List of signature Z-crystals
       SIGNATURE_Z_CRYSTALS = {
         aloraichium_z: [{ specie: :raichu, forms: [1], base_move: :thunderbolt, zmove: :stoked_sparksurfer, be_method: :s_basic }],
         decidium_z: [{ specie: :decidueye, forms: [0], base_move: :spirit_shackle, zmove: :sinister_arrow_raid, be_method: :s_basic }],
@@ -57,7 +57,7 @@ module Battle
           { specie: :tapu_fini, forms: [0], base_move: :nature_s_madness, zmove: :guardian_of_alola, be_method: :s_guardian_of_alola }
         ],
         ultranecrozium_z: [{ specie: :raichu, forms: [0], base_move: :photon_geyser, zmove: :light_that_burns_the_sky, be_method: :s_photon_geyser }]
-      }.freeze
+      }
 
       # Create the Z-Moves logic
       # @param scene [Battle::Scene]
@@ -128,21 +128,12 @@ module Battle
         end
       end
 
-      # Marks the given Player as having used a Z-Move.
+      # Marks the given Pokémon's trainer as having used a Z-Move.
       #
       # @param pokemon [Pokemon] The Pokémon that has used a Z-Move.
       # @return [void]
       def mark_as_z_move_used(pokemon)
         @used_z_moves_tool_bags << pokemon.bag
-      end
-
-      # Determines the name of the Z-Move tool used to allow a Z-Move.
-      #
-      # @param pokemon [Pokemon] The Pokémon from which to check the trainer's bag is being checked for Z-Move tools.
-      # @return [String] The name of the Z-Move tool if found
-      def z_move_tool_name(pokemon)
-        symbol = Z_MOVES_TOOLS.find { |tool| pokemon.bag.contain_item?(tool) }
-        return data_item(symbol || 0).name
       end
 
       private
@@ -186,8 +177,7 @@ module Battle
         return Battle::Move[data[:be_method]].new(data[:zmove], move.pp.positive? ? 1 : 0, 1, @scene)
       end
 
-      # Checks if there are any player actions in the scene that are Z-Move commands.
-      #
+      # Function that checks if any action of the player is a Z-Move
       # @return [Boolean] true if any player action is an Z-Move command, false otherwise.
       def any_z_move_player_action?
         @scene.player_actions.any? { |action| action.is_a?(Actions::ZMove) }

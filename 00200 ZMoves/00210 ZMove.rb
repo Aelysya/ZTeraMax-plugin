@@ -29,7 +29,7 @@ module Battle
       end
 
       # List of move-copying moves that should not be reverted after using them as Z-Moves
-      NO_REVERT_Z_MOVES = %i[mimic sketch].freeze
+      NO_REVERT_Z_MOVES = %i[mimic sketch]
 
       # Internal procedure of the move
       # @param user [PFM::PokemonBattler]

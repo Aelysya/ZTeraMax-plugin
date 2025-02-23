@@ -19,6 +19,7 @@ module Battle
 
       # rubocop:disable Layout/HashAlignment
       # rubocop:disable Naming/VariableNumber
+      # List of status moves that have an effect when used with a Z-Crystal
       Z_STATUS_MOVES_EFFECTS = {
         # Attack
         tail_whip:   ->(user, scene) { scene.logic.stat_change_handler.stat_change_with_process(:atk, 1, user, user, self) },
@@ -279,10 +280,13 @@ module Battle
         curse:        ->(user, scene) { z_curse(user, scene) },
         memento:      ->(user, scene) { user.effects.add(Effects::ZHealNextAlly.new(scene.logic, user)) },
         parting_shot: ->(user, scene) { user.effects.add(Effects::ZHealNextAlly.new(scene.logic, user)) }
-      }.freeze
+      }
       # rubocop:enable Layout/HashAlignment
       # rubocop:enable Naming/VariableNumber
 
+      # Function that handles the Z-effect of increasing all user's stats by 1 stage
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param scene [PFM::Battle::Scene] scene of the battle
       def increase_all_stats(user, scene)
         scene.logic.stat_change_handler.stat_change_with_process(:atk, 1, user, user, self)
         scene.logic.stat_change_handler.stat_change_with_process(:dfe, 1, user, user, self)
@@ -291,18 +295,27 @@ module Battle
         scene.logic.stat_change_handler.stat_change_with_process(:spd, 1, user, user, self)
       end
 
+      # Function that handles the Z-effect of resetting negative changes on the user's stats
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param scene [PFM::Battle::Scene] scene of the battle
       def reset_decreased_stats(user, scene)
-        return if user.battle_stage.none? { |stage| stage != 0 }
+        return if user.battle_stage.none? { |stage| stage < 0 }
 
-        user.battle_stage.map! { 0 }
+        user.battle_stage.map! { |stage| stage < 0 ? 0 : stage }
         scene.display_message_and_wait(parse_text_with_pokemon(19, 195, user))
       end
 
+      # Function that handles the Z-effect of focusing the attention on the user
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param scene [PFM::Battle::Scene] scene of the battle
       def focus_attention(user, scene)
         user.effects.add(Effects::CenterOfAttention.new(@logic, user, 1, self))
         scene.display_message_and_wait(parse_text_with_pokemon(19, 670, user))
       end
 
+      # Function that handles the Z-effect of increasing the crit ratio of the user
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param scene [PFM::Battle::Scene] scene of the battle
       def boost_crit_ratio(user, scene)
         return if UNSTACKABLE_EFFECTS.any? { |e| target.effects.has?(e) }
 
@@ -310,6 +323,9 @@ module Battle
         scene.display_message_and_wait(parse_text_with_pokemon(19, 1047, user))
       end
 
+      # Function that handles the Z-effect of Curse
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param scene [PFM::Battle::Scene] scene of the battle
       def z_curse(user, scene)
         if user.type_ghost?
           scene.logic.damage_handler.heal(user, user.max_hp)
@@ -318,6 +334,9 @@ module Battle
         end
       end
 
+      # Internal procedure of the move
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param targets [Array<PFM::PokemonBattler>] expected targets
       def proceed_internal(user, targets)
         return user.add_move_to_history(self, targets) unless (actual_targets = proceed_internal_precheck(user, targets))
 
@@ -340,12 +359,19 @@ module Battle
         @scene.visual.wait_for_animation
       end
 
+      # Tell if the move accuracy is bypassed
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param targets [Array<PFM::PokemonBattler>] expected targets
+      # @return [Boolean]
       def bypass_accuracy?(user, targets)
         return true if @is_z
 
         return super(user, targets)
       end
 
+      # Function that deals the Z-effect to the pokemon
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       def deal_z_effect(user, actual_targets)
         return true unless @is_z
         return true unless status? && Z_STATUS_MOVES_EFFECTS.key?(db_symbol)

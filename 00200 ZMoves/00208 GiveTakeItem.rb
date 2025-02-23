@@ -38,7 +38,7 @@ module Util
       1121 => 1115, # Mimikium Z
       1122 => 1116, # Lycanium Z
       1123 => 1117 # Kommonium Z
-    }.freeze
+    }
 
     alias default_give givetake_give_item_update_state
     # Update the bag and pokemon state when giving an item

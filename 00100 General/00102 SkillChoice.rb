@@ -9,6 +9,7 @@ module BattleUI
         super(viewport, scene)
       end
 
+      # Refresh the move buttons
       def refresh_skill_buttons
         @info.data = @pokemon
         @buttons.each do |button|
@@ -23,6 +24,7 @@ module BattleUI
       private
 
       alias default_create_sprites create_sprites
+      # Create the buttons sprites
       def create_sprites
         @background = add_sprite(0, 0, 'battle/types', 1, each_data_type.size, type: SpriteSheet)
         @text = add_text(28, 6, 0, 16, :sliced_name, color: 10, type: UI::SymText)
