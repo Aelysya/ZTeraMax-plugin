@@ -100,21 +100,6 @@ module Battle
       # @param target [PFM::PokemonBattler] The target of the move.
       # @return [Integer] The calculated base power of the move.
       # @see https://bulbapedia.bulbagarden.net/wiki/Z-Move#Power
-
-      # The method first retrieves the original power of the move. If the move is listed in the
-      # Z_MOVES_POWER_EXCEPTIONS hash, it uses the corresponding power value. Otherwise, it determines
-      # the power based on the original power range:
-      # - 0..59: 100
-      # - 60..69: 120
-      # - 70..79: 140
-      # - 80..89: 160
-      # - 90..99: 175
-      # - 100..109: 180
-      # - 110..119: 185
-      # - 120..129: 190
-      # - 130..139: 195
-      # - 140 and above: 200
-      #
       # The calculated power is then logged and returned.
       def real_base_power(user, target)
         original_power = power = @original_move.real_base_power(user, target)

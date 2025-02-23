@@ -1,45 +1,6 @@
 module Util
   # Module adding the give / take item functionality to a scene
   module GiveTakeItem
-    # List of Z crystals IDs, key is the big crystal, value is the held crystal
-    Z_CRYSTALS_IDS = {
-      807 => 776, # Normalium Z
-      808 => 777, # Firium Z
-      809 => 778, # Waterium Z
-      810 => 779, # Electrium Z
-      811 => 780, # Grassium Z
-      812 => 781, # Icium Z
-      813 => 782, # Fightinium Z
-      814 => 783, # Poisonium Z
-      815 => 784, # Groundium Z
-      816 => 785, # Flyinium Z
-      817 => 786, # Psychium Z
-      818 => 787, # Buginium Z
-      819 => 788, # Rockium Z
-      820 => 789, # Ghostium Z
-      821 => 790, # Dragonium Z
-      822 => 791, # Darkinium Z
-      823 => 792, # Steelium Z
-      824 => 793, # Fairium Z
-      825 => 794, # Pikanium Z
-      826 => 798, # Decidium Z
-      827 => 799, # Incinium Z
-      828 => 800, # Primarium Z
-      829 => 801, # Tapunium Z
-      830 => 802, # Marshadium Z
-      831 => 803, # Aloraichium Z
-      832 => 804, # Snorlium Z
-      833 => 805, # Eevium Z
-      834 => 806, # Mewnium Z
-      836 => 835, # Pikashunium Z
-      1118 => 1112, # Solganium Z
-      1119 => 1113, # Lunalium Z
-      1120 => 1114, # Ultranecrozium Z
-      1121 => 1115, # Mimikium Z
-      1122 => 1116, # Lycanium Z
-      1123 => 1117 # Kommonium Z
-    }
-
     alias default_give givetake_give_item_update_state
     # Update the bag and pokemon state when giving an item
     # @param item1 [Integer] taken item
