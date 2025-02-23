@@ -89,7 +89,10 @@ module Battle
       def replace_with_type_z_move(pokemon, move)
         return move unless data_type(move.type).db_symbol == TYPE_Z_CRYSTALS[pokemon.item_db_symbol][:type]
 
-        return Battle::Move[:s_type_z_move].new(TYPE_Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
+        replacement_move = Battle::Move[:s_type_z_move].new(TYPE_Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
+        replacement_move.is_z = true
+
+        return replacement_move
       end
 
       # Replaces a Pokémon's status move with its corresponding Z-Move if the Pokémon is holding the correct Z-Crystal.
@@ -117,7 +120,10 @@ module Battle
 
         return move unless move.db_symbol == data[:base_move]
 
-        return Battle::Move[data[:be_method]].new(data[:zmove], move.pp.positive? ? 1 : 0, 1, @scene)
+        replacement_move = Battle::Move[data[:be_method]].new(data[:zmove], move.pp.positive? ? 1 : 0, 1, @scene)
+        replacement_move.is_z = true
+
+        return replacement_move
       end
 
       # Function that checks if any action of the player is a Z-Move

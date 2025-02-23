@@ -1,21 +1,7 @@
 module Battle
   class Move
-    # if the move is Z-empowered
-    # @return [Boolean]
-    attr_accessor :is_z
-
     module MoveZMovePlugin
       module_function
-
-      # Create a new move
-      # @param db_symbol [Symbol] db_symbol of the move in the database
-      # @param pp [Integer] number of pp the move currently has
-      # @param ppmax [Integer] maximum number of pp the move currently has
-      # @param scene [Battle::Scene] current battle scene
-      def initialize(db_symbol, pp, ppmax, scene)
-        super(db_symbol, pp, ppmax, scene)
-        @is_z = false
-      end
 
       # Function that handles the Z-effect of increasing all user's stats by 1 stage
       # @param user [PFM::PokemonBattler] user of the move
