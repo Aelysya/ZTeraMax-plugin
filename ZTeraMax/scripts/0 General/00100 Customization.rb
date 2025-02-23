@@ -78,92 +78,92 @@ module Battle
       # rubocop:disable Layout/HashAlignment
       # rubocop:disable Naming/VariableNumber
       # List of status moves that have an effect when used with a Z-Crystal
-      Z_STATUS_MOVES_EFFECTS_NEW = {
+      Z_STATUS_MOVES_EFFECTS = {
         # Attack
-        **[
-          :tail_whip,
-          :leer,
-          :meditate,
-          :screech,
-          :sharpen,
-          :will_o_wisp,
-          :taunt,
-          :odor_sleuth,
-          :howl,
-          :bulk_up,
-          :power_trick,
-          :hone_claws,
-          :work_up,
-          :rototiller,
-          :topsy_turvy,
-          :laser_focus,
+        **%i[
+          tail_whip
+          leer
+          meditate
+          screech
+          sharpen
+          will_o_wisp
+          taunt
+          odor_sleuth
+          howl
+          bulk_up
+          power_trick
+          hone_claws
+          work_up
+          rototiller
+          topsy_turvy
+          laser_focus
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:atk, 1, user, scene) }
         end,
         splash: ->(user, scene) { apply_stat_change(:atk, 3, user, scene) },
 
         # Defense
-        **[
-          :growl,
-          :roar,
-          :poison_powder,
-          :toxic,
-          :harden,
-          :withdraw,
-          :reflect,
-          :poison_gas,
-          :spider_web,
-          :spikes,
-          :charm,
-          :pain_split,
-          :torment,
-          :feather_dance,
-          :tickle,
-          :block,
-          :toxic_spikes,
-          :aqua_ring,
-          :stealth_rock,
-          :defend_order,
-          :wide_guard,
-          :quick_guard,
-          :mat_block,
-          :noble_roar,
-          :flower_shield,
-          :grassy_terrain,
-          :fairy_lock,
-          :play_nice,
-          :spiky_shield,
-          :venom_drench,
-          :baby_doll_eyes,
-          :baneful_bunker,
-          :strength_sap,
-          :tearful_look
+        **%i[
+          growl
+          roar
+          poison_powder
+          toxic
+          harden
+          withdraw
+          reflect
+          poison_gas
+          spider_web
+          spikes
+          charm
+          pain_split
+          torment
+          feather_dance
+          tickle
+          block
+          toxic_spikes
+          aqua_ring
+          stealth_rock
+          defend_order
+          wide_guard
+          quick_guard
+          mat_block
+          noble_roar
+          flower_shield
+          grassy_terrain
+          fairy_lock
+          play_nice
+          spiky_shield
+          venom_drench
+          baby_doll_eyes
+          baneful_bunker
+          strength_sap
+          tearful_look
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:dfe, 1, user, scene) }
         end,
 
         # Special Attack
-        **[
-          :growth,
-          :confuse_ray,
-          :mind_reader,
-          :nightmare,
-          :sweet_kiss,
-          :teeter_dance,
-          :fake_tears,
-          :metal_sound,
-          :gravity,
-          :miracle_eye,
-          :embargo,
-          :telekinesis,
-          :soak,
-          :simple_beam,
-          :reflect_type,
-          :ion_deluge,
-          :electrify,
-          :gear_up,
-          :psychic_terrain,
-          :instruct
+        **%i[
+          growth
+          confuse_ray
+          mind_reader
+          nightmare
+          sweet_kiss
+          teeter_dance
+          fake_tears
+          metal_sound
+          gravity
+          miracle_eye
+          embargo
+          telekinesis
+          soak
+          simple_beam
+          reflect_type
+          ion_deluge
+          electrify
+          gear_up
+          psychic_terrain
+          instruct
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:ats, 1, user, scene) }
         end,
@@ -172,183 +172,183 @@ module Battle
         heal_block: ->(user, scene) { apply_stat_change(:ats, 2, user, scene) },
 
         # Special Defense
-        **[
-          :whirlwind,
-          :stun_spore,
-          :thunder_wave,
-          :light_screen,
-          :glare,
-          :mean_look,
-          :flatter,
-          :charge,
-          :wish,
-          :ingrain,
-          :mud_sport,
-          :cosmic_power,
-          :water_sport,
-          :wonder_room,
-          :magic_room,
-          :entrainment,
-          :crafty_shield,
-          :misty_terrain,
-          :confide,
-          :eerie_impulse,
-          :magnetic_flux,
-          :spotlight
+        **%i[
+          whirlwind
+          stun_spore
+          thunder_wave
+          light_screen
+          glare
+          mean_look
+          flatter
+          charge
+          wish
+          ingrain
+          mud_sport
+          cosmic_power
+          water_sport
+          wonder_room
+          magic_room
+          entrainment
+          crafty_shield
+          misty_terrain
+          confide
+          eerie_impulse
+          magnetic_flux
+          spotlight
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:dfs, 1, user, scene) }
         end,
 
-        **[
-          :magic_coat,
-          :imprison,
-          :captivate,
-          :aromatic_mist,
-          :powder
+        **%i[
+          magic_coat
+          imprison
+          captivate
+          aromatic_mist
+          powder
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:dfs, 2, user, scene) }
         end,
 
         # Speed
-        **[
-          :sing,
-          :supersonic,
-          :sleep_powder,
-          :string_shot,
-          :hypnosis,
-          :lovely_kiss,
-          :scary_face,
-          :lock_on,
-          :sandstorm,
-          :safeguard,
-          :encore,
-          :rain_dance,
-          :sunny_dance,
-          :hail,
-          :role_play,
-          :yawn,
-          :skill_swap,
-          :grass_whistle,
-          :gastro_acid,
-          :power_swap,
-          :guard_swap,
-          :worry_seed,
-          :guard_split,
-          :power_split,
-          :after_you,
-          :quash,
-          :sticky_web,
-          :electric_terrain,
-          :toxic_thread,
-          :speed_swap,
-          :aurora_veil
+        **%i[
+          sing
+          supersonic
+          sleep_powder
+          string_shot
+          hypnosis
+          lovely_kiss
+          scary_face
+          lock_on
+          sandstorm
+          safeguard
+          encore
+          rain_dance
+          sunny_dance
+          hail
+          role_play
+          yawn
+          skill_swap
+          grass_whistle
+          gastro_acid
+          power_swap
+          guard_swap
+          worry_seed
+          guard_split
+          power_split
+          after_you
+          quash
+          sticky_web
+          electric_terrai
+          toxic_thread
+          speed_swap
+          aurora_veil
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:spd, 1, user, scene) }
         end,
-  
-        **[
-          :trick,
-          :recycle,
-          :snatch,
-          :switcheroo,
-          :ally_switch,
-          :bestow
+
+        **%i[
+          trick
+          recycle
+          snatch
+          switcheroo
+          ally_switch
+          bestow
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:spd, 2, user, scene) }
         end,
 
         # Accuracy
-        **[
-          :mimic,
-          :defense_curl,
-          :focus_energy,
-          :sweet_scent,
-          :defog,
-          :trick_room
+        **%i[
+          mimic
+          defense_curl
+          focus_energy
+          sweet_scent
+          defog
+          trick_room
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:acc, 1, user, scene) }
         end,
 
         # Evasion
-        **[
-          :sand_attack,
-          :smokescreen,
-          :kinesis,
-          :flash,
-          :detect,
-          :camouflage,
-          :lucky_chant,
-          :magnet_rise
+        **%i[
+          sand_attack
+          smokescreen
+          kinesis
+          flash
+          detect
+          camouflage
+          lucky_chant
+          magnet_rise
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:eva, 1, user, scene) }
         end,
 
         # All basic stats
-        **[
-          :conversion,
-          :sketch,
-          :trick_or_treat,
-          :forest_s_curse,
-          :geomancy,
-          :happy_hour,
-          :celebrate,
-          :hold_hands,
-          :purify
+        **%i[
+          conversion
+          sketch
+          trick_or_treat
+          forest_s_curse
+          geomancy
+          happy_hour
+          celebrate
+          hold_hands
+          purify
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { increase_all_stats(user, scene) }
         end,
 
         # Reset decreased stats
-        **[
-          :swords_dance,
-          :disable,
-          :leech_seed,
-          :agility,
-          :double_team,
-          :recover,
-          :minimize,
-          :barrier,
-          :amnesia,
-          :soft_boiled,
-          :spore,
-          :acid_armor,
-          :rest,
-          :substitute,
-          :cotton_spore,
-          :protect,
-          :perish_song,
-          :endure,
-          :swagger,
-          :milk_drink,
-          :attract,
-          :baton_pass,
-          :morning_sun,
-          :synthesis,
-          :moonlight,
-          :swallow,
-          :follow_me,
-          :helping_hand,
-          :tail_glow,
-          :slack_off,
-          :iron_defense,
-          :calm_mind,
-          :dragon_dance,
-          :roost,
-          :rock_polish,
-          :nasty_plot,
-          :heal_order,
-          :dark_void,
-          :autotomize,
-          :rage_powder,
-          :quiver_dance,
-          :coil,
-          :shell_smash,
-          :heal_pulse,
-          :shift_gear,
-          :cotton_guard,
-          :king_s_shield,
-          :shore_up,
-          :floral_healing
+        **%i[
+          swords_dance
+          disable
+          leech_seed
+          agility
+          double_team
+          recover
+          minimize
+          barrier
+          amnesia
+          soft_boiled
+          spore
+          acid_armor
+          rest
+          substitute
+          cotton_spore
+          protect
+          perish_song
+          endure
+          swagger
+          milk_drink
+          attract
+          baton_pass
+          morning_sun
+          synthesis
+          moonlight
+          swallow
+          follow_me
+          helping_hand
+          tail_glow
+          slack_off
+          iron_defense
+          calm_mind
+          dragon_dance
+          roost
+          rock_polish
+          nasty_plot
+          heal_order
+          dark_void
+          autotomize
+          rage_powder
+          quiver_dance
+          coil
+          shell_smash
+          heal_pulse
+          shift_gear
+          cotton_guard
+          king_s_shield
+          shore_up
+          floral_healing
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { reset_decreased_stats(user, scene) }
         end,
@@ -358,39 +358,38 @@ module Battle
         grudge:       ->(user, scene) { focus_attention(user, scene) },
 
         # Boost crit ratio
-        **[
-          :foresight,
-          :tailwind,
-          :acupressure,
-          :heart_swap
+        **%i[
+          foresight
+          tailwind
+          acupressure
+          heart_swap
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { boost_crit_ratio(user, scene) }
         end,
 
         # Full heal
-        **[
-          :mist,
-          :teleport,
-          :haze,
-          :transform,
-          :conversion_2,
-          :spite,
-          :belly_drum,
-          :heal_bell,
-          :psych_up,
-          :stockpile,
-          :refresh,
-          :aromatherapy
+        **%i[
+          mist
+          teleport
+          haze
+          transform
+          conversion_2
+          spite
+          belly_drum
+          heal_bell
+          psych_up
+          stockpile
+          refresh
+          aromatherapy
         ].each_with_object({}) do |action, hash|
-          hash[action] = ->(user, scene) {  scene.logic.damage_handler.heal(user, user.max_hp, false) }
+          hash[action] = ->(user, scene) { scene.logic.damage_handler.heal(user, user.max_hp, false) }
         end,
 
         # Other
         # mirror_move: ->(user, logic) { logic.stat_change_handler.stat_change_with_process(:atk, 2, user, user, self) }, -> Must call a Z-Move
         # me_first: ->(user, logic) { logic.stat_change_handler.stat_change_with_process(:spd, 2, user, user, self) }, -> Must call a Z-Move
         # copycat: ->(user, logic) { logic.stat_change_handler.stat_change_with_process(:acc, 1, user, user, self) }, -> Must call a Z-Move
-        # sleep_talk: ->(user, _logic) { boost_crit_ratio(user) }, -> Must call a Z-Move
-
+        sleep_talk:   ->(user, scene) { boost_crit_ratio(user, scene) },
         curse:        ->(user, scene) { z_curse(user, scene) },
         memento:      ->(user, scene) { user.effects.add(Effects::ZHealNextAlly.new(scene.logic, user)) },
         parting_shot: ->(user, scene) { user.effects.add(Effects::ZHealNextAlly.new(scene.logic, user)) }

@@ -19,10 +19,11 @@ module Battle
       # @param user [PFM::PokemonBattler] user of the move
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       def deal_effect(user, actual_targets)
+        puts "3: #{is_z}"
         return super unless is_z
 
         move = usable_moves(user).sample(random: @logic.generic_rng).dup
-        move = move.status? ? logic.z_move.replace_with_status_z_move(user, move) : logic.z_move.replace_with_type_z_move(user, move)
+        move = logic.z_move.replace_with_type_z_move(user, move) unless move.status?
         def move.move_usable_by_user(user, targets)
           return true
         end
