@@ -385,6 +385,12 @@ module Battle
           hash[action] = ->(user, scene) {  scene.logic.damage_handler.heal(user, user.max_hp, false) }
         end,
 
+        # Other
+        # mirror_move: ->(user, logic) { logic.stat_change_handler.stat_change_with_process(:atk, 2, user, user, self) }, -> Must call a Z-Move
+        # me_first: ->(user, logic) { logic.stat_change_handler.stat_change_with_process(:spd, 2, user, user, self) }, -> Must call a Z-Move
+        # copycat: ->(user, logic) { logic.stat_change_handler.stat_change_with_process(:acc, 1, user, user, self) }, -> Must call a Z-Move
+        # sleep_talk: ->(user, _logic) { boost_crit_ratio(user) }, -> Must call a Z-Move
+
         curse:        ->(user, scene) { z_curse(user, scene) },
         memento:      ->(user, scene) { user.effects.add(Effects::ZHealNextAlly.new(scene.logic, user)) },
         parting_shot: ->(user, scene) { user.effects.add(Effects::ZHealNextAlly.new(scene.logic, user)) }
