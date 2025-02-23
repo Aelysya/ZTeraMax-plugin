@@ -386,9 +386,9 @@ module Battle
         end,
 
         # Other
-        # mirror_move: ->(user, logic) { logic.stat_change_handler.stat_change_with_process(:atk, 2, user, user, self) }, -> Must call a Z-Move
+        mirror_move: ->(user, scene) { scene.logic.stat_change_handler.stat_change_with_process(:atk, 2, user, user, self) },
         # me_first: ->(user, logic) { logic.stat_change_handler.stat_change_with_process(:spd, 2, user, user, self) }, -> Must call a Z-Move
-        # copycat: ->(user, logic) { logic.stat_change_handler.stat_change_with_process(:acc, 1, user, user, self) }, -> Must call a Z-Move
+        copycat:      ->(user, scene) { scene.logic.stat_change_handler.stat_change_with_process(:acc, 1, user, user, self) },
         sleep_talk:   ->(user, scene) { boost_crit_ratio(user, scene) },
         curse:        ->(user, scene) { z_curse(user, scene) },
         memento:      ->(user, scene) { user.effects.add(Effects::ZHealNextAlly.new(scene.logic, user)) },

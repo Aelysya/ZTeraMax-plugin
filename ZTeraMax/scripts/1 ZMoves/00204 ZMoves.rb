@@ -93,6 +93,19 @@ module Battle
         return replacement_move
       end
 
+      # Get the corresponding Z-Move for a given move
+      #
+      # @param move [Move] The move to get the corresponding Z-Move for.
+      # @return [Move] The corresponding Z-Move.
+      def corresponding_z_move(move)
+        z_crystal = TYPE_Z_CRYSTALS.find { |_k, v| v[:type] == data_type(move.type).db_symbol }&.first
+        return log_error("Z crystal for move #{move} not found.") && move unless z_crystal
+
+        replacement_move = Battle::Move[:s_type_z_move].new(TYPE_Z_CRYSTALS[z_crystal][data_move(move.db_symbol).category], @scene, move)
+        replacement_move.is_z = true
+        return replacement_move
+      end
+
       # Replaces a Pokémon's status move with its corresponding Z-Move if the Pokémon is holding the correct Z-Crystal.
       #
       # @param pokemon [Pokemon] The Pokémon whose move is to be replaced.

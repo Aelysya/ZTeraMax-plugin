@@ -22,7 +22,7 @@ module Battle
         return super unless is_z
 
         move = usable_moves(user).sample(random: @logic.generic_rng).dup
-        move = logic.z_move.replace_with_type_z_move(user, move) unless move.status?
+        move = logic.z_move.corresponding_z_move(move) unless move.status?
         def move.move_usable_by_user(user, targets)
           return true
         end
