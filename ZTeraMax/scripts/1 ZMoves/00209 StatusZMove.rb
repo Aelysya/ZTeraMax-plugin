@@ -47,7 +47,6 @@ module Battle
 
         user.effects.add(Effects::FocusEnergy.new(@logic, user))
         scene.display_message_and_wait(parse_text_with_pokemon(19, 1047, user))
-        puts 2
       end
 
       # Function that handles the Z-effect of Curse
@@ -100,11 +99,11 @@ module Battle
       # @param user [PFM::PokemonBattler] user of the move
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       def deal_z_effect(user, actual_targets)
-        puts 1
         return true unless @is_z
         return true unless status? && Z_STATUS_MOVES_EFFECTS.key?(db_symbol)
 
         Z_STATUS_MOVES_EFFECTS[db_symbol].call(user, @scene)
+        return true
       end
     end
 

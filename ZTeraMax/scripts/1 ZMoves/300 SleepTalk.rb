@@ -19,7 +19,6 @@ module Battle
       # @param user [PFM::PokemonBattler] user of the move
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       def deal_effect(user, actual_targets)
-        puts "3: #{is_z}"
         return super unless is_z
 
         move = usable_moves(user).sample(random: @logic.generic_rng).dup
@@ -28,6 +27,15 @@ module Battle
           return true
         end
         use_another_move(move, user)
+      end
+
+      # Function that list all the moves the user can pick
+      # @param user [PFM::PokemonBattler]
+      # @return [Array<Battle::Move>]
+      def usable_moves(user)
+        return user.original_moveset.reject { |skill| CANNOT_BE_SELECTED_MOVES.include?(skill.db_symbol) } if is_z
+
+        return super
       end
     end
     Move.register(:s_sleep_talk, SleepTalkZ)
