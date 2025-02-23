@@ -1,0 +1,34 @@
+module Battle
+  class Move
+    # Assist move
+    class AssistZ < Assist
+      # Function that tests if the user is able to use the move
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param targets [Array<PFM::PokemonBattler>] expected targets
+      # @note Thing that prevents the move from being used should be defined by :move_prevention_user Hook
+      # @return [Boolean] if the procedure can continue
+      def move_usable_by_user(user, targets)
+        return true if is_z
+
+        return super
+      end
+
+      private
+
+      # Function that deals the effect to the pokemon
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
+      def deal_effect(user, actual_targets)
+        skill = usable_moves(user).sample(random: @logic.generic_rng)
+        move = Battle::Move[skill.be_method].new(skill.id, 1, 1, @scene)
+        move = logic.z_move.corresponding_z_move(move) unless move.status?
+
+        def move.move_usable_by_user(user, targets)
+          return true
+        end
+        use_another_move(move, user)
+      end
+    end
+    Move.register(:s_assist, Assist)
+  end
+end

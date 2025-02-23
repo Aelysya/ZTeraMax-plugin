@@ -6,6 +6,8 @@ module Battle
       # @param user [PFM::PokemonBattler] user of the move
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       def deal_effect(user, actual_targets)
+        return super unless is_z
+
         skill = each_data_move.reject { |i| CANNOT_BE_SELECTED_MOVES.include?(i.db_symbol) }.sample(random: @logic.generic_rng)
         move = Battle::Move[skill.be_method].new(skill.id, 1, 1, @scene)
         move = logic.z_move.corresponding_z_move(move) unless move.status?
