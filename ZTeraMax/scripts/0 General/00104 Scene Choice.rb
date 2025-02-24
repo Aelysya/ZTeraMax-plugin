@@ -10,7 +10,7 @@ module Battle
         if mega
           @player_actions << [next_action, Actions::Mega.new(self, launcher)]
         elsif zmove
-          @player_actions << [next_action, Actions::ZMove.new(self, launcher)]
+          @player_actions << Actions::ZMove.new(self, skill, launcher, target_bank, target_position)
         else
           @player_actions << next_action
         end

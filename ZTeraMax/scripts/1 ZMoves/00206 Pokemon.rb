@@ -14,6 +14,8 @@ module PFM
       FORM_CALIBRATE[:arceus] = proc do
         next @form = ArceusItem.index(item_db_symbol).to_i if ArceusItem.include?(item_db_symbol)
         next @form = ArceusZCrystalItem.index(item_db_symbol).to_i if ArceusZCrystalItem.include?(item_db_symbol)
+
+        next 0
       end
     end
 

@@ -58,7 +58,7 @@ module Battle
         if user.type_ghost?
           scene.logic.damage_handler.heal(user, user.max_hp)
         else
-          scene.logic.stat_change_handler.stat_change_with_process(:atk, 1, user, user, self)
+          apply_stat_change(:atk, 1, user, scene)
         end
       end
 
