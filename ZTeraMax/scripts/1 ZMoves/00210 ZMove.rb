@@ -32,7 +32,7 @@ module Battle
         @scene.display_message_and_wait(parse_text_with_pokemon(20_000, 1, user, PFM::Text::PKNICK[0] => user.given_name))
       end
 
-      # Get the move name sliced to fit in the move button, also add a 'Z' affixe if the move is a status Z-Move
+      # Get the move name sliced to fit in the move button, also add a 'Z' affix if the move is a status Z-Move
       # @return [String]
       def sliced_name
         processed_name = name
