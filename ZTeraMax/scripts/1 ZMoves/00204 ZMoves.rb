@@ -38,7 +38,7 @@ module Battle
       def can_pokemon_use_z_move?(pokemon)
         return false unless Z_MOVES_TOOLS.any? { |tool| pokemon.bag.contain_item?(tool) }
         return false if pokemon.from_party? && any_z_move_player_action?
-        return false if [30, 31].include?(pokemon.form)
+        return false if pokemon.mega_evolved?
 
         return !@used_z_moves_tool_bags.include?(pokemon.bag) && pokemon_holds_valid_z_crystal?(pokemon)
       end

@@ -3,6 +3,7 @@ module PFM
     module PokemonZMovesPlugin
       # Check if the Pokemon can mega evolve
       # @return [Integer, false] form index if the Pokemon can mega evolve, false otherwise
+      # @note itemless Mega Evolution can't Mega if they hold a ZCrystal (Rayquaza)
       def can_mega_evolve?
         return false if Z_CRYSTALS.include?(item_db_symbol)
 

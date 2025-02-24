@@ -8,10 +8,9 @@ module Battle
       # @note Thing that prevents the move from being used should be defined by :move_prevention_user Hook
       # @return [Boolean] if the procedure can continue
       def move_usable_by_user(user, targets)
-        return super unless is_z
         return false if target_move(targets.first).is_z
 
-        return true
+        return super
       end
 
       private
@@ -36,7 +35,7 @@ module Battle
         end
 
         def move.chance_of_hit(user, target)
-          return 0
+          return 100
         end
         use_another_move(move, user)
       end

@@ -88,12 +88,10 @@ module Battle
       # @see https://bulbapedia.bulbagarden.net/wiki/Z-Move#Power
       # The calculated power is then logged and returned.
       def real_base_power(user, target)
-        original_power = power = @original_move.real_base_power(user, target)
-
         if Z_MOVES_POWER_EXCEPTIONS.key?(@original_move.db_symbol)
           power = Z_MOVES_POWER_EXCEPTIONS[@original_move.db_symbol]
         else
-          case original_power
+          case power
           when 0..59
             power = 100
           when 60..69

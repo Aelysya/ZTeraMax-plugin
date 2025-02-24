@@ -7,14 +7,14 @@ module Battle
 
       # Function that handles the Z-effect of increasing one of the user's stats by 1 stage
       # @param user [PFM::PokemonBattler] user of the move
-      # @param scene [PFM::Battle::Scene] scene of the battle
+      # @param scene [battle::scene] scene of the battle
       def apply_stat_change(stat, value, user, scene)
         scene.logic.stat_change_handler.stat_change_with_process(stat, value, user, user, self)
       end
 
       # Function that handles the Z-effect of increasing all user's stats by 1 stage
       # @param user [PFM::PokemonBattler] user of the move
-      # @param scene [PFM::Battle::Scene] scene of the battle
+      # @param scene [battle::scene] scene of the battle
       def increase_all_stats(user, scene)
         scene.logic.stat_change_handler.stat_change_with_process(:atk, 1, user, user, self)
         scene.logic.stat_change_handler.stat_change_with_process(:dfe, 1, user, user, self)
@@ -25,7 +25,7 @@ module Battle
 
       # Function that handles the Z-effect of resetting negative changes on the user's stats
       # @param user [PFM::PokemonBattler] user of the move
-      # @param scene [PFM::Battle::Scene] scene of the battle
+      # @param scene [battle::scene] scene of the battle
       def reset_decreased_stats(user, scene)
         return if user.battle_stage.none? { |stage| stage < 0 }
 
@@ -35,7 +35,7 @@ module Battle
 
       # Function that handles the Z-effect of focusing the attention on the user
       # @param user [PFM::PokemonBattler] user of the move
-      # @param scene [PFM::Battle::Scene] scene of the battle
+      # @param scene [battle::scene] scene of the battle
       def focus_attention(user, scene)
         user.effects.add(Effects::CenterOfAttention.new(@logic, user, 1, self))
         scene.display_message_and_wait(parse_text_with_pokemon(19, 670, user))
@@ -43,7 +43,7 @@ module Battle
 
       # Function that handles the Z-effect of increasing the crit ratio of the user
       # @param user [PFM::PokemonBattler] user of the move
-      # @param scene [PFM::Battle::Scene] scene of the battle
+      # @param scene [battle::scene] scene of the battle
       def boost_crit_ratio(user, scene)
         return if %i[dragon_cheer focus_energy triple_arrows].any? { |e| user.effects.has?(e) }
 
@@ -53,7 +53,7 @@ module Battle
 
       # Function that handles the Z-effect of Curse
       # @param user [PFM::PokemonBattler] user of the move
-      # @param scene [PFM::Battle::Scene] scene of the battle
+      # @param scene [battle::scene] scene of the battle
       def z_curse(user, scene)
         if user.type_ghost?
           scene.logic.damage_handler.heal(user, user.max_hp)
@@ -109,14 +109,14 @@ module Battle
         return 0
       end
 
-      # Tell if the move accuracy is bypassed
+      # Return the chance of hit of the move
       # @param user [PFM::PokemonBattler] user of the move
-      # @param targets [Array<PFM::PokemonBattler>] expected targets
-      # @return [Boolean]
-      def bypass_accuracy?(user, targets)
+      # @param target [PFM::PokemonBattler] target of the move
+      # @return [Float]
+      def chance_of_hit(user, target)
         return true if @is_z
 
-        return super(user, targets)
+        return super
       end
 
       # Function that deals the Z-effect to the pokemon
