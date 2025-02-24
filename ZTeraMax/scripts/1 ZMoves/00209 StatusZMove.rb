@@ -66,6 +66,7 @@ module Battle
       # @param user [PFM::PokemonBattler] user of the move
       # @param targets [Array<PFM::PokemonBattler>] expected targets
       def proceed_internal(user, targets)
+        return super unless @is_z
         return user.add_move_to_history(self, targets) unless (actual_targets = proceed_internal_precheck(user, targets))
 
         post_accuracy_check_effects(user, actual_targets)
@@ -86,9 +87,26 @@ module Battle
         @scene.visual.set_info_state(:move_animation)
         @scene.visual.wait_for_animation
 
+        z_move_position = find_z_move_position(user)
+        original_move = user.original_moveset[z_move_position]
+
+        original_move.pp -= @logic.foes_of(user).any? { |foe| foe.alive? && foe.has_ability?(:pressure) } ? 2 : 1
+
         user.original_moveset.each_with_index do |move, i|
           user.moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene) unless NO_REVERT_Z_MOVES.include?(move.db_symbol)
         end
+      end
+
+      # Find the Z-Move position in the moveset of the Pokemon
+      # @param pokemon [PFM::PokemonBattler]
+      # @return [Integer]
+      def find_z_move_position(pokemon)
+        return 0 if pokemon.move_history.empty?
+
+        pokemon.moveset.each_with_index do |move, i|
+          return i if move && move.id == pokemon.move_history.last.move.id && move.pp == 0
+        end
+        return 0
       end
 
       # Tell if the move accuracy is bypassed
