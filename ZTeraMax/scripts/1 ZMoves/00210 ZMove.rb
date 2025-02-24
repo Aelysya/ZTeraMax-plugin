@@ -60,7 +60,7 @@ module Battle
         original_move.pp -= @logic.foes_of(user).any? { |foe| foe.alive? && foe.has_ability?(:pressure) } ? 2 : 1
 
         user.original_moveset.each_with_index do |move, i|
-          user.moveset[i] = Battle::Move.new(move.db_symbol, move.pp, move.ppmax, @scene) unless NO_REVERT_Z_MOVES.include?(move.db_symbol)
+          user.moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene) unless NO_REVERT_Z_MOVES.include?(move.db_symbol)
         end
       end
 

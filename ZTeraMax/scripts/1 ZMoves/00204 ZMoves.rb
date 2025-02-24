@@ -56,7 +56,7 @@ module Battle
 
         if z_crystal_activated
           pokemon.moveset.each_with_index do |move, i|
-            pokemon.original_moveset[i] = Battle::Move.new(move.db_symbol, move.pp, move.ppmax, @scene)
+            pokemon.original_moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene)
 
             if move.status? && z_type
               pokemon.moveset[i] = replace_with_status_z_move(pokemon, move)

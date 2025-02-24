@@ -3,6 +3,8 @@ module Battle
     module MoveZMovePlugin
       module_function
 
+      NO_REVERT_Z_MOVES = %i[mimic sketch]
+
       # Function that handles the Z-effect of increasing one of the user's stats by 1 stage
       # @param user [PFM::PokemonBattler] user of the move
       # @param scene [PFM::Battle::Scene] scene of the battle
@@ -83,6 +85,10 @@ module Battle
         user.add_successful_move_to_history(self, actual_targets)
         @scene.visual.set_info_state(:move_animation)
         @scene.visual.wait_for_animation
+
+        user.original_moveset.each_with_index do |move, i|
+          user.moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene) unless NO_REVERT_Z_MOVES.include?(move.db_symbol)
+        end
       end
 
       # Tell if the move accuracy is bypassed
