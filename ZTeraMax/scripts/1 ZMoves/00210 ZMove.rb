@@ -74,7 +74,7 @@ module Battle
         v_create: 220,
         flying_press: 170,
         core_enforcer: 140
-    }
+      }
 
       # These move have 0 base power in database, but have a specific power when used with a Z-Crystal
       # @note Hard Press is a gen 9 move so it isn't documented yet. Assuming its power follows the standard formula, at 100% potential (100 bp).
