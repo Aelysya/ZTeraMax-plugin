@@ -12,6 +12,8 @@ This plugins aims to add the Z-Moves, Dynamax and Terastal functionalities to a 
 
 First, it is highly recommended that you use a datapack that you can find [here](https://github.com/PokemonWorkshop/GameDataPacks/tree/gen-packs). Many of the data used in this plugin are erroneous in the base data of a default Studio project, so most of the functionalities will simply not work.
 
+**Note on move animations**: The Z-Moves have no animation yet, you can either do them by yourself if you want, or you can wait for someone else to volunteer to do them. Either way, it is useless to complain about them being missing.
+
 ### Z-Moves
 
 When you give a crystal to your players, be sure to give them the ones that contain a '2' at the end (e.g. normalium_z2). In the database these are the bigger crystals.
