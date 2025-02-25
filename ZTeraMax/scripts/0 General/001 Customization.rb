@@ -100,7 +100,18 @@ module Battle
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:atk, 1, user, scene) }
         end,
-        splash: ->(user, scene) { apply_stat_change(:atk, 3, user, scene) },
+
+        **%i[
+          mirror_move
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { apply_stat_change(:atk, 2, user, scene) }
+        end,
+
+        **%i[
+          splash
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { apply_stat_change(:atk, 3, user, scene) }
+        end,
 
         # Defense
         **%i[
@@ -168,8 +179,13 @@ module Battle
           hash[action] = ->(user, scene) { apply_stat_change(:ats, 1, user, scene) }
         end,
 
-        psycho_shift: ->(user, scene) { apply_stat_change(:ats, 2, user, scene) },
-        heal_block: ->(user, scene) { apply_stat_change(:ats, 2, user, scene) },
+        # Special Attack
+        **%i[
+          psycho_shift
+          heal_block
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { apply_stat_change(:ats, 2, user, scene) }
+        end,
 
         # Special Defense
         **%i[
@@ -253,6 +269,7 @@ module Battle
           switcheroo
           ally_switch
           bestow
+          me_first
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:spd, 2, user, scene) }
         end,
@@ -265,6 +282,7 @@ module Battle
           sweet_scent
           defog
           trick_room
+          copycat
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { apply_stat_change(:acc, 1, user, scene) }
         end,
@@ -354,8 +372,12 @@ module Battle
         end,
 
         # Focus attention
-        destiny_bond: ->(user, scene) { focus_attention(user, scene) },
-        grudge:       ->(user, scene) { focus_attention(user, scene) },
+        **%i[
+          destiny_bond
+          grudge
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { focus_attention(user, scene) }
+        end,
 
         # Boost crit ratio
         **%i[
@@ -363,6 +385,7 @@ module Battle
           tailwind
           acupressure
           heart_swap
+          sleep_talk
         ].each_with_object({}) do |action, hash|
           hash[action] = ->(user, scene) { boost_crit_ratio(user, scene) }
         end,
@@ -385,14 +408,16 @@ module Battle
           hash[action] = ->(user, scene) { scene.logic.damage_handler.heal(user, user.max_hp, false) }
         end,
 
+        # Heal on next switch-in
+        **%i[
+          memento
+          parting_shot
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { user.effects.add(Effects::ZHealNextAlly.new(scene.logic, user)) }
+        end,
+
         # Other
-        mirror_move:  ->(user, scene) { scene.logic.stat_change_handler.stat_change_with_process(:atk, 2, user, user, self) },
-        me_first:     ->(user, logic) { logic.stat_change_handler.stat_change_with_process(:spd, 2, user, user, self) },
-        copycat:      ->(user, scene) { scene.logic.stat_change_handler.stat_change_with_process(:acc, 1, user, user, self) },
-        sleep_talk:   ->(user, scene) { boost_crit_ratio(user, scene) },
         curse:        ->(user, scene) { z_curse(user, scene) },
-        memento:      ->(user, scene) { user.effects.add(Effects::ZHealNextAlly.new(scene.logic, user)) },
-        parting_shot: ->(user, scene) { user.effects.add(Effects::ZHealNextAlly.new(scene.logic, user)) }
       }
       # rubocop:enable Layout/HashAlignment
       # rubocop:enable Naming/VariableNumber

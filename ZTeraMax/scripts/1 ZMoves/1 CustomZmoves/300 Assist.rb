@@ -18,6 +18,6 @@ module Battle
         use_another_move(move, user)
       end
     end
-    Move.register(:s_assist, Assist)
+    Move.register(:s_assist, AssistZ)
   end
 end
