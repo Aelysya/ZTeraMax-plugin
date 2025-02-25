@@ -10,6 +10,7 @@ deps: []
 retry_psdk_compatibility_after_plugin_load: false
 added_files:
   - Data/Text/Dialogs/120000.csv
+  - Data/configs/z_tera_max_config.json
   - graphics/interface/battle/button_zmove.png
   - graphics/interface/battle/button_zmove_activated.png
 

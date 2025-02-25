@@ -27,7 +27,7 @@ module BattleUI
       # Create the buttons sprites
       def create_sprites
         @background = add_sprite(0, 0, 'battle/types', 1, each_data_type.size, type: SpriteSheet)
-        @text = add_text(28, 6, 0, 16, :sliced_name, color: 10, type: UI::SymText)
+        @text = add_text(28, 6, 0, 16, Configs.z_tera_max.use_slice_name ? :sliced_name : :name, color: 10, type: UI::SymText)
       end
     end
 
