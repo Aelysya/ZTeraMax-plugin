@@ -73,11 +73,29 @@ module Battle
         hex: 160,
         v_create: 220,
         flying_press: 170,
-        core_enforcer: 140,
+        core_enforcer: 140
+    }
+
+      # These move have 0 base power in database, but have a specific power when used with a Z-Crystal
+      # @note Hard Press is a gen 9 move so it isn't documented yet. Assuming its power follows the standard formula, at 100% potential (100 bp).
+      VARIABLE_POWER_Z_MOVES = {
+        electro_ball: 160,
+        gyro_ball: 160,
+        endeavor: 160,
+        final_gambit: 180,
+        frustration: 160,
+        return: 160,
+        heat_crash: 160,
+        heavy_slam: 160,
+        natural_gift: 160,
+        punishment: 160,
         fissure: 180,
         guillotine: 180,
         horn_drill: 180,
-        sheer_cold: 180
+        sheer_cold: 180,
+        crush_grip: 190,
+        wring_out: 190,
+        hard_press: 180
       }
 
       # Calculates the real base power of a move considering Z-Move exceptions and original move power.
@@ -87,36 +105,28 @@ module Battle
       # @return [Integer] The calculated base power of the move.
       # @see https://bulbapedia.bulbagarden.net/wiki/Z-Move#Power
       # The calculated power is then logged and returned.
-      def real_base_power(user, target)
-        if Z_MOVES_POWER_EXCEPTIONS.key?(@original_move.db_symbol)
-          power = Z_MOVES_POWER_EXCEPTIONS[@original_move.db_symbol]
-        else
-          case power
-          when 0..59
-            power = 100
-          when 60..69
-            power = 120
-          when 70..79
-            power = 140
-          when 80..89
-            power = 160
-          when 90..99
-            power = 175
-          when 100..109
-            power = 180
-          when 110..119
-            power = 185
-          when 120..129
-            power = 190
-          when 130..139
-            power = 195
-          else
-            power = 200
-          end
-        end
+      def real_base_power(_user, _target)
+        z_power = if Z_MOVES_POWER_EXCEPTIONS.key?(@original_move.db_symbol)
+                    Z_MOVES_POWER_EXCEPTIONS[@original_move.db_symbol]
+                  elsif base_power == 0 && VARIABLE_POWER_Z_MOVES.key?(@original_move.db_symbol)
+                    VARIABLE_POWER_Z_MOVES[@original_move.db_symbol]
+                  else
+                    case base_power
+                    when 0..59 then 100
+                    when 60..69 then 120
+                    when 70..79 then 140
+                    when 80..89 then 160
+                    when 90..99 then 175
+                    when 100..109 then 180
+                    when 110..119 then 185
+                    when 120..129 then 190
+                    when 130..139 then 195
+                    else 200
+                    end
+                  end
 
-        log_data("power = #{power} # after #{self.class} real_base_power")
-        return power
+        log_data("z_power = #{z_power} # after #{self.class} real_base_power")
+        return z_power
       end
     end
     Move.register(:s_type_z_move, TypeZMove)
