@@ -333,7 +333,7 @@ module Battle
           refresh
           aromatherapy
         ].each_with_object({}) do |action, hash|
-          hash[action] = ->(user, scene) { scene.logic.damage_handler.heal(user, user.max_hp, false) }
+          hash[action] = ->(user, scene) { scene.logic.damage_handler.heal(user, user.max_hp, test_heal_block: false) }
         end,
 
         # Heal on next switch-in

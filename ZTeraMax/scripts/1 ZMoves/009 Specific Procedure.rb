@@ -7,7 +7,9 @@ module Battle
       # @param user [PFM::PokemonBattler] user of the move
       # @param targets [Array<PFM::PokemonBattler>] expected targets
       def proceed_internal_z_move(user, targets)
-        return user.add_move_to_history(self, targets) unless (actual_targets = proceed_internal_precheck(user, targets))
+        unless (actual_targets = proceed_internal_precheck(user, targets))
+          return user.add_move_to_history(self, targets) && @logic.z_move.reset_to_original_moveset(user)
+        end
 
         post_accuracy_check_effects(user, actual_targets)
 
