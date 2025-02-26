@@ -9,7 +9,7 @@ module Battle
         # @param user [PFM::PokemonBattler] user of the move
         # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
         def deal_z_effect(user, actual_targets)
-          Z_STATUS_MOVES_EFFECTS[db_symbol].call(user, @scene)
+          Z_STATUS_MOVES_EFFECTS[db_symbol].call(user, @scene) if @is_z
 
           move = usable_moves(user).sample(random: @logic.generic_rng).dup
           move = logic.z_move.corresponding_z_move(move) unless move.status?

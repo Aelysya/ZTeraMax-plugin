@@ -12,7 +12,7 @@ module Battle
         # @param user [PFM::PokemonBattler] user of the move
         # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
         def deal_z_effect(user, actual_targets)
-          Z_STATUS_MOVES_EFFECTS[db_symbol].call(user, @scene)
+          Z_STATUS_MOVES_EFFECTS[db_symbol].call(user, @scene) if @is_z
 
           skill = data_move(element_by_location)
           log_data("nature power # becomes #{skill.db_symbol}")
