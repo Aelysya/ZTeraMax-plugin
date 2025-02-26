@@ -1,7 +1,7 @@
 module Battle
   class Move
     module MoveZMovePlugin
-      # if the move is Z-empowered
+      # if the move is Z-empowered, used for status moves bonus effects
       # @return [Boolean]
       attr_accessor :is_z
 
@@ -19,7 +19,7 @@ module Battle
       # @param user [PFM::PokemonBattler] user of the move
       def usage_message(user)
         @scene.visual.hide_team_info
-        pre_z_move_message(user) if @is_z
+        pre_z_move_message(user) if user.effects.has?(:z_power) && @is_z
         message = parse_text_with_pokemon(8999 - Studio::Text::CSV_BASE, 12, user, PFM::Text::PKNAME[0] => user.given_name, PFM::Text::MOVE[0] => name)
         scene.display_message_and_wait(message)
         PFM::Text.reset_variables
@@ -36,7 +36,7 @@ module Battle
       # @return [String]
       def sliced_name
         processed_name = name
-        processed_name = parse_text(20_000, 2, PFM::Text::MOVE[0] => name) if @is_z && status?
+        processed_name = parse_text(20_000, 2, PFM::Text::MOVE[0] => name) if @is_z
 
         return processed_name if processed_name.size <= 15
 
@@ -44,11 +44,8 @@ module Battle
       end
     end
 
-    class ZMove < Basic; end
-    Move.register(:s_z_move, ZMove)
-
     # Class managing type-specific Z-Moves
-    class TypeZMove < ZMove
+    class ZMove < Basic
       # Original move linked to this Z-Move
       # @return [Integer]
       attr_reader :original_move
@@ -108,10 +105,10 @@ module Battle
       def real_base_power(_user, _target)
         z_power = if Z_MOVES_POWER_EXCEPTIONS.key?(@original_move.db_symbol)
                     Z_MOVES_POWER_EXCEPTIONS[@original_move.db_symbol]
-                  elsif base_power == 0 && VARIABLE_POWER_Z_MOVES.key?(@original_move.db_symbol)
+                  elsif @original_move.base_power == 0 && VARIABLE_POWER_Z_MOVES.key?(@original_move.db_symbol)
                     VARIABLE_POWER_Z_MOVES[@original_move.db_symbol]
                   else
-                    case base_power
+                    case @original_move.base_power
                     when 0..59 then 100
                     when 60..69 then 120
                     when 70..79 then 140
@@ -129,9 +126,9 @@ module Battle
         return z_power
       end
     end
-    Move.register(:s_type_z_move, TypeZMove)
+    Move.register(:s_z_move, ZMove)
 
-    class GuardianOfAlola < ZMove
+    class GuardianOfAlola < Basic
       def damages(user, target)
         @critical = false
         @effectiveness = 1
@@ -141,7 +138,7 @@ module Battle
     end
     Move.register(:s_guardian_of_alola, GuardianOfAlola)
 
-    class GenesisSupernova < ZMove
+    class GenesisSupernova < Basic
       # Sets terrain to psychic terrain
       # @param user [PFM::PokemonBattler] user of the move
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move

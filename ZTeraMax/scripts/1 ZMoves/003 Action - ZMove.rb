@@ -18,7 +18,7 @@ module Battle
         # Execute the action
         def execute
           super
-          @scene.logic.z_move.mark_as_z_move_used(@user)
+          @scene.logic.z_move.mark_as_z_move_used(@user) if @move.is_z
         end
       end
 

@@ -7,7 +7,7 @@ module Battle
         # @param move [Battle::Move]
         # @return [Proc, nil]
         def on_move_disabled_check(user, move)
-          return if move.is_z
+          return if user.effects.has?(:z_power) && move.is_z
 
           return super
         end
@@ -18,7 +18,7 @@ module Battle
         # @param move [Battle::Move]
         # @return [:prevent, nil] :prevent if the move cannot continue
         def on_move_prevention_user(user, targets, move)
-          return if move.is_z
+          return if user.effects.has?(:z_power) && move.is_z
 
           return super
         end

@@ -3,7 +3,352 @@ module Battle
     module MoveZMovePlugin
       module_function
 
-      NO_REVERT_Z_MOVES = %i[mimic sketch]
+      # rubocop:disable Layout/HashAlignment
+      # rubocop:disable Naming/VariableNumber
+      # List of status moves that have an effect when used with a Z-Crystal
+      Z_STATUS_MOVES_EFFECTS = {
+        # Attack
+        **%i[
+          tail_whip
+          leer
+          meditate
+          screech
+          sharpen
+          will_o_wisp
+          taunt
+          odor_sleuth
+          howl
+          bulk_up
+          power_trick
+          hone_claws
+          work_up
+          rototiller
+          topsy_turvy
+          laser_focus
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { apply_stat_change(:atk, 1, user, scene) }
+        end,
+
+        **%i[
+          mirror_move
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { apply_stat_change(:atk, 2, user, scene) }
+        end,
+
+        **%i[
+          splash
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { apply_stat_change(:atk, 3, user, scene) }
+        end,
+
+        # Defense
+        **%i[
+          growl
+          roar
+          poison_powder
+          toxic
+          harden
+          withdraw
+          reflect
+          poison_gas
+          spider_web
+          spikes
+          charm
+          pain_split
+          torment
+          feather_dance
+          tickle
+          block
+          toxic_spikes
+          aqua_ring
+          stealth_rock
+          defend_order
+          wide_guard
+          quick_guard
+          mat_block
+          noble_roar
+          flower_shield
+          grassy_terrain
+          fairy_lock
+          play_nice
+          spiky_shield
+          venom_drench
+          baby_doll_eyes
+          baneful_bunker
+          strength_sap
+          tearful_look
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { apply_stat_change(:dfe, 1, user, scene) }
+        end,
+
+        # Special Attack
+        **%i[
+          growth
+          confuse_ray
+          mind_reader
+          nightmare
+          sweet_kiss
+          teeter_dance
+          fake_tears
+          metal_sound
+          gravity
+          miracle_eye
+          embargo
+          telekinesis
+          soak
+          simple_beam
+          reflect_type
+          ion_deluge
+          electrify
+          gear_up
+          psychic_terrain
+          instruct
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { apply_stat_change(:ats, 1, user, scene) }
+        end,
+
+        # Special Attack
+        **%i[
+          psycho_shift
+          heal_block
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { apply_stat_change(:ats, 2, user, scene) }
+        end,
+
+        # Special Defense
+        **%i[
+          whirlwind
+          stun_spore
+          thunder_wave
+          light_screen
+          glare
+          mean_look
+          flatter
+          charge
+          wish
+          ingrain
+          mud_sport
+          cosmic_power
+          water_sport
+          wonder_room
+          magic_room
+          entrainment
+          crafty_shield
+          misty_terrain
+          confide
+          eerie_impulse
+          magnetic_flux
+          spotlight
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { apply_stat_change(:dfs, 1, user, scene) }
+        end,
+
+        **%i[
+          magic_coat
+          imprison
+          captivate
+          aromatic_mist
+          powder
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { apply_stat_change(:dfs, 2, user, scene) }
+        end,
+
+        # Speed
+        **%i[
+          sing
+          supersonic
+          sleep_powder
+          string_shot
+          hypnosis
+          lovely_kiss
+          scary_face
+          lock_on
+          sandstorm
+          safeguard
+          encore
+          rain_dance
+          sunny_dance
+          hail
+          role_play
+          yawn
+          skill_swap
+          grass_whistle
+          gastro_acid
+          power_swap
+          guard_swap
+          worry_seed
+          guard_split
+          power_split
+          after_you
+          quash
+          sticky_web
+          electric_terrai
+          toxic_thread
+          speed_swap
+          aurora_veil
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { apply_stat_change(:spd, 1, user, scene) }
+        end,
+
+        **%i[
+          trick
+          recycle
+          snatch
+          switcheroo
+          ally_switch
+          bestow
+          me_first
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { apply_stat_change(:spd, 2, user, scene) }
+        end,
+
+        # Accuracy
+        **%i[
+          mimic
+          defense_curl
+          focus_energy
+          sweet_scent
+          defog
+          trick_room
+          copycat
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { apply_stat_change(:acc, 1, user, scene) }
+        end,
+
+        # Evasion
+        **%i[
+          sand_attack
+          smokescreen
+          kinesis
+          flash
+          detect
+          camouflage
+          lucky_chant
+          magnet_rise
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { apply_stat_change(:eva, 1, user, scene) }
+        end,
+
+        # All basic stats
+        **%i[
+          conversion
+          sketch
+          trick_or_treat
+          forest_s_curse
+          geomancy
+          happy_hour
+          celebrate
+          hold_hands
+          purify
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { increase_all_stats(user, scene) }
+        end,
+
+        # Reset decreased stats
+        **%i[
+          swords_dance
+          disable
+          leech_seed
+          agility
+          double_team
+          recover
+          minimize
+          barrier
+          amnesia
+          soft_boiled
+          spore
+          acid_armor
+          rest
+          substitute
+          cotton_spore
+          protect
+          perish_song
+          endure
+          swagger
+          milk_drink
+          attract
+          baton_pass
+          morning_sun
+          synthesis
+          moonlight
+          swallow
+          follow_me
+          helping_hand
+          tail_glow
+          slack_off
+          iron_defense
+          calm_mind
+          dragon_dance
+          roost
+          rock_polish
+          nasty_plot
+          heal_order
+          dark_void
+          autotomize
+          rage_powder
+          quiver_dance
+          coil
+          shell_smash
+          heal_pulse
+          shift_gear
+          cotton_guard
+          king_s_shield
+          shore_up
+          floral_healing
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { reset_decreased_stats(user, scene) }
+        end,
+
+        # Focus attention
+        **%i[
+          destiny_bond
+          grudge
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { focus_attention(user, scene) }
+        end,
+
+        # Boost crit ratio
+        **%i[
+          foresight
+          tailwind
+          acupressure
+          heart_swap
+          sleep_talk
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { boost_crit_ratio(user, scene) }
+        end,
+
+        # Full heal
+        **%i[
+          mist
+          teleport
+          haze
+          transform
+          conversion_2
+          spite
+          belly_drum
+          heal_bell
+          psych_up
+          stockpile
+          refresh
+          aromatherapy
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { scene.logic.damage_handler.heal(user, user.max_hp, false) }
+        end,
+
+        # Heal on next switch-in
+        **%i[
+          memento
+          parting_shot
+        ].each_with_object({}) do |action, hash|
+          hash[action] = ->(user, scene) { user.effects.add(Effects::ZHealNextAlly.new(scene.logic, user)) }
+        end,
+
+        # Other
+        curse:        ->(user, scene) { z_curse(user, scene) },
+      }
+      # rubocop:enable Layout/HashAlignment
+      # rubocop:enable Naming/VariableNumber
 
       # Function that handles the Z-effect of increasing one of the user's stats by 1 stage
       # @param user [PFM::PokemonBattler] user of the move
@@ -61,95 +406,8 @@ module Battle
           apply_stat_change(:atk, 1, user, scene)
         end
       end
-
-      # Internal procedure of the move
-      # @param user [PFM::PokemonBattler] user of the move
-      # @param targets [Array<PFM::PokemonBattler>] expected targets
-      def proceed_internal(user, targets)
-        return super unless @is_z
-        return user.add_move_to_history(self, targets) unless (actual_targets = proceed_internal_precheck(user, targets))
-
-        post_accuracy_check_effects(user, actual_targets)
-
-        post_accuracy_check_move(user, actual_targets)
-
-        play_animation(user, targets)
-
-        deal_damage(user, actual_targets) &&
-          effect_working?(user, actual_targets) &&
-          deal_status(user, actual_targets) &&
-          deal_stats(user, actual_targets) &&
-          deal_z_effect(user, actual_targets) &&
-          deal_effect(user, actual_targets)
-
-        user.add_move_to_history(self, actual_targets)
-        user.add_successful_move_to_history(self, actual_targets)
-        @scene.visual.set_info_state(:move_animation)
-        @scene.visual.wait_for_animation
-
-        z_move_position = find_z_move_position(user)
-        original_move = user.original_moveset[z_move_position]
-
-        original_move.pp -= @logic.foes_of(user).any? { |foe| foe.alive? && foe.has_ability?(:pressure) } ? 2 : 1
-
-        user.original_moveset.each_with_index do |move, i|
-          user.moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene) unless NO_REVERT_Z_MOVES.include?(move.db_symbol)
-        end
-      end
-
-      # Find the Z-Move position in the moveset of the Pokemon
-      # @param pokemon [PFM::PokemonBattler]
-      # @return [Integer]
-      def find_z_move_position(pokemon)
-        return 0 if pokemon.move_history.empty?
-
-        pokemon.moveset.each_with_index do |move, i|
-          return i if move && move.id == pokemon.move_history.last.move.id && move.pp == 0
-        end
-        return 0
-      end
-
-      # Return the chance of hit of the move
-      # @param user [PFM::PokemonBattler] user of the move
-      # @param target [PFM::PokemonBattler] target of the move
-      # @return [Float]
-      def chance_of_hit(user, target)
-        return true if @is_z
-
-        return super
-      end
-
-      # Function that deals the Z-effect to the pokemon
-      # @param user [PFM::PokemonBattler] user of the move
-      # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
-      def deal_z_effect(user, actual_targets)
-        return true unless @is_z
-        return true unless status? && Z_STATUS_MOVES_EFFECTS.key?(db_symbol)
-
-        Z_STATUS_MOVES_EFFECTS[db_symbol].call(user, @scene)
-        return true
-      end
     end
 
     prepend MoveZMovePlugin
-  end
-
-  module Effects
-    # Healing Wish Effect
-    class ZHealNextAlly < PokemonTiedEffectBase
-      # Get the name of the effect
-      # @return [Symbol]
-      def name
-        return :z_heal_next_ally
-      end
-
-      # Function called when a Pokemon has actually switched with another one
-      # @param handler [Battle::Logic::SwitchHandler]
-      # @param who [PFM::PokemonBattler] Pokemon that is switched out
-      # @param with [PFM::PokemonBattler] Pokemon that is switched in
-      def on_switch_event(handler, who, with)
-        handler.logic.damage_handler.heal(with, with.max_hp, false)
-      end
-    end
   end
 end
