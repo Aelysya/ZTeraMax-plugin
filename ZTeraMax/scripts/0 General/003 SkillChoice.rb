@@ -16,6 +16,12 @@ module BattleUI
           button.data = @pokemon
         end
       end
+
+      # Cancel the player choice
+      def choice_cancel
+        super
+        @scene.logic.z_move.reset_to_original_moveset(@pokemon)
+      end
     end
 
     prepend SkillChoiceZMovePlugin
