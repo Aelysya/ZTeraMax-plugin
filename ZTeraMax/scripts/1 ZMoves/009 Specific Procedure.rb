@@ -1,6 +1,6 @@
 module Battle
   class Move
-    module MoveZMovePlugin
+    module MoveZTeraMaxPlugin
       module_function
 
       # Internal procedure of the move
@@ -72,6 +72,6 @@ module Battle
       end
     end
 
-    prepend MoveZMovePlugin
+    prepend MoveZTeraMaxPlugin
   end
 end

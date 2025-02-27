@@ -5,7 +5,7 @@ module Battle
     # @see https://bulbapedia.bulbagarden.net/wiki/Nature_Power_(move)
     # @see https://www.pokepedia.fr/Force_Nature
     class NaturePower
-      module ZMovePlugin
+      module ZTeraMaxPlugin
         private
 
         # Function that deals the effect to the pokemon
@@ -32,7 +32,7 @@ module Battle
         end
       end
 
-      prepend ZMovePlugin
+      prepend ZTeraMaxPlugin
     end
   end
 end

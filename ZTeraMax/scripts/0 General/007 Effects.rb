@@ -9,7 +9,7 @@ module Battle
       # @return [Boolean] if the target is evading the move
       def on_move_prevention_target(user, target, move)
         return false if goes_through_protect?(user, target, move)
-        return false if z_move?(move) # Manque le message je crois
+        return false if trampling_move?(move) # Manque le message je crois
 
         play_protect_effect(user, target, move)
         return true
@@ -22,7 +22,7 @@ module Battle
       # @return [Float, Integer] multiplier
       def mod3_multiplier(_user, target, move)
         return 1 if target != @pokemon
-        return 1 unless z_move?(move)
+        return 1 unless trampling_move?(move)
 
         return 0.25
       end
@@ -30,8 +30,8 @@ module Battle
       # Check if the move is a Z Move or Dynamax Move
       # @param move [Battle::Move]
       # @return [Boolean]
-      def z_move?(move)
-        return true if move.instance_of?(Battle::Move::ZMove)
+      def trampling_move?(move)
+        return true if move.instance_of?(Battle::Move::ZMove) || move.instance_of?(Battle::Move::MaxMove)
 
         return false
       end

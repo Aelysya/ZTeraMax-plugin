@@ -2,7 +2,7 @@ module Battle
   class Move
     # Move that mimics the last move of the choosen target
     class MirrorMove
-      module ZMovePlugin
+      module ZTeraMaxPlugin
         # Function that tests if the user is able to use the move
         # @param user [PFM::PokemonBattler] user of the move
         # @param targets [Array<PFM::PokemonBattler>] expected targets
@@ -31,7 +31,7 @@ module Battle
         end
       end
 
-      prepend ZMovePlugin
+      prepend ZTeraMaxPlugin
     end
   end
 end

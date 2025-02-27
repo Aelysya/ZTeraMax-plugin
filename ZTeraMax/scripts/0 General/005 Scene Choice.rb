@@ -2,15 +2,17 @@ module Battle
   class Scene
     # Method that asks the target of the choosen move
     def target_choice
-      launcher, skill, target_bank, target_position, mega, zmove = @visual.show_target_choice
+      launcher, skill, target_bank, target_position, mega, z_move, dynamax = @visual.show_target_choice
       effect = launcher&.effects&.get(&:force_next_move?)
       if launcher && skill
         action_class = effect ? effect.action_class : Actions::Attack
         next_action = action_class.new(self, skill, launcher, target_bank, target_position)
         if mega
           @player_actions << [next_action, Actions::Mega.new(self, launcher)]
-        elsif zmove
+        elsif z_move
           @player_actions << Actions::ZMove.new(self, skill, launcher, target_bank, target_position)
+        elsif dynamax
+          @player_actions << [next_action, Actions::Dynamax.new(self, launcher)]
         else
           @player_actions << next_action
         end

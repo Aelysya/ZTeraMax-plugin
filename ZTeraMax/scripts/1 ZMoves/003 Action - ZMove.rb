@@ -2,7 +2,7 @@ module Battle
   module Actions
     # Class describing the Z-Move action
     class ZMove < Attack
-      module ActionZMovePlugin
+      module ActionZTeraMaxPlugin
         # Get the user of this action
         # @return [PFM::PokemonBattler]
         attr_reader :user
@@ -22,7 +22,7 @@ module Battle
         end
       end
 
-      prepend ActionZMovePlugin
+      prepend ActionZTeraMaxPlugin
     end
   end
 end

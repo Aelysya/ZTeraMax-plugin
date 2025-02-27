@@ -2,7 +2,7 @@ module Battle
   class Move
     # Metronome move
     class Metronome
-      module ZMovePlugin
+      module ZTeraMaxPlugin
         # Function that deals the effect to the pokemon
         # @param user [PFM::PokemonBattler] user of the move
         # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
@@ -21,7 +21,7 @@ module Battle
         end
       end
 
-      prepend ZMovePlugin
+      prepend ZTeraMaxPlugin
     end
   end
 end

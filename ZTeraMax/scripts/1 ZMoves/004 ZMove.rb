@@ -1,51 +1,10 @@
 module Battle
   class Move
-    module MoveZMovePlugin
-      # if the move is Z-empowered, used for status moves bonus effects
-      # @return [Boolean]
-      attr_accessor :is_z
-
-      # Create a new move
-      # @param db_symbol [Symbol] db_symbol of the move in the database
-      # @param pp [Integer] number of pp the move currently has
-      # @param ppmax [Integer] maximum number of pp the move currently has
-      # @param scene [Battle::Scene] current battle scene
-      def initialize(db_symbol, pp, ppmax, scene)
-        super(db_symbol, pp, ppmax, scene)
-        @is_z = false
-      end
-
-      # Show the move usage message
-      # @param user [PFM::PokemonBattler] user of the move
-      def usage_message(user)
-        @scene.visual.hide_team_info
-        pre_z_move_message(user) if user.effects.has?(:z_power) && @is_z
-        message = parse_text_with_pokemon(8999 - Studio::Text::CSV_BASE, 12, user, PFM::Text::PKNAME[0] => user.given_name, PFM::Text::MOVE[0] => name)
-        scene.display_message_and_wait(message)
-        PFM::Text.reset_variables
-      end
-
-      # Display messages before using a Z-Move
-      # @return [String]
-      def pre_z_move_message(user)
-        @scene.display_message_and_wait(parse_text_with_pokemon(20_000, 0, user, PFM::Text::PKNICK[0] => user.given_name))
-        @scene.display_message_and_wait(parse_text_with_pokemon(20_000, 1, user, PFM::Text::PKNICK[0] => user.given_name))
-      end
-
-      # Get the move name sliced to fit in the move button, also add a 'Z' affix if the move is a status Z-Move
-      # @return [String]
-      def sliced_name
-        processed_name = name
-        processed_name = parse_text(20_000, 2, PFM::Text::MOVE[0] => name) if @is_z && status?
-
-        return processed_name if processed_name.size <= 15
-
-        return processed_name.slice(0..12) << '...'
-      end
-    end
+    class ZMove < Basic; end
+    Move.register(:s_z_move, ZMove)
 
     # Class managing type-specific Z-Moves
-    class ZMove < Basic
+    class TypeZMove < ZMove
       # Original move linked to this Z-Move
       # @return [Integer]
       attr_reader :original_move
@@ -126,9 +85,9 @@ module Battle
         return z_power
       end
     end
-    Move.register(:s_z_move, ZMove)
+    Move.register(:s_type_z_move, ZMove)
 
-    class GuardianOfAlola < Basic
+    class GuardianOfAlola < ZMove
       def damages(user, target)
         @critical = false
         @effectiveness = 1
@@ -138,7 +97,7 @@ module Battle
     end
     Move.register(:s_guardian_of_alola, GuardianOfAlola)
 
-    class GenesisSupernova < Basic
+    class GenesisSupernova < ZMove
       # Sets terrain to psychic terrain
       # @param user [PFM::PokemonBattler] user of the move
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move

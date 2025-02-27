@@ -1,6 +1,6 @@
 module Battle
   class Logic
-    module LogicZMovePlugin
+    module LogicZTeraMaxPlugin
       # Get the ZMove helper
       # @return [ZMoves]
       attr_reader :z_move
@@ -14,7 +14,7 @@ module Battle
       end
     end
 
-    prepend LogicZMovePlugin
+    prepend LogicZTeraMaxPlugin
 
     # Logic for Z-Moves
     class ZMoves
@@ -45,34 +45,34 @@ module Battle
 
       # List of signature Z-crystals
       SIGNATURE_Z_CRYSTALS = {
-        aloraichium_z: [{ specie: :raichu, forms: [1], base_move: :thunderbolt, zmove: :stoked_sparksurfer, be_method: :s_basic }],
-        decidium_z: [{ specie: :decidueye, forms: [0], base_move: :spirit_shackle, zmove: :sinister_arrow_raid, be_method: :s_basic }],
-        eevium_z: [{ specie: :eevee, forms: [0], base_move: :last_resort, zmove: :extreme_evoboost, be_method: :s_self_stat }],
-        incinium_z: [{ specie: :incineroar, forms: [0], base_move: :darkest_lariat, zmove: :malicious_moonsault, be_method: :s_stomp }],
-        kommonium_z: [{ specie: :kommo_o, forms: [0], base_move: :clanging_scales, zmove: :clangorous_soulblaze, be_method: :s_self_stat }],
+        aloraichium_z: [{ specie: :raichu, forms: [1], base_move: :thunderbolt, z_move: :stoked_sparksurfer, be_method: :s_basic }],
+        decidium_z: [{ specie: :decidueye, forms: [0], base_move: :spirit_shackle, z_move: :sinister_arrow_raid, be_method: :s_basic }],
+        eevium_z: [{ specie: :eevee, forms: [0], base_move: :last_resort, z_move: :extreme_evoboost, be_method: :s_self_stat }],
+        incinium_z: [{ specie: :incineroar, forms: [0], base_move: :darkest_lariat, z_move: :malicious_moonsault, be_method: :s_stomp }],
+        kommonium_z: [{ specie: :kommo_o, forms: [0], base_move: :clanging_scales, z_move: :clangorous_soulblaze, be_method: :s_self_stat }],
         lunalium_z: [
-          { specie: :lunala, forms: [0], base_move: :moongeist_beam, zmove: :menacing_moonraze_maelstrom, be_method: :s_basic },
-          { specie: :necrozma, forms: [2], base_move: :moongeist_beam, zmove: :menacing_moonraze_maelstrom, be_method: :s_basic }
+          { specie: :lunala, forms: [0], base_move: :moongeist_beam, z_move: :menacing_moonraze_maelstrom, be_method: :s_basic },
+          { specie: :necrozma, forms: [2], base_move: :moongeist_beam, z_move: :menacing_moonraze_maelstrom, be_method: :s_basic }
         ],
-        lycanium_z: [{ specie: :lycanroc, forms: [0, 1, 2], base_move: :stone_edge, zmove: :splintered_stormshards, be_method: :s_ice_spinner }],
-        marshadium_z: [{ specie: :marshadow, forms: [0], base_move: :spectral_thief, zmove: :soul_stealing_7_star_strike, be_method: :s_basic }],
-        mewnium_z: [{ specie: :mew, forms: [0], base_move: :psychic, zmove: :genesis_supernova, be_method: :s_genesis_supernova }],
-        mimikium_z: [{ specie: :mimikyu, forms: [0], base_move: :play_rough, zmove: :let_s_snuggle_forever, be_method: :s_basic }],
-        pikanium_z: [{ specie: :pikachu, forms: [0], base_move: :volt_tackle, zmove: :catastropika, be_method: :s_basic }],
-        pikashunium_z: [{ specie: :pikachu, forms: [8..14], base_move: :thunderbolt, zmove: :s10_000_000_volt_thunderbolt, be_method: :s_basic }],
-        primarium_z: [{ specie: :primarina, forms: [0], base_move: :sparkling_aria, zmove: :oceanic_operetta, be_method: :s_basic }],
-        snorlium_z: [{ specie: :snorlax, forms: [0], base_move: :giga_impact, zmove: :pulverizing_pancake, be_method: :s_basic }],
+        lycanium_z: [{ specie: :lycanroc, forms: [0, 1, 2], base_move: :stone_edge, z_move: :splintered_stormshards, be_method: :s_ice_spinner }],
+        marshadium_z: [{ specie: :marshadow, forms: [0], base_move: :spectral_thief, z_move: :soul_stealing_7_star_strike, be_method: :s_basic }],
+        mewnium_z: [{ specie: :mew, forms: [0], base_move: :psychic, z_move: :genesis_supernova, be_method: :s_genesis_supernova }],
+        mimikium_z: [{ specie: :mimikyu, forms: [0], base_move: :play_rough, z_move: :let_s_snuggle_forever, be_method: :s_basic }],
+        pikanium_z: [{ specie: :pikachu, forms: [0], base_move: :volt_tackle, z_move: :catastropika, be_method: :s_basic }],
+        pikashunium_z: [{ specie: :pikachu, forms: [8..14], base_move: :thunderbolt, z_move: :s10_000_000_volt_thunderbolt, be_method: :s_basic }],
+        primarium_z: [{ specie: :primarina, forms: [0], base_move: :sparkling_aria, z_move: :oceanic_operetta, be_method: :s_basic }],
+        snorlium_z: [{ specie: :snorlax, forms: [0], base_move: :giga_impact, z_move: :pulverizing_pancake, be_method: :s_basic }],
         solganium_z: [
-          { specie: :solgaleo, forms: [0], base_move: :sunsteel_strike, zmove: :searing_sunraze_smash, be_method: :s_basic },
-          { specie: :necrozma, forms: [1], base_move: :moongeist_beam, zmove: :searing_sunraze_smash, be_method: :s_basic }
+          { specie: :solgaleo, forms: [0], base_move: :sunsteel_strike, z_move: :searing_sunraze_smash, be_method: :s_basic },
+          { specie: :necrozma, forms: [1], base_move: :moongeist_beam, z_move: :searing_sunraze_smash, be_method: :s_basic }
         ],
         tapunium_z: [
-          { specie: :tapu_koko, forms: [0], base_move: :nature_s_madness, zmove: :guardian_of_alola, be_method: :s_guardian_of_alola },
-          { specie: :tapu_lele, forms: [0], base_move: :nature_s_madness, zmove: :guardian_of_alola, be_method: :s_guardian_of_alola },
-          { specie: :tapu_bulu, forms: [0], base_move: :nature_s_madness, zmove: :guardian_of_alola, be_method: :s_guardian_of_alola },
-          { specie: :tapu_fini, forms: [0], base_move: :nature_s_madness, zmove: :guardian_of_alola, be_method: :s_guardian_of_alola }
+          { specie: :tapu_koko, forms: [0], base_move: :nature_s_madness, z_move: :guardian_of_alola, be_method: :s_guardian_of_alola },
+          { specie: :tapu_lele, forms: [0], base_move: :nature_s_madness, z_move: :guardian_of_alola, be_method: :s_guardian_of_alola },
+          { specie: :tapu_bulu, forms: [0], base_move: :nature_s_madness, z_move: :guardian_of_alola, be_method: :s_guardian_of_alola },
+          { specie: :tapu_fini, forms: [0], base_move: :nature_s_madness, z_move: :guardian_of_alola, be_method: :s_guardian_of_alola }
         ],
-        ultranecrozium_z: [{ specie: :raichu, forms: [0], base_move: :photon_geyser, zmove: :light_that_burns_the_sky, be_method: :s_photon_geyser }]
+        ultranecrozium_z: [{ specie: :raichu, forms: [0], base_move: :photon_geyser, z_move: :light_that_burns_the_sky, be_method: :s_photon_geyser }]
       }
 
       # Create the Z-Moves logic
@@ -117,11 +117,8 @@ module Battle
       end
 
       # Updates the moveset of a given Pokémon
-      #
       # @param pokemon [Pokemon] The Pokémon whose moveset is to be updated.
       # @param z_crystal_activated [Boolean] Whether to set the moveset to the Z-Move state or the original state.
-      #
-      # @return [void]
       def update_moveset(pokemon, z_crystal_activated)
         return unless pokemon_holds_valid_z_crystal?(pokemon)
 
@@ -143,18 +140,6 @@ module Battle
         end
       end
 
-      def reset_to_original_moveset(pokemon)
-        pokemon.effects.each do |effect|
-          next unless effect.name == :z_power
-
-          effect.kill
-        end
-
-        pokemon.original_moveset.each_with_index do |move, i|
-          pokemon.moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene)
-        end
-      end
-
       # Marks the given Pokémon's trainer as having used a Z-Move.
       #
       # @param pokemon [Pokemon] The Pokémon that has used a Z-Move.
@@ -171,7 +156,7 @@ module Battle
       def replace_with_type_z_move(pokemon, move)
         return move unless data_type(move.type).db_symbol == TYPE_Z_CRYSTALS[pokemon.item_db_symbol][:type]
 
-        replacement_move = Battle::Move[:s_z_move].new(TYPE_Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
+        replacement_move = Battle::Move[:s_type_z_move].new(TYPE_Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
         replacement_move.is_z = true
 
         return replacement_move
@@ -185,7 +170,7 @@ module Battle
         z_crystal = TYPE_Z_CRYSTALS.find { |_k, v| v[:type] == data_type(move.type).db_symbol }&.first
         return log_error("Z crystal for move #{move} not found.") && move unless z_crystal
 
-        replacement_move = Battle::Move[:s_z_move].new(TYPE_Z_CRYSTALS[z_crystal][data_move(move.db_symbol).category], @scene, move)
+        replacement_move = Battle::Move[:s_type_z_move].new(TYPE_Z_CRYSTALS[z_crystal][data_move(move.db_symbol).category], @scene, move)
         replacement_move.is_z = true
 
         return replacement_move
@@ -216,7 +201,7 @@ module Battle
 
         return move unless move.db_symbol == data[:base_move]
 
-        replacement_move = Battle::Move[data[:be_method]].new(data[:zmove], move.pp.positive? ? 1 : 0, 1, @scene)
+        replacement_move = Battle::Move[data[:be_method]].new(data[:z_move], move.pp.positive? ? 1 : 0, 1, @scene)
         replacement_move.is_z = true
 
         return replacement_move

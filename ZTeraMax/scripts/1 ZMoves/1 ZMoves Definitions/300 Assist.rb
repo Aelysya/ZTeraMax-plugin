@@ -2,7 +2,7 @@ module Battle
   class Move
     # Assist move
     class Assist
-      module ZMovePlugin
+      module ZTeraMaxPlugin
         private
 
         # Function that deals the effect to the pokemon
@@ -22,7 +22,7 @@ module Battle
         end
       end
 
-      prepend ZMovePlugin
+      prepend ZTeraMaxPlugin
     end
   end
 end

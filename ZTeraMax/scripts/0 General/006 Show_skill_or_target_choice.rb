@@ -21,7 +21,8 @@ module Battle
         return nil
       end
       arr << @skill_choice_ui.mega_enabled
-      arr << @skill_choice_ui.zmove_enabled
+      arr << @skill_choice_ui.z_move_enabled
+      arr << @skill_choice_ui.dynamax_enabled
       return arr
     end
   end

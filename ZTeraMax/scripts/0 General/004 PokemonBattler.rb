@@ -1,7 +1,7 @@
 module PFM
   # Class defining a Pokemon during a battle, it aim to copy its properties but also to have the methods related to the battle.
   class PokemonBattler < Pokemon
-    module PokemonBattlerZMovePlugin
+    module PokemonBattlerZTeraMaxPlugin
       # @return [Array<Battle::Move>] the original moveset of the Pokemon
       attr_accessor :original_moveset
 
@@ -17,6 +17,6 @@ module PFM
       end
     end
 
-    prepend PokemonBattlerZMovePlugin
+    prepend PokemonBattlerZTeraMaxPlugin
   end
 end

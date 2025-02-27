@@ -1,6 +1,6 @@
 module Battle
   class Move
-    module MoveZMovePlugin
+    module MoveZTeraMaxPlugin
       module_function
 
       # rubocop:disable Layout/HashAlignment
@@ -408,6 +408,6 @@ module Battle
       end
     end
 
-    prepend MoveZMovePlugin
+    prepend MoveZTeraMaxPlugin
   end
 end

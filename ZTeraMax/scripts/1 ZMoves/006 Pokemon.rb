@@ -13,7 +13,7 @@ module PFM
                             psychium_z buginium_z rockium_z ghostium_z dragonium_z
                             steelium_z darkinium_z fairium_z]
 
-    module PokemonZMovesPlugin
+    module PokemonZTeraMaxPlugin
       # Check if the Pokemon can mega evolve
       # @return [Integer, false] form index if the Pokemon can mega evolve, false otherwise
       # @note itemless Mega Evolution can't Mega if they hold a ZCrystal (Rayquaza)
@@ -32,6 +32,6 @@ module PFM
       end
     end
 
-    prepend PokemonZMovesPlugin
+    prepend PokemonZTeraMaxPlugin
   end
 end
