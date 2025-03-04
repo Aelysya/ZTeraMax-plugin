@@ -50,20 +50,13 @@ module Battle
         @used_dynamax_tool_bags = []
       end
 
-      # Determines if a given Pokémon can use a Z-Move.
-      #
-      # A Pokémon can use a Z-Move if the following conditions are met:
-      # - The Player's bag contains at least one Z-Move tool.
-      # - The Pokémon is in the party and Z-Move command has been issued (in case of duo battle).
-      # - The Pokémon is not mega-evolved or under primal resurgence.
-      # - The Player has not already used a Z-Move during the battle.
-      #
+      # Determines if a given Pokémon can Dynamax.
       # @param pokemon [Pokemon] The Pokémon to check.
-      # @return [Boolean] True if the Pokémon can use a Z-Move, false otherwise.
+      # @return [Boolean] True if the Pokémon can Dynamax, false otherwise.
       def can_pokemon_dynamax?(pokemon)
         return false unless DYNAMAX_TOOLS.any? { |tool| pokemon.bag.contain_item?(tool) }
         return false if pokemon.from_party? && any_dynamax_player_action?
-        return false if pokemon.mega_evolved?
+        return false if pokemon.mega_evolved? || pokemon.holds_z_crystal?
 
         return !@used_dynamax_tool_bags.include?(pokemon.bag)
       end

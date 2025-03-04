@@ -107,7 +107,6 @@ module Battle
           hash[action] = ->(user, scene) { apply_stat_change(:ats, 1, user, scene) }
         end,
 
-        # Special Attack
         **%i[
           psycho_shift
           heal_block
@@ -345,7 +344,7 @@ module Battle
         end,
 
         # Other
-        curse:        ->(user, scene) { z_curse(user, scene) },
+        curse: ->(user, scene) { z_curse(user, scene) },
       }
       # rubocop:enable Layout/HashAlignment
       # rubocop:enable Naming/VariableNumber

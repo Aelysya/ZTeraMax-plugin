@@ -34,7 +34,9 @@ To use Z-Moves in battle, here's what your players need:
 When you give a Z-Crystal to your players, be sure to give them one that contains a '2' at the end of their db_symbol (e.g. normalium_z2). In the database these are the bigger crystals. When your players will give a crystal to their Pokémon, it will automatically create the right crystal, which is the smaller version in the database. When they try to retrieve a crystal from their Pokémon, it will not be put back in the bag, just deleted. This mimics the ways these items work in the official games.
 
 #### Dynamax
-TODO
+
+To give the Gigantamax factor to a Pokémon (or remove it) you will have to script it by yourself. If you want to follow the official way, check this [link](https://bulbapedia.bulbagarden.net/wiki/Master_Dojo#Max_Soup).
+The attribute to modify is `gigantamax_factor`, you can do it by calling `$actors[gv[43]].gigantamax_factor = true|false` (check the Motisma devices in the Demo's laboratory for more information on how to modify a Pokémon's attributes from an event)
 
 #### Terastal
 TODO

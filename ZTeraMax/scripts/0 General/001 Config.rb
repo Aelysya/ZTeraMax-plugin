@@ -24,12 +24,17 @@ end
 
 module Configs
   KEY_TRANSLATIONS[:useBuiltinMoveNameSlice] = :use_slice_name
+  KEY_TRANSLATIONS[:defaultGigantamaxChance] = :default_gigantamax_chance
 
   module Project
     class ZTeraMax
       # if the move name should be sliced using the plugin's method
       # @return [Boolean]
       attr_accessor :use_slice_name
+
+      # The default chance to generate a Pokémon with the gigantamax factor
+      # @return [Integer] Between 0 and 100
+      attr_accessor :default_gigantamax_chance
     end
   end
 
@@ -44,6 +49,7 @@ module PSDKEditor
 
     data_z_tera_max = { klass: 'Configs::Project::ZTeraMax' }
     data_z_tera_max[:useBuiltinMoveNameSlice] = PSDK_CONFIG.use_slice_name
+    data_z_tera_max[:defaultGigantamaxChance] = PSDK_CONFIG.default_gigantamax_chance
     File.write(File.join(ROOT_CONFIGS, 'z_tera_max_config.json'), JSON.pretty_generate(data_z_tera_max))
   end
 end

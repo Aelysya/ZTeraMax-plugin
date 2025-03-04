@@ -83,10 +83,6 @@ module Battle
       end
 
       # Checks if a given Pokémon holds a valid Z-Crystal.
-      #
-      # A Z-Crystal is considered valid if it is either a type-specific Z-Crystal
-      # or a signature Z-Crystal that matches the Pokémon's species and form.
-      #
       # @param pokemon [Pokemon] The Pokémon to check.
       # @return [Boolean] True if the Pokémon holds a valid Z-Crystal, false otherwise.
       def pokemon_holds_valid_z_crystal?(pokemon)
@@ -99,13 +95,6 @@ module Battle
       end
 
       # Determines if a given Pokémon can use a Z-Move.
-      #
-      # A Pokémon can use a Z-Move if the following conditions are met:
-      # - The Player's bag contains at least one Z-Move tool.
-      # - The Pokémon is in the party and Z-Move command has been issued (in case of duo battle).
-      # - The Pokémon is not mega-evolved or under primal resurgence.
-      # - The Player has not already used a Z-Move during the battle.
-      #
       # @param pokemon [Pokemon] The Pokémon to check.
       # @return [Boolean] True if the Pokémon can use a Z-Move, false otherwise.
       def can_pokemon_use_z_move?(pokemon)
@@ -141,7 +130,6 @@ module Battle
       end
 
       # Marks the given Pokémon's trainer as having used a Z-Move.
-      #
       # @param pokemon [Pokemon] The Pokémon that has used a Z-Move.
       # @return [void]
       def mark_as_z_move_used(pokemon)
@@ -149,7 +137,6 @@ module Battle
       end
 
       # Replaces a Pokémon's move with its corresponding Z-Move if the Pokémon is holding the correct Z-Crystal.
-      #
       # @param pokemon [Pokemon] The Pokémon whose move is to be replaced.
       # @param move [Move] The move to be potentially replaced with a Z-Move.
       # @return [Move] The original move if the Pokémon is not holding the correct Z-Crystal, otherwise the corresponding Z-Move.
@@ -163,7 +150,6 @@ module Battle
       end
 
       # Get the corresponding Z-Move for a given move
-      #
       # @param move [Move] The move to get the corresponding Z-Move for.
       # @return [Move] The corresponding Z-Move.
       def corresponding_z_move(move)
@@ -177,7 +163,6 @@ module Battle
       end
 
       # Replaces a Pokémon's status move with its corresponding Z-Move if the Pokémon is holding the correct Z-Crystal.
-      #
       # @param pokemon [Pokemon] The Pokémon whose move is to be replaced.
       # @param move [Move] The move to be potentially replaced with a Z-Move.
       # @return [Move] The original move if the Pokémon is not holding the correct Z-Crystal, otherwise the corresponding Z-Move.
@@ -191,7 +176,6 @@ module Battle
       end
 
       # Replaces a Pokémon's move with its signature Z-Move if conditions are met.
-      #
       # @param pokemon [Pokemon] The Pokémon whose move is to be replaced.
       # @param move [Move] The move to be potentially replaced.
       # @return [Move] The original move or the signature Z-Move if conditions are met.
@@ -213,16 +197,6 @@ module Battle
       # @return [Boolean] true if any player action is an Z-Move command, false otherwise.
       def any_z_move_player_action?
         @scene.player_actions.any? { |action| action.is_a?(Actions::ZMove) }
-      end
-    end
-
-    class MegaEvolve
-      private
-
-      # Function that checks if any action of the player is a mega evolve
-      # @return [Boolean]
-      def any_mega_player_action?
-        @scene.player_actions.any? { |actions| actions.is_a?(Actions::Mega) }
       end
     end
   end

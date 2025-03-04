@@ -1,3 +1,4 @@
 {
-  "useBuiltinMoveNameSlice": true
+  "useBuiltinMoveNameSlice": true,
+  "defaultGigantamaxChance": 10
 }

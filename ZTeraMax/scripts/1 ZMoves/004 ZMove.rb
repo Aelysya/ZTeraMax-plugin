@@ -55,7 +55,6 @@ module Battle
       }
 
       # Calculates the real base power of a move considering Z-Move exceptions and original move power.
-      #
       # @param user [PFM::PokemonBattler] The user of the move.
       # @param target [PFM::PokemonBattler] The target of the move.
       # @return [Integer] The calculated base power of the move.
@@ -88,6 +87,9 @@ module Battle
     Move.register(:s_type_z_move, ZMove)
 
     class GuardianOfAlola < ZMove
+      # Deals 3/4 of the target's current HP as fixed damage
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param target [Array<PFM::PokemonBattler>] target that will be affected by the move
       def damages(user, target)
         @critical = false
         @effectiveness = 1
