@@ -10,7 +10,7 @@ module PFM
       end
 
       original_moveset.each_with_index do |move, i|
-        moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene)
+        moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, moveset[i].pp, move.ppmax, @scene)
       end
     end
   end

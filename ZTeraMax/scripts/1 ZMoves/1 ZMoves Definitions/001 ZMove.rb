@@ -17,8 +17,7 @@ module Battle
       # @param original_move [Battle::Move] original move linked to this Z-Move
       def initialize(db_symbol, scene, original_move)
         @original_move = original_move
-        pp = original_move.pp == 0 ? 0 : 1
-        super(db_symbol, pp, 1, scene)
+        super(db_symbol, original_move.pp, original_move.ppmax, scene)
       end
 
       # List of exceptions for the power calculation

@@ -28,7 +28,7 @@ module Battle
         @scene.visual.set_info_state(:move_animation)
         @scene.visual.wait_for_animation
 
-        post_z_move_actions(user)
+        user.reset_to_original_moveset
       end
 
       # Function that deals the Z-effect to the pokemon
@@ -38,26 +38,6 @@ module Battle
         Z_STATUS_MOVES_EFFECTS[db_symbol].call(user, @scene) if @is_z && Z_STATUS_MOVES_EFFECTS.key?(db_symbol)
         deal_effect(user, actual_targets)
         return true
-      end
-
-      def post_z_move_actions(user)
-        z_move_position = find_z_move_position(user)
-        original_move = user.original_moveset[z_move_position]
-
-        original_move.pp -= @logic.foes_of(user).any? { |foe| foe.alive? && foe.has_ability?(:pressure) } ? 2 : 1
-        user.reset_to_original_moveset
-      end
-
-      # Find the Z-Move position in the moveset of the Pokemon
-      # @param pokemon [PFM::PokemonBattler]
-      # @return [Integer]
-      def find_z_move_position(pokemon)
-        return 0 if pokemon.move_history.empty?
-
-        pokemon.moveset.each_with_index do |move, i|
-          return i if move && move.id == pokemon.move_history.last.move.id && move.pp == 0
-        end
-        return 0
       end
 
       # Return the chance of hit of the move

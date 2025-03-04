@@ -71,9 +71,9 @@ module Battle
             pokemon.original_moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene)
 
             if move.status?
-              pokemon.moveset[i] = Battle::Move[:max_move].new(:max_guard, 3, 3, @scene)
+              pokemon.moveset[i] = Battle::Move[:max_move].new(:max_guard, move.pp, move.ppmax, @scene)
             else
-              pokemon.moveset[i] = Battle::Move[:max_move].new(MAX_MOVES[data_move(move.db_symbol).type], 3, 3, @scene)
+              pokemon.moveset[i] = Battle::Move[:s_basic].new(MAX_MOVES[data_move(move.db_symbol).type], move.pp, move.ppmax, @scene)
             end
             pokemon.moveset[i].is_max = true
           end

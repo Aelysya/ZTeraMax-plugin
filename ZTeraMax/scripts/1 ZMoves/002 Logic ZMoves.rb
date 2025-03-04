@@ -169,7 +169,7 @@ module Battle
       def replace_with_status_z_move(pokemon, move)
         return move unless data_type(move.type).db_symbol == TYPE_Z_CRYSTALS[pokemon.item_db_symbol][:type]
 
-        replacement_move = Battle::Move[move.be_method].new(move.db_symbol, move.pp.positive? ? 1 : 0, 1, @scene)
+        replacement_move = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene)
         replacement_move.is_z = true
 
         return replacement_move
@@ -185,7 +185,7 @@ module Battle
 
         return move unless move.db_symbol == data[:base_move]
 
-        replacement_move = Battle::Move[data[:be_method]].new(data[:z_move], move.pp.positive? ? 1 : 0, 1, @scene)
+        replacement_move = Battle::Move[data[:be_method]].new(data[:z_move], move.pp, move.ppmax, @scene)
         replacement_move.is_z = true
 
         return replacement_move
