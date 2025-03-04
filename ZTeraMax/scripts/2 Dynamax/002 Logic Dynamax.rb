@@ -1,6 +1,6 @@
 module Battle
   class Logic
-    module LogicZTeraMaxPlugin
+    module LogicZTeraMaxDynPlugin
       # Get the Dynamax helper
       # @return [Dynamax]
       attr_reader :dynamax
@@ -14,7 +14,7 @@ module Battle
       end
     end
 
-    prepend LogicZTeraMaxPlugin
+    prepend LogicZTeraMaxDynPlugin
 
     # Logic for Dynamax
     class Dynamax
@@ -66,7 +66,7 @@ module Battle
       # @param z_crystal_activated [Boolean] Whether to set the moveset to the Dynamax state or the original state.
       def update_moveset(pokemon, dynamax_activated)
         if dynamax_activated
-          pokemon.effects.add(Effects::Dynamax.new(@logic, pokemon))
+          pokemon.effects.add(Effects::Dynamaxed.new(@logic, pokemon))
           pokemon.moveset.each_with_index do |move, i|
             pokemon.original_moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene)
 
@@ -78,7 +78,7 @@ module Battle
             pokemon.moveset[i].is_max = true
           end
         else
-          reset_to_original_moveset(pokemon)
+          pokemon.reset_to_original_moveset
         end
       end
 

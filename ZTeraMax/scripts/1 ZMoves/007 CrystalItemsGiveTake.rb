@@ -1,7 +1,7 @@
 module Battle
   class Logic
     class ItemChangeHandler < ChangeHandlerBase
-      module ItemChangeHandlerZTeraMaxPlugin
+      module ZMovesPlugin
         # List of item that cannot be manipulated during battle (Knock off, Trick, etc...)
         PROTECTED_ITEMS.concat(%i[normalium_z fightinium_z flyinium_z poisonium_z groundium_z rockium_z buginium_z
                                   ghostium_z steelium_z firium_z waterium_z grassium_z electrium_z psychium_z
@@ -10,7 +10,7 @@ module Battle
                                   pikanium_z pikashunium_z primarium_z snorlium_z solganium_z tapunium_z ultranecrozium_z])
       end
 
-      prepend ItemChangeHandlerZTeraMaxPlugin
+      prepend ZMovesPlugin
     end
   end
 end

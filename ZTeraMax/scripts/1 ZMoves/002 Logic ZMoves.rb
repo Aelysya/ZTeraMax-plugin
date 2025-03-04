@@ -1,6 +1,6 @@
 module Battle
   class Logic
-    module LogicZTeraMaxPlugin
+    module ZMovesPlugin
       # Get the ZMove helper
       # @return [ZMoves]
       attr_reader :z_move
@@ -10,11 +10,11 @@ module Battle
       def initialize(scene)
         # ZMove helper
         @z_move = ZMoves.new(scene)
-        super(scene)
+        super
       end
     end
 
-    prepend LogicZTeraMaxPlugin
+    prepend ZMovesPlugin
 
     # Logic for Z-Moves
     class ZMoves
@@ -125,7 +125,7 @@ module Battle
             end
           end
         else
-          reset_to_original_moveset(pokemon)
+          pokemon.reset_to_original_moveset
         end
       end
 

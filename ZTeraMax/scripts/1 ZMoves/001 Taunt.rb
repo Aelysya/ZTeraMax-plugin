@@ -1,7 +1,7 @@
 module Battle
   module Effects
     class Taunt
-      module TauntZTeraMaxPlugin
+      module ZMovesPlugin
         # Function called when we try to check if the user cannot use a move
         # @param user [PFM::PokemonBattler]
         # @param move [Battle::Move]
@@ -24,7 +24,7 @@ module Battle
         end
       end
 
-      prepend TauntZTeraMaxPlugin
+      prepend ZMovesPlugin
     end
   end
 end

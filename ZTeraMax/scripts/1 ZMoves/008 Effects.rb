@@ -17,6 +17,14 @@ module Battle
     end
 
     class ZPower < PokemonTiedEffectBase
+      # Create a new Pokemon tied effect
+      # @param logic [Battle::Logic]
+      # @param pokemon [PFM::PokemonBattler]
+      def initialize(logic, pokemon)
+        super
+        self.counter = 1
+      end
+
       # Get the name of the effect
       # @return [Symbol]
       def name

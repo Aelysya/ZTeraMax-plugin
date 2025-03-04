@@ -15,7 +15,7 @@ module Battle
       # @param ppmax [Integer] maximum number of pp the move currently has
       # @param scene [Battle::Scene] current battle scene
       def initialize(db_symbol, pp, ppmax, scene)
-        super(db_symbol, pp, ppmax, scene)
+        super
         @is_z = false
         @is_max = false
       end

@@ -1,6 +1,6 @@
 module Battle
   class Move
-    module MoveZTeraMaxPlugin
+    module ZMovesPlugin
       module_function
 
       # rubocop:disable Naming/VariableNumber
@@ -405,6 +405,6 @@ module Battle
       end
     end
 
-    prepend MoveZTeraMaxPlugin
+    prepend ZMovesPlugin
   end
 end

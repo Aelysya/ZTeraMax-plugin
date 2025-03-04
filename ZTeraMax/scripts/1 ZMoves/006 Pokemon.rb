@@ -1,6 +1,6 @@
 module PFM
   class Pokemon
-    module PokemonZTeraMaxPlugin
+    module ZMovesPlugin
       # List of Z-Crystals
       Z_CRYSTALS = %i[normalium_z fightinium_z flyinium_z poisonium_z groundium_z rockium_z buginium_z
                       ghostium_z steelium_z firium_z waterium_z grassium_z electrium_z psychium_z
@@ -37,6 +37,6 @@ module PFM
       end
     end
 
-    prepend PokemonZTeraMaxPlugin
+    prepend ZMovesPlugin
   end
 end

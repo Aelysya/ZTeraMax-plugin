@@ -84,7 +84,7 @@ module Battle
         return z_power
       end
     end
-    Move.register(:s_type_z_move, ZMove)
+    Move.register(:s_type_z_move, TypeZMove)
 
     class GuardianOfAlola < ZMove
       # Deals 3/4 of the target's current HP as fixed damage

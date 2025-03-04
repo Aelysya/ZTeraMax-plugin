@@ -1,6 +1,6 @@
 module Battle
   class Move
-    module MoveZTeraMaxPlugin
+    module ZMovesPlugin
       module_function
 
       # Internal procedure of the move
@@ -8,7 +8,7 @@ module Battle
       # @param targets [Array<PFM::PokemonBattler>] expected targets
       def proceed_internal_z_move(user, targets)
         unless (actual_targets = proceed_internal_precheck(user, targets))
-          return user.add_move_to_history(self, targets) && @logic.z_move.reset_to_original_moveset(user)
+          return user.add_move_to_history(self, targets) && user.reset_to_original_moveset
         end
 
         post_accuracy_check_effects(user, actual_targets)
@@ -45,8 +45,7 @@ module Battle
         original_move = user.original_moveset[z_move_position]
 
         original_move.pp -= @logic.foes_of(user).any? { |foe| foe.alive? && foe.has_ability?(:pressure) } ? 2 : 1
-
-        @logic.z_move.reset_to_original_moveset(user)
+        user.reset_to_original_moveset
       end
 
       # Find the Z-Move position in the moveset of the Pokemon
@@ -72,6 +71,6 @@ module Battle
       end
     end
 
-    prepend MoveZTeraMaxPlugin
+    prepend ZMovesPlugin
   end
 end
