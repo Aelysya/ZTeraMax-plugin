@@ -83,7 +83,6 @@ module Battle
       end
 
       # Marks the given Pokémon's trainer as having used the Dynamax.
-      #
       # @param pokemon [Pokemon] The Pokémon that has used the Dynamax.
       # @return [void]
       def mark_as_dynamax_used(pokemon)

@@ -3,7 +3,6 @@ module Battle
     module MoveZTeraMaxPlugin
       module_function
 
-      # rubocop:disable Layout/HashAlignment
       # rubocop:disable Naming/VariableNumber
       # List of status moves that have an effect when used with a Z-Crystal
       Z_STATUS_MOVES_EFFECTS = {
@@ -346,7 +345,6 @@ module Battle
         # Other
         curse: ->(user, scene) { z_curse(user, scene) },
       }
-      # rubocop:enable Layout/HashAlignment
       # rubocop:enable Naming/VariableNumber
 
       # Function that handles the Z-effect of increasing one of the user's stats by 1 stage
