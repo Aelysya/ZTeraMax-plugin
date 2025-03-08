@@ -6,7 +6,7 @@ module Battle
     # Class managing type-specific Z-Moves
     class TypeZMove < ZMove
       # Original move linked to this Z-Move
-      # @return [Integer]
+      # @return [Battle::Move]
       attr_reader :original_move
 
       # Create a new move

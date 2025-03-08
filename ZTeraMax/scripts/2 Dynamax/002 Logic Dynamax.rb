@@ -23,24 +23,24 @@ module Battle
 
       # Type to Max Moves linking
       MAX_MOVES = {
-        normal: :max_strike,
-        fighting: :max_knuckle,
-        flying: :max_airstream,
-        poison: :max_ooze,
-        ground: :max_quake,
-        rock: :max_rockfall,
-        bug: :max_flutterby,
-        ghost: :max_phantasm,
-        steel: :max_steelspike,
-        fire: :max_flare,
-        water: :max_geyser,
-        grass: :max_overgrowth,
-        electric: :max_lightning,
-        psychic: :max_mindstorm,
-        ice: :max_hailstorm,
-        dragon: :max_wyrmwind,
-        dark: :max_darkness,
-        fairy: :max_starfall
+        normal: { move_symbol: :max_strike, be_method: :s_stat_max_move },
+        fighting: { move_symbol: :max_knuckle, be_method: :s_self_stat_max_move },
+        flying: { move_symbol: :max_airstream, be_method: :s_self_stat_max_move },
+        poison: { move_symbol: :max_ooze, be_method: :s_self_stat_max_move },
+        ground: { move_symbol: :max_quake, be_method: :s_self_stat_max_move },
+        rock: { move_symbol: :max_rockfall, be_method: :s_weather_max_move },
+        bug: { move_symbol: :max_flutterby, be_method: :s_stat_max_move },
+        ghost: { move_symbol: :max_phantasm, be_method: :s_stat_max_move },
+        steel: { move_symbol: :max_steelspike, be_method: :s_self_stat_max_move },
+        fire: { move_symbol: :max_flare, be_method: :s_weather_max_move },
+        water: { move_symbol: :max_geyser, be_method: :s_weather_max_move },
+        grass: { move_symbol: :max_overgrowth, be_method: :s_terrain_max_move },
+        electric: { move_symbol: :max_lightning, be_method: :s_terrain_max_move },
+        psychic: { move_symbol: :max_mindstorm, be_method: :s_terrain_max_move },
+        ice: { move_symbol: :max_hailstorm, be_method: :s_weather_max_move },
+        dragon: { move_symbol: :max_wyrmwind, be_method: :s_stat_max_move },
+        dark: { move_symbol: :max_darkness, be_method: :s_stat_max_move },
+        fairy: { move_symbol: :max_starfall, be_method: :s_terrain_max_move }
       }
 
       # Create the Dynamax logic
@@ -71,11 +71,12 @@ module Battle
             pokemon.original_moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene)
 
             if move.status?
-              pokemon.moveset[i] = Battle::Move[:max_move].new(:max_guard, move.pp, move.ppmax, @scene)
+              pokemon.moveset[i] = Battle::Move[:s_max_guard].new(:max_guard, move.pp, move.ppmax, @scene)
+              pokemon.moveset[i].is_max = true
             else
-              pokemon.moveset[i] = Battle::Move[:s_basic].new(MAX_MOVES[data_move(move.db_symbol).type], move.pp, move.ppmax, @scene)
+              max_move_data = MAX_MOVES[data_move(move.db_symbol).type]
+              pokemon.moveset[i] = Battle::Move[max_move_data[:be_method]].new(max_move_data[:move_symbol], @scene, move)
             end
-            pokemon.moveset[i].is_max = true
           end
         else
           pokemon.reset_to_original_moveset
