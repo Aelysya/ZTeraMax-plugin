@@ -1,6 +1,10 @@
 module Battle
   class Move
     class MaxMove < Basic
+      # Original move linked to this Max Move
+      # @return [Battle::Move]
+      attr_reader :original_move
+
       # List of power depending on the original move for this Max Move
       MAX_MOVES_POWER = {
         struggle: 1,
@@ -116,10 +120,6 @@ module Battle
           hash[action] = 150
         end
       }
-
-      # Original move linked to this Max Move
-      # @return [Battle::Move]
-      attr_reader :original_move
 
       # Create a new move
       # @param db_symbol [Symbol] db_symbol of the move in the database

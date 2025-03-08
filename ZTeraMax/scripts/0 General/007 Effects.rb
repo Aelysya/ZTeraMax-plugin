@@ -26,7 +26,7 @@ module Battle
           return 0.25
         end
 
-        # Check if the move is a Z Move or Dynamax Move
+        # Check if the move is a Z-Move or Max Move
         # @param move [Battle::Move]
         # @return [Boolean]
         def trampling_move?(move)
