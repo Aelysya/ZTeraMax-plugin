@@ -35,7 +35,7 @@ module Battle
         sprite.go_out
         visual.hide_info_bar(@user)
         wait_for(sprite, visual)
-        # @user.dynamax
+        @user.dynamax
         sprite.visible = false
         sprite.go_in
         visual.show_info_bar(@user)

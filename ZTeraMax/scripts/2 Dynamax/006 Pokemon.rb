@@ -1,6 +1,6 @@
 module PFM
   class Pokemon
-    module PokemonZTeraMaxPlugin
+    module DynamaxPlugin
       # @return [Integer] Dynamax level of the Pokémon between 0 and 10
       attr_accessor :dynamax_level
 
@@ -52,6 +52,6 @@ module PFM
       end
     end
 
-    prepend PokemonZTeraMaxPlugin
+    prepend DynamaxPlugin
   end
 end
