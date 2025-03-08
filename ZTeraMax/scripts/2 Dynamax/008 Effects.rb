@@ -6,7 +6,7 @@ module Battle
       # @param pokemon [PFM::PokemonBattler]
       def initialize(logic, pokemon)
         super
-        self.counter = 3
+        @counter = 3
       end
 
       # Get the name of the effect
