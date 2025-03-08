@@ -1,3 +1,7 @@
+param (
+    [switch]$n
+)
+
 $yamlFile = "ZTeraMax/config.yml"
 
 if (-Not (Test-Path $yamlFile)) {
@@ -15,7 +19,13 @@ if (-Not $match.Success) {
 }
 
 $major, $minor, $build, $patch = $match.Groups[1..4].Value
-$patch = [int]$patch + 1
+
+if ($n) {
+    $build = [int]$build + 1
+    $patch = 0
+} else {
+    $patch = [int]$patch + 1
+}
 $newVersion = "version: $major.$minor.$build.$patch"
 $newVersionContent = [regex]::Replace($content, $regex, $newVersion)
 
@@ -24,7 +34,7 @@ Write-Host "Version updated to $major.$minor.$build.$patch" -ForegroundColor Gre
 
 Set-Location ..
 Write-Host "Building..."
-cmd.exe /c "call ./psdk --util=plugin build ZTeraMax"
-cmd.exe /c "call ./psdk --util=plugin load"
-cmd.exe /c "call ./psdk debug skip_title"
+# cmd.exe /c "call ./psdk --util=plugin build ZTeraMax"
+# cmd.exe /c "call ./psdk --util=plugin load"
+# cmd.exe /c "call ./psdk debug skip_title"
 Set-Location ./scripts
