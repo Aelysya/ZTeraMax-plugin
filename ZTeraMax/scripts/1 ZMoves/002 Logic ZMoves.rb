@@ -196,7 +196,7 @@ module Battle
       # Function that checks if any action of the player is a Z-Move
       # @return [Boolean] true if any player action is an Z-Move command, false otherwise.
       def any_z_move_player_action?
-        @scene.player_actions.any? { |action| action.is_a?(Actions::ZMove) }
+        @scene.player_actions.flatten.any? { |action| action.is_a?(Actions::ZMove) }
       end
     end
   end

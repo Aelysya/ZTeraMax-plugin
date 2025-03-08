@@ -95,7 +95,7 @@ module Battle
       # Function that checks if any action of the player is a Dynamax
       # @return [Boolean] true if any player action is an Dynamax command, false otherwise.
       def any_dynamax_player_action?
-        @scene.player_actions.any? { |action| action.is_a?(Actions::Dynamax) }
+        @scene.player_actions.flatten.any? { |action| action.is_a?(Actions::Dynamax) }
       end
     end
   end
