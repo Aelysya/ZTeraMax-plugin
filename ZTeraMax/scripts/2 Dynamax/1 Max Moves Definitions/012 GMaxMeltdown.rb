@@ -1,0 +1,16 @@
+module Battle
+  class Move
+    class GMaxMeltdown < MaxMove
+      # Function that deals the effect to the pokemon
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
+      def deal_effect(user, actual_targets)
+        @logic.foes_of(user).each do |target|
+          target.effects.add(Effects::Torment.new(@logic, target)) unless target.effects.has?(:torment)
+          @scene.display_message_and_wait(parse_text_with_pokemon(19, 577, target))
+        end
+      end
+    end
+    Move.register(:s_gmax_meltdown, GMaxMeltdown)
+  end
+end

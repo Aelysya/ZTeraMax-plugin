@@ -121,6 +121,12 @@ module Battle
         end
       }
 
+      FIXED_POWER_MAX_MOVE = {
+        gmax_drum_solo: 160,
+        gmax_fireball: 160,
+        gmax_hydrosnipe: 160
+      }
+
       # Create a new move
       # @param db_symbol [Symbol] db_symbol of the move in the database
       # @param pp [Integer] number of pp the move currently has
@@ -153,7 +159,13 @@ module Battle
       # @see https://bulbapedia.bulbagarden.net/wiki/Max_Move#Power
       # The calculated power is then logged and returned.
       def real_base_power(_user, _target)
-        power = MAX_MOVES_POWER.fetch(@original_move.db_symbol, 130)
+        power = if MAX_MOVES_POWER.key?(@original_move.db_symbol)
+                  MAX_MOVES_POWER[@original_move.db_symbol]
+                elsif FIXED_POWER_MAX_MOVE.key?(@original_move.db_symbol)
+                  FIXED_POWER_MAX_MOVE[@original_move.db_symbol]
+                else
+                  130 # Move not found so 130 by default (Most common power bracket)
+                end
 
         log_data("power = #{power} # after #{self.class} real_base_power")
         return power

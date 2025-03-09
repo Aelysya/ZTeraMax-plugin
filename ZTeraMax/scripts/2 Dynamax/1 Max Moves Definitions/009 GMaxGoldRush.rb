@@ -1,6 +1,5 @@
 module Battle
   class Move
-    # class managing PayDay move
     class GMaxGoldRush < MaxMove
       private
 

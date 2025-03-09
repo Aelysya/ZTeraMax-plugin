@@ -21,7 +21,7 @@ module Battle
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       def deal_effect(user, actual_targets)
         nb_turn = user.hold_item?(WEATHER_ITEMS[db_symbol]) ? 8 : 5
-        logic.weather_change_handler.weather_change_with_process(WEATHER_MOVES[db_symbol], nb_turn)
+        @logic.weather_change_handler.weather_change_with_process(WEATHER_MOVES[db_symbol], nb_turn)
       end
     end
     Move.register(:s_weather_max_move, WeatherMaxMove)

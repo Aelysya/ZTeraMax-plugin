@@ -1,10 +1,6 @@
 module Battle
   module Effects
     class DamageOverFourTurns < PositionTiedEffectBase
-      # The move responsive of the effect
-      # @return [PFM::PokemonBattler]
-      attr_reader :move
-
       # Create a new position tied effect
       # @param logic [Battle::Logic] logic used to get all the handler in order to allow the effect to work
       # @param bank [Integer] bank where the effect is tied

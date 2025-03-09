@@ -1,6 +1,7 @@
 module Battle
   class Move
-    class GMaxTerror < MaxMove
+    # Move that binds the target to the field
+    class BindingMaxMove < MaxMove
       private
 
       # Test if the effect is working
@@ -8,21 +9,22 @@ module Battle
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       # @return [Boolean]
       def effect_working?(user, actual_targets)
-        return actual_targets.all? { |target| !target.effects.has?(:cantswitch) }
+        !@logic.foes_of(user).all? { |target| target.type_ghost? || target.effects.has?(:bind) }
       end
 
-      # Function that deals the status changes to all foes
+      # Function that deals the effect to the pokemon
       # @param user [PFM::PokemonBattler] user of the move
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       def deal_effect(user, actual_targets)
+        turn_count = user.hold_item?(:grip_claw) ? 7 : @logic.generic_rng.rand(4..5)
         @logic.foes_of(user).each do |target|
-          next if target.effects.has?(:cantswitch)
+          next if target.type_ghost? || target.effects.has?(:bind)
 
-          target.effects.add(Effects::CantSwitch.new(@logic, target, user, self))
-          scene.display_message_and_wait(parse_text_with_pokemon(19, 875, target))
+          target.effects.add(Effects::Bind.new(@logic, target, user, turn_count, self))
         end
       end
     end
-    Move.register(:s_gmax_terror, GMaxTerror)
+
+    Move.register(:s_binding_max_move, BindingMaxMove)
   end
 end
