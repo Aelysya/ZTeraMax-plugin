@@ -20,9 +20,12 @@ module Battle
         @pokemon.reset_to_original_moveset
       end
 
-      # Function called when the effect has been deleted from the effects handler
+      # Function called when a Pokemon has actually switched with another one
+      # @param handler [Battle::Logic::SwitchHandler]
+      # @param who [PFM::PokemonBattler] Pokemon that is switched out
+      # @param with [PFM::PokemonBattler] Pokemon that is switched in
       def on_switch_event(handler, who, with)
-        kill
+        kill if who == @pokemon
       end
 
       # Function called after damages were applied and when target died (post_damage_death)
@@ -32,7 +35,7 @@ module Battle
       # @param launcher [PFM::PokemonBattler, nil] Potential launcher of a move
       # @param skill [Battle::Move, nil] Potential move used
       def on_post_damage_death(handler, hp, target, launcher, skill)
-        kill
+        kill if target == @pokemon
       end
     end
 

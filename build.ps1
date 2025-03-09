@@ -2,6 +2,8 @@ param (
     [switch]$n
 )
 
+Set-ExecutionPolicy Bypass -Scope Process
+
 $yamlFile = "ZTeraMax/config.yml"
 
 if (-Not (Test-Path $yamlFile)) {
@@ -34,7 +36,7 @@ Write-Host "Version updated to $major.$minor.$build.$patch" -ForegroundColor Gre
 
 Set-Location ..
 Write-Host "Building..."
-# cmd.exe /c "call ./psdk --util=plugin build ZTeraMax"
-# cmd.exe /c "call ./psdk --util=plugin load"
-# cmd.exe /c "call ./psdk debug skip_title"
+cmd.exe /c "call ./psdk --util=plugin build ZTeraMax"
+cmd.exe /c "call ./psdk --util=plugin load"
+cmd.exe /c "call ./psdk debug skip_title"
 Set-Location ./scripts
