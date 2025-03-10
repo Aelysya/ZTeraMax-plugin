@@ -17,7 +17,7 @@ module Battle
       # @param target [PFM::PokemonBattler]
       # @return [Integer, Float]
       def calc_factor(target)
-        type = [self.type]
+        type = [data_type(:rock).id]
         @effectiveness = -1
         n = calc_type_n_multiplier(target, :type1, type) *
             calc_type_n_multiplier(target, :type2, type) *
