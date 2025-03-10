@@ -161,8 +161,8 @@ module Battle
       def real_base_power(_user, _target)
         power = if MAX_MOVES_POWER.key?(@original_move.db_symbol)
                   MAX_MOVES_POWER[@original_move.db_symbol]
-                elsif FIXED_POWER_MAX_MOVE.key?(@original_move.db_symbol)
-                  FIXED_POWER_MAX_MOVE[@original_move.db_symbol]
+                elsif FIXED_POWER_MAX_MOVE.key?(db_symbol)
+                  FIXED_POWER_MAX_MOVE[db_symbol]
                 else
                   130 # Move not found so 130 by default (Most common power bracket)
                 end
