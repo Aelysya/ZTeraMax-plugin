@@ -159,13 +159,7 @@ module Battle
       # @see https://bulbapedia.bulbagarden.net/wiki/Max_Move#Power
       # The calculated power is then logged and returned.
       def real_base_power(_user, _target)
-        power = if MAX_MOVES_POWER.key?(@original_move.db_symbol)
-                  MAX_MOVES_POWER[@original_move.db_symbol]
-                elsif FIXED_POWER_MAX_MOVE.key?(db_symbol)
-                  FIXED_POWER_MAX_MOVE[db_symbol]
-                else
-                  130 # Move not found so 130 by default (Most common power bracket)
-                end
+        power = FIXED_POWER_MAX_MOVE.fetch(db_symbol, MAX_MOVES_POWER.fetch(@original_move.db_symbol, 130))
 
         log_data("power = #{power} # after #{self.class} real_base_power")
         return power

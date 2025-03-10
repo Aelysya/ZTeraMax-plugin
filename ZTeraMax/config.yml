@@ -5,7 +5,7 @@ authors:
   - Aelysya
   - Lexio
   - Ota
-version: 0.6.7.9
+version: 0.6.7.11
 deps: []
 retry_psdk_compatibility_after_plugin_load: false
 added_files:

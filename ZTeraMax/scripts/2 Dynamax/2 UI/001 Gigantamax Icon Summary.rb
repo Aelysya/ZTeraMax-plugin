@@ -1,10 +1,18 @@
 module UI
   class Summary_Top < SpriteStack
     module MemoZTeraMaxPlugin
+      GIGANTAMAX_SPECIES = %i[
+        venusaur charizard blastoise butterfree pikachu meowth machamp
+        gengar kingler lapras eevee snorlax garbodor melmetal rillaboom
+        cinderace inteleon corviknight orbeetle drednaw coalossal flapple
+        appletun sandaconda toxtricity centiskorch hatterene grimmsnarl
+        alcremie copperaja duraludon urshifu
+      ]
+
       # Set the Pokemon shown
       # @param pokemon [PFM::Pokemon]
       def data=(pokemon)
-        @gigantamax.visible = pokemon.gigantamax_factor
+        @gigantamax.visible = pokemon.gigantamax_factor && GIGANTAMAX_SPECIES.include?(pokemon.db_symbol)
         super
       end
 

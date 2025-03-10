@@ -47,6 +47,6 @@ module Battle
         return 0
       end
     end
-    Move.register(:s_gmax_depletion, SpitGMaxDepletione)
+    Move.register(:s_gmax_depletion, GMaxDepletion)
   end
 end
