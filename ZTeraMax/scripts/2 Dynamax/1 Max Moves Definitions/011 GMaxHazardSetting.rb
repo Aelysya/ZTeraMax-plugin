@@ -25,6 +25,7 @@ module Battle
         return n
       end
     end
+    Move.register(:s_gmax_stonesurge, GMaxStonesurge)
 
     class GMaxSteelsurge < MaxMove
       # Function that deals the effect to the pokemon
@@ -51,7 +52,6 @@ module Battle
         return n
       end
     end
-    Move.register(:s_gmax_stonesurge, GMaxStonesurge)
     Move.register(:s_gmax_steelsurge, GMaxSteelsurge)
   end
 end
