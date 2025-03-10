@@ -10,7 +10,7 @@ module Battle
         return if @logic.bank_effects[bank]&.get(:stealth_rock)
 
         @logic.add_bank_effect(Effects::StealthRock.new(@logic, bank, self))
-        @scene.display_message_and_wait(parse_text(18, bank == 0 ? 162 : 163))
+        @scene.display_message_and_wait(parse_text(18, 162 + user.bank.clamp(0, 1)))
       end
 
       # Calculate the multiplier needed to get the damage factor of the Stealth Rock
