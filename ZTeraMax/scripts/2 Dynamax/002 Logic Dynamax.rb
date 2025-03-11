@@ -43,6 +43,40 @@ module Battle
         fairy: :max_starfall
       }
 
+      SIGNATURE_MAX_MOVES = {
+        venusaur: { type: :grass, move: :gmax_vine_lach },
+        charizard: { type: :fire, move: :gmax_wildfire },
+        blastoise: { type: :water, move: :gmax_cannonade },
+        butterfree: { type: :bug, move: :gmax_befuddle },
+        pikachu: { type: :electric, move: :gmax_volt_crash },
+        meowth: { type: :normal, move: :gmax_gold_rush },
+        machamp: { type: :fighting, move: :gmax_chi_strike },
+        gengar: { type: :ghost, move: :gmax_terror },
+        kingler: { type: :water, move: :gmax_foam_burst },
+        lapras: { type: :ice, move: :gmax_resonance },
+        eevee: { type: :normal, move: :gmax_cuddle },
+        snorlax: { type: :normal, move: :gmax_replenish },
+        garbodor: { type: :poison, move: :gmax_malodor },
+        melmetal: { type: :steel, move: :gmax_meltdown },
+        rillaboom: { type: :grass, move: :gmax_drum_solo },
+        cinderace: { type: :fire, move: :gmax_fireball },
+        inteleon: { type: :water, move: :gmax_hydrosnipe },
+        corviknight: { type: :flying, move: :gmax_wind_rage },
+        orbeetle: { type: :psychic, move: :gmax_gravitas },
+        drednaw: { type: :water, move: :gmax_stonesurge },
+        coalossal: { type: :rock, move: :gmax_volcalith },
+        flapple: { type: :grass, move: :gmax_tartness },
+        appletun: { type: :grass, move: :gmax_sweetness },
+        sandaconda: { type: :ground, move: :gmax_sand_blast },
+        toxtricity: { type: :electric, move: :gmax_stun_shock },
+        centiskorch: { type: :fire, move: :gmax_centiferno },
+        hatterene: { type: :fairy, move: :gmax_smite },
+        grimmsnarl: { type: :dark, move: :gmax_snooze },
+        alcremie: { type: :fairy, move: :gmax_finale },
+        copperajah: { type: :steel, move: :gmax_steelsurge },
+        duraludon: { type: :dragon, move: :gmax_depletion }
+      }
+
       # Create the Dynamax logic
       # @param scene [Battle::Scene]
       def initialize(scene)
@@ -63,7 +97,7 @@ module Battle
 
       # Updates the moveset of a given Pokémon
       # @param pokemon [Pokemon] The Pokémon whose moveset is to be updated.
-      # @param z_crystal_activated [Boolean] Whether to set the moveset to the Dynamax state or the original state.
+      # @param dynamax_activated [Boolean] Whether to set the moveset to the Dynamax state or the original state.
       def update_moveset(pokemon, dynamax_activated)
         if dynamax_activated
           pokemon.moveset.each_with_index do |move, i|
@@ -73,13 +107,43 @@ module Battle
               pokemon.moveset[i] = Battle::Move[:s_max_guard].new(:max_guard, move.pp, move.ppmax, @scene)
               pokemon.moveset[i].is_max = true
             else
-              max_move_symbol = MAX_MOVES[data_move(move.db_symbol).type]
-              pokemon.moveset[i] = Battle::Move[data_move(max_move_symbol).be_method].new(max_move_symbol, @scene, move)
+              pokemon.moveset[i] = replace_with_max_move(pokemon, move)
             end
           end
         else
           pokemon.reset_to_original_moveset
         end
+      end
+
+      # Get the Max Move corresponding to a certain move
+      # @param pokemon [Pokemon] The Pokémon whose moveset is to be updated
+      # @param move [Move] The move to be replaced with a Max Move.
+      # @return [Move] The corresponding Max Move.
+      def replace_with_max_move(pokemon, move)
+        return handle_urshifu_case(pokemon, move) if pokemon.db_symbol == :urshifu
+
+        move_type = data_move(move.db_symbol).type
+        if SIGNATURE_MAX_MOVES.key?(pokemon.db_symbol) && SIGNATURE_MAX_MOVES[pokemon.db_symbol][:type] == move_type
+          max_move_symbol = SIGNATURE_MAX_MOVES[pokemon.db_symbol][:move]
+        else
+          max_move_symbol = MAX_MOVES[move_type]
+        end
+
+        return Battle::Move[data_move(max_move_symbol).be_method].new(max_move_symbol, @scene, move)
+      end
+
+      # Handle the Urshifu exception when finding a corresponding Max Move
+      # @param pokemon [Pokemon] Urshifu
+      # @param move [Move] The move to be replaced with a Max Move.
+      # @return [Move] The corresponding Max Move.
+      def handle_urshifu_case(pokemon, move)
+        move_type = data_move(move.db_symbol).type
+
+        return Battle::Move[:s_max_move].new(:gmax_one_blow, @scene, move) if pokemon.form == 0 && move_type == :dark
+        return Battle::Move[:s_max_move].new(:gmax_rapid_flow, @scene, move) if pokemon.form == 1 && move_type == :water
+
+        max_move_symbol = MAX_MOVES[move_type]
+        return Battle::Move[data_move(max_move_symbol).be_method].new(max_move_symbol, @scene, move)
       end
 
       # Marks the given Pokémon's trainer as having used the Dynamax.
