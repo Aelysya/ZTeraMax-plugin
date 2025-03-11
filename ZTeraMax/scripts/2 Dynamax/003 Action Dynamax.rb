@@ -37,7 +37,7 @@ module Battle
         wait_for(sprite, visual)
         @user.dynamax
         sprite.visible = false
-        # sprite.set_tone_to(84, 7, 33, 50)
+        # sprite.set_tone_to(0.84, 0.07, 0.33, 0.5)
         sprite.go_in
         visual.show_info_bar(@user)
         wait_for(sprite, visual)

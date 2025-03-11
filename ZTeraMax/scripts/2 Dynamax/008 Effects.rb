@@ -18,6 +18,7 @@ module Battle
       # Function called when the effect has been deleted from the effects handler
       def on_delete
         @pokemon.reset_to_original_moveset
+        @pokemon.hp = (@pokemon.hp / (1.5 + 0.05 * @pokemon.dynamax_level)).ceil
       end
 
       # Function called when a Pokemon has actually switched with another one

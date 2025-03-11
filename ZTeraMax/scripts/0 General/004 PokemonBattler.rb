@@ -6,8 +6,8 @@ module PFM
       attr_accessor :original_moveset
 
       # List of moves that should ignore abilities
-      MOVES_IGNORING_ABILITIES += %i[searing_sunraze_smash menacing_moonraze_maelstrom light_that_burns_the_sky
-                                     gmax_drum_solo gmax_fireball gmax_hydrosnipe]
+      MOVES_IGNORING_ABILITIES.concat(%i[searing_sunraze_smash menacing_moonraze_maelstrom light_that_burns_the_sky
+                                         gmax_drum_solo gmax_fireball gmax_hydrosnipe])
 
       # Create a new PokemonBattler
       # @param viewport [Viewport]
