@@ -1,6 +1,5 @@
 module Battle
   class Move
-    # Move that inflict attract effect to the ennemy
     class GMaxCuddle < MaxMove
       private
 

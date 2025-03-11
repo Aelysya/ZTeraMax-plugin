@@ -1,6 +1,5 @@
 module Battle
   class Move
-    # Move that binds the target to the field
     class BindingMaxMove < MaxMove
       private
 
