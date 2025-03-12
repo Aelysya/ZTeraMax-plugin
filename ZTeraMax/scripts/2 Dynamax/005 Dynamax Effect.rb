@@ -51,6 +51,18 @@ module Battle
 
         return :prevent
       end
+
+      # Function called when we try to check if the Pokemon is immune to a move due to its effect
+      # @param user [PFM::PokemonBattler]
+      # @param target [PFM::PokemonBattler]
+      # @param move [Battle::Move]
+      # @return [Boolean] if the target is immune to the move
+      def on_move_ability_immunity(user, target, move)
+        return false unless @target == target
+        return false unless move&.ohko?
+
+        return true
+      end
     end
 
     class MaxGuard < Protect
