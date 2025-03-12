@@ -58,18 +58,9 @@ module Battle
       # @param move [Battle::Move]
       # @return [Boolean] if the target is immune to the move
       def on_move_ability_immunity(user, target, move)
-        return false unless @target == target
         return false unless move&.ohko?
 
         return true
-      end
-    end
-
-    class MaxGuard < Protect
-      # Get the name of the effect
-      # @return [Symbol]
-      def name
-        return :max_guard
       end
     end
   end
