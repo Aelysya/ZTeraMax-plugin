@@ -54,6 +54,7 @@ module BattleUI
 
       prepend SpecialButtonZTeraMaxPlugin
 
+      NO_DYNAMAX_POKEMON = %i[zacian zamazenta eternatus]
       alias default_data data=
       # Set the data of the button
       # @param pokemon [PFM::PokemonBattler]
@@ -68,7 +69,7 @@ module BattleUI
           when :z_move
             @scene.logic.z_move.can_pokemon_use_z_move?(pokemon)
           when :dynamax
-            @scene.logic.dynamax.can_pokemon_dynamax?(pokemon)
+            @scene.logic.dynamax.can_pokemon_dynamax?(pokemon) && !NO_DYNAMAX_POKEMON.include?(pokemon.db_symbol)
           end
       end
 
