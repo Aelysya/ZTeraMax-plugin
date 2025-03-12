@@ -2,8 +2,6 @@ param (
     [switch]$n
 )
 
-Set-ExecutionPolicy Bypass -Scope Process
-
 $yamlFile = "ZTeraMax/config.yml"
 
 if (-Not (Test-Path $yamlFile)) {

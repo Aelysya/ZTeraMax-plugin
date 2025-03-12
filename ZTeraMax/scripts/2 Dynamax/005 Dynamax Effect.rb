@@ -38,6 +38,19 @@ module Battle
       def on_post_damage_death(handler, hp, target, launcher, skill)
         kill if target == @pokemon
       end
+
+      # Function called when a status_prevention is checked
+      # @param handler [Battle::Logic::StatusChangeHandler]
+      # @param status [Symbol] :poison, :toxic, :confusion, :sleep, :freeze, :paralysis, :burn, :flinch, :cure
+      # @param target [PFM::PokemonBattler]
+      # @param launcher [PFM::PokemonBattler, nil] Potential launcher of a move
+      # @param skill [Battle::Move, nil] Potential move used
+      # @return [:prevent, nil] :prevent if the status cannot be applied
+      def on_status_prevention(handler, status, target, launcher, skill)
+        return unless status == :flinch
+
+        return :prevent
+      end
     end
 
     class MaxGuard < Protect
