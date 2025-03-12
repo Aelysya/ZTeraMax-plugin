@@ -6,7 +6,7 @@ module UI
         gengar kingler lapras eevee snorlax garbodor melmetal rillaboom
         cinderace inteleon corviknight orbeetle drednaw coalossal flapple
         appletun sandaconda toxtricity centiskorch hatterene grimmsnarl
-        alcremie copperaja duraludon urshifu
+        alcremie copperaja duraludon urshifu eternatus
       ]
 
       # Set the Pokemon shown

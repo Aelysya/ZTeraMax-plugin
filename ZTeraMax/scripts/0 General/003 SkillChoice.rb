@@ -54,7 +54,7 @@ module BattleUI
 
       prepend SpecialButtonZTeraMaxPlugin
 
-      NO_DYNAMAX_POKEMON = %i[zacian zamazenta eternatus]
+      NO_DYNAMAX_POKEMON = %i[zacian zamazenta]
       alias default_data data=
       # Set the data of the button
       # @param pokemon [PFM::PokemonBattler]

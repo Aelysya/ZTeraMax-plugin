@@ -48,7 +48,14 @@ module PFM
       # @param opts [Hash] Hash describing optional value you want to assign to the Pokemon
       def dynamax_initialize(opts)
         @dynamax_level = opts[:dynamax_level] || 0
-        @gigantamax_factor = opts[:gigantamax_factor] || rand(100) < Configs.z_tera_max.default_gigantamax_chance # 10% by default
+
+        @gigantamax_factor = if db_symbol == :eternatus
+                               true
+                             else
+                               opts[:gigantamax_factor] || rand(100) < Configs.z_tera_max.default_gigantamax_chance # 10% by default
+                             end
+
+        log_data(@gigantamax_factor)
       end
     end
 
