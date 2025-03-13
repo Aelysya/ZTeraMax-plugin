@@ -57,7 +57,7 @@ module Battle
         return :prevent
       end
 
-      MOVES_IMMUNITY = %i[sky_drop heat_crash heavy_slam grass_knot low_kick]
+      MOVES_IMMUNITY = %i[sky_drop heat_crash heavy_slam grass_knot low_kick entrainment skill_swap]
 
       # Function called when we try to check if the Pokemon is immune to a move due to its effect
       # @param user [PFM::PokemonBattler]
@@ -65,10 +65,10 @@ module Battle
       # @param move [Battle::Move]
       # @return [Boolean] if the target is immune to the move
       def on_move_ability_immunity(user, target, move)
-        return false unless move&.ohko?
-        return false unless MOVES_IMMUNITY.include?(move.db_symbol)
+        return true if move&.ohko?
+        return true if MOVES_IMMUNITY.include?(move.db_symbol)
 
-        return true
+        return false
       end
     end
   end

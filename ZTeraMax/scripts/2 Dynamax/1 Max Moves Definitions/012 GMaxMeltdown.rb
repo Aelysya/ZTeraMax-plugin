@@ -6,7 +6,7 @@ module Battle
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       def deal_effect(user, actual_targets)
         @logic.foes_of(user).each do |target|
-          target.effects.add(Effects::Torment.new(@logic, target)) unless target.effects.has?(:torment)
+          target.effects.add(Effects::Torment.new(@logic, target)) unless target.effects.has?(:torment) || target.effects.has?(:dynamaxed)
           @scene.display_message_and_wait(parse_text_with_pokemon(19, 577, target))
         end
       end
