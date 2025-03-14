@@ -4,7 +4,7 @@ module PFM
     # @param pokemon [Pokemon] The Pokémon whose moveset is to be updated.
     def reset_to_original_moveset
       effects.each do |effect|
-        next unless effect.name == :z_power # || effect.name == :dynamaxed
+        next unless effect.name == :z_power
 
         effect.kill
       end

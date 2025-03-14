@@ -69,7 +69,8 @@ module BattleUI
           when :z_move
             @scene.logic.z_move.can_pokemon_use_z_move?(pokemon)
           when :dynamax
-            @scene.logic.dynamax.can_pokemon_dynamax?(pokemon) && !NO_DYNAMAX_POKEMON.include?(pokemon.db_symbol)
+            dynamax_enabled = $game_switches[Configs.z_tera_max.dynamax_enabled_switch]
+            @scene.logic.dynamax.can_pokemon_dynamax?(pokemon) && !NO_DYNAMAX_POKEMON.include?(pokemon.db_symbol) && dynamax_enabled
           end
       end
 

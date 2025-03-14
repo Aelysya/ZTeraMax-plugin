@@ -25,6 +25,17 @@ module PFM
 
         return super
       end
+
+      # Copy all the properties back to the original pokemon
+      def copy_properties_back_to_original
+        effects.each do |effect|
+          next unless effect.name == :dynamaxed
+
+          effect.kill
+        end
+        
+        super
+      end
     end
 
     prepend DynamaxPlugin
