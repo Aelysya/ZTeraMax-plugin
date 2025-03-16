@@ -52,3 +52,12 @@ TODO
 
 - Reviewer:
   - Zøzo
+
+#### Dynamax
+
+- Main developers:
+  - Aelysya
+  - Ota
+
+- Reviewer:
+  -

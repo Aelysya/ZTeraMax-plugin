@@ -10,7 +10,6 @@ module PFM
         effects.add(Battle::Effects::Dynamaxed.new(@scene.logic, self))
         @hp = (@hp * (1.5 + 0.05 * @dynamax_level)).ceil
         form_calibrate(:gigantamax) if @gigantamax_factor
-        log_data(@form)
       end
 
       # Return the max HP of the Pokemon

@@ -21,6 +21,7 @@ module Battle
         # @return [Float, Integer] multiplier
         def mod3_multiplier(_user, target, move)
           return 1 if target != @pokemon
+          return 1 if move.db_symbol == :gmax_one_blow || move.db_symbol == :gmax_rapid_flow
           return 1 unless trampling_move?(move)
 
           return 0.25
@@ -30,7 +31,7 @@ module Battle
         # @param move [Battle::Move]
         # @return [Boolean]
         def trampling_move?(move)
-          return true if move.instance_of?(Battle::Move::ZMove) || move.instance_of?(Battle::Move::MaxMove)
+          return true if move.is_a?(Battle::Move::ZMove) || move.is_a?(Battle::Move::MaxMove)
 
           return false
         end
