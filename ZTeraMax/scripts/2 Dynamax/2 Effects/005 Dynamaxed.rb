@@ -20,10 +20,12 @@ module Battle
         @pokemon.reset_to_original_moveset
         @pokemon.hp = (@pokemon.hp / (1.5 + 0.05 * @pokemon.dynamax_level)).ceil
 
-        visual = @logic.scene.visual
-        sprite = visual.battler_sprite(@pokemon.bank, @pokemon.position)
-        sprite.deflate_animation
-        sprite.set_tone_to(0, 0, 0, 0)
+        # Don't play deflate animation if battler is dead or being switched
+        if @pokemon.alive? && @pokemon.position&.between?(0, $game_temp.vs_type - 1)
+          visual = @logic.scene.visual
+          sprite = visual.battler_sprite(@pokemon.bank, @pokemon.position)
+          sprite.deflate_animation
+        end
       end
 
       # Function called when a Pokemon has actually switched with another one

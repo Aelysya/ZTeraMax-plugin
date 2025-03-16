@@ -123,7 +123,7 @@ module Battle
         return handle_urshifu_case(pokemon, move) if pokemon.db_symbol == :urshifu
 
         move_type = data_move(move.db_symbol).type
-        if SIGNATURE_MAX_MOVES.key?(pokemon.db_symbol) && SIGNATURE_MAX_MOVES[pokemon.db_symbol][:type] == move_type
+        if SIGNATURE_MAX_MOVES.key?(pokemon.db_symbol) && SIGNATURE_MAX_MOVES[pokemon.db_symbol][:type] == move_type && pokemon.gigantamax_factor
           max_move_symbol = SIGNATURE_MAX_MOVES[pokemon.db_symbol][:move]
         else
           max_move_symbol = MAX_MOVES[move_type]
