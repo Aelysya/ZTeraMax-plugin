@@ -19,6 +19,7 @@ module Battle
       def on_delete
         @pokemon.reset_to_original_moveset
         @pokemon.hp = (@pokemon.hp / (1.5 + 0.05 * @pokemon.dynamax_level)).ceil
+        @pokemon.form_calibrate
 
         # Don't play deflate animation if battler is dead or being switched
         if @pokemon.alive? && @pokemon.position&.between?(0, $game_temp.vs_type - 1)

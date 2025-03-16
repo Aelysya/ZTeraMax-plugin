@@ -54,8 +54,6 @@ module PFM
                              else
                                opts[:gigantamax_factor] || rand(100) < Configs.z_tera_max.default_gigantamax_chance # 10% by default
                              end
-
-        log_data(@gigantamax_factor)
       end
     end
 
