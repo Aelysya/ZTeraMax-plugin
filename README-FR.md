@@ -28,13 +28,23 @@ Vous avez peut-être une UI de combat personnalisée pour votre fangame, et si c
 
 Les capacités Z ont été implémentés dans le plugin pour avoir un fonctionnement aussi proche que possible de la manière officielle, pour avoir toutes les informations à leur sujet sur la [page Bulbapedia pour les capacités Z](https://bulbapedia.bulbagarden.net/wiki/Z-Move).
 Pour utiliser les capacités Z en combat, voici ce dont vos joueurs ont besoin :
-- Un anneau Z, qui est soit un Z-Ring, soit un Z-Power Ring.
+- Un anneau Z, qui est soit un Bracelet Z, soit un Super Bracelet Z.
 - Des Cristaux Z
 
 Lorsque vous donnez un cristaal Z à vos joueurs, assurez-vous de leur en donner un qui contient un '2' à la fin de leur db_symbole (ex: normalium_z2). Dans la base de données, il s'agit des plus gros cristaux. Lorsque le joueur choisit de donner un cristal à son Pokémon, le plugin crée automatiquement le bon cristal, qui sera la version plus petite dans la base de données. Lorsqu'ils essaieront de récupérer le cristal de leur Pokémon, celui-ci ne sera pas remis dans le sac, il sera simplement supprimé. Cela reproduit le fonctionnement de ces objets dans les jeux officiels.
 
 #### Dynamax
-TODO
+
+Le Dynamax a été implémenté dans le plugin pour avoir un fonctionnement aussi proche que possible de la manière officielle, vous pouvez obtenir beaucoup d'informations à son sujet sur la [page Bulbapedia pour le Dynamax](https://bulbapedia.bulbagarden.net/wiki/Dynamax).
+Pour utiliser le Dynamax en combat, vos joueurs auront besoin d'un Bandeau Dynamax.
+
+Par défaut, **TOUS** les Pokémon seront générés avec 10% de chances d'avoir le gène Gigamax, pas seulement ceux qui ont une forme Gigamax. Le symbole sur le résumé n'apparaîtra cependant que si une forme Gigamax est disponible, se référer à l'array GIGANTAMAX_SPECIES dans `2 Dynamax/3 UI/001 Gigantamax Icon Summary.rb` pour les espèces Gigamax officielles. Vous pouvez monkey-patch ce tableau pour ajouter vos Pokémon Gigamax custom.
+La valeur de 10% est personnalisable, vous pouvez changer la valeur de `defaultGigantamaxChance` dans le fichier de configuration `Data/configs/z_tera_max_config.json`.
+
+Pour donner le gène Gigamax à un Pokémon (ou l'enlever), vous devrez le faire vous-même. Si vous voulez suivre la méthode officielle, consultez ce [lien](https://bulbapedia.bulbagarden.net/wiki/Master_Dojo#Max_Soup).
+L'attribut à modifier est `gigantamax_factor`, vous pouvez le faire en appelant `$actors[gv[43]].gigantamax_factor = true|false` (consultez les appareils Motisma dans le laboratoire de la Démo pour plus d'informations sur la façon de modifier les attributs d'un Pokémon à partir d'un événement).
+
+Dans les jeux officiels, le Dynamax n'est autorisé que dans certains combats comme les arènes ou la ligue. Si vous voulez imiter cela, un interrupteur est utilisé pour autoriser ou non l'utilisation de Dynamax dans les combats. Par défaut le numéro du switch est 113, c'est un choix complètement aléatoire et peut entrer en conflit avec un de vos switchs, si c'est le cas, vous pouvez changer le numéro du switch en allant dans le fichier de configuration `Data/configs/z_tera_max_config.json` et en modifiant la valeur du champ `dynamaxEnabledSwitch`.
 
 #### Terastal
 TODO
