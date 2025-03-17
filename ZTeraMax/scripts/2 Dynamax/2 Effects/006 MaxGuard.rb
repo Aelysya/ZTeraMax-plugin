@@ -14,7 +14,11 @@ module Battle
       # @return [Boolean] if the target is evading the move
       def on_move_prevention_target(user, target, move)
         return false if move.db_symbol == :gmax_one_blow || move.db_symbol == :gmax_rapid_flow
-        return true if trampling_move?(move) # Override the protect effect allowing trampling moves to go through
+
+        if trampling_move?(move) # Override the protect effect allowing trampling moves to go through
+          play_protect_effect(user, target, move)
+          return true
+        end
 
         super
       end
