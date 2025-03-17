@@ -7,6 +7,9 @@ module PFM
       # @return [Boolean] If the Pokémon has the gigantamax factor
       attr_accessor :gigantamax_factor
 
+      # @return [Integer] If the Pokémon has the gigantamax factor
+      attr_accessor :gigantamaxed
+
       # Create a new Pokemon with specific parameters
       # @param id [Integer, Symbol] ID of the Pokemon in the database
       # @param level [Integer] level of the Pokemon
@@ -54,6 +57,8 @@ module PFM
                              else
                                opts[:gigantamax_factor] || rand(100) < Configs.z_tera_max.default_gigantamax_chance # 10% by default
                              end
+
+        @gigantamaxed = false
       end
     end
 
