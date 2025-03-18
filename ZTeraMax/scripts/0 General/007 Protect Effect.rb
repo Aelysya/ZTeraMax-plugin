@@ -9,7 +9,11 @@ module Battle
         # @param move [Battle::Move]
         # @return [Boolean] if the target is evading the move
         def on_move_prevention_target(user, target, move)
-          return false if trampling_move?(move) # Manque le message je crois
+          if trampling_move?(move)
+            @logic.scene.display_message_and_wait(parse_text(20_000, 6, PFM::Text::PKNICK[0] => target.given_name))
+
+            return false
+          end
 
           super
         end
@@ -21,7 +25,6 @@ module Battle
         # @return [Float, Integer] multiplier
         def mod3_multiplier(_user, target, move)
           return 1 if target != @pokemon
-          return 1 if move.db_symbol == :gmax_one_blow || move.db_symbol == :gmax_rapid_flow
           return 1 unless trampling_move?(move)
 
           return 0.25
@@ -31,6 +34,7 @@ module Battle
         # @param move [Battle::Move]
         # @return [Boolean]
         def trampling_move?(move)
+          return false if move.db_symbol == :gmax_one_blow || move.db_symbol == :gmax_rapid_flow
           return true if move.is_a?(Battle::Move::ZMove) || move.is_a?(Battle::Move::MaxMove)
 
           return false

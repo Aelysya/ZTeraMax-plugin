@@ -9,7 +9,7 @@ module Battle
           # @return [Boolean]
           # @note The move selection restriction stops working when user is dynamaxed
           def can_be_used?(user, move)
-            return true if @target.effect.has?(:dynamaxed)
+            return true if @target.effects.has?(:dynamaxed)
 
             super
           end
@@ -23,7 +23,7 @@ module Battle
           # @return [Float, Integer] multiplier
           # @note The stat boost stops working when user is dynamaxed
           def atk_modifier
-            return 1 if @target.effect.has?(:dynamaxed)
+            return 1 if @target.effects.has?(:dynamaxed)
 
             super
           end
@@ -37,7 +37,7 @@ module Battle
           # @return [Float, Integer] multiplier
           # @note The stat boost stops working when user is dynamaxed
           def ats_modifier
-            return 1 if @target.effect.has?(:dynamaxed)
+            return 1 if @target.effects.has?(:dynamaxed)
 
             super
           end
@@ -51,7 +51,7 @@ module Battle
           # @return [Float, Integer] multiplier
           # @note The stat boost stops working when user is dynamaxed
           def spd_modifier
-            return 1 if @target.effect.has?(:dynamaxed)
+            return 1 if @target.effects.has?(:dynamaxed)
 
             super
           end
