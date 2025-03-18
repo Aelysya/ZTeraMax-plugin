@@ -24,6 +24,7 @@ module Battle
           visual = @logic.scene.visual
           sprite = visual.battler_sprite(@pokemon.bank, @pokemon.position)
           sprite.deflate_animation
+          sprite.pokemon = @pokemon
         end
       end
 
