@@ -90,7 +90,7 @@ module Battle
       def can_pokemon_dynamax?(pokemon)
         return false unless DYNAMAX_TOOLS.any? { |tool| pokemon.bag.contain_item?(tool) }
         return false if pokemon.from_party? && any_dynamax_player_action?
-        return false if pokemon.mega_evolved? || pokemon.holds_z_crystal?
+        return false if pokemon.can_mega_evolve? || pokemon.mega_evolved? || pokemon.holds_z_crystal?
 
         return !@used_dynamax_tool_bags.include?(pokemon.bag)
       end
