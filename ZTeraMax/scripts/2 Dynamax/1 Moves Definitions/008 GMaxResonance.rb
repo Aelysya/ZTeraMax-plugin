@@ -7,6 +7,8 @@ module Battle
       # @param user [PFM::PokemonBattler] user of the move
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       def deal_effect(user, actual_targets)
+        return if @logic.bank_effects[user.bank]&.get(:aurora_veil)
+
         turn_count = user.hold_item?(:light_clay) ? 8 : 5
         @logic.bank_effects[user.bank].add(Effects::AuroraVeil.new(@logic, user.bank, 0, turn_count))
         # scene.display_message_and_wait(parse_text(18, 288 + user.bank.clamp(0, 1))) # Ligne vide dans le CSV, à corriger sur PSDK
