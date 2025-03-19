@@ -51,8 +51,6 @@ TODO
 
 ## Credits
 
-#### Z-Moves
-
 - Main developers:
   - Aelysya
   - Lexio
@@ -60,12 +58,3 @@ TODO
 
 - Reviewer:
   - Zøzo
-
-#### Dynamax
-
-- Main developers:
-  - Aelysya
-  - Ota
-
-- Reviewer:
-  -
