@@ -121,6 +121,7 @@ module Battle
         end
       }
 
+      # List of Max Moves that have a fixed power, no matter the original move
       FIXED_POWER_MAX_MOVE = {
         gmax_drum_solo: 160,
         gmax_fireball: 160,

@@ -1,6 +1,7 @@
 module UI
   class Summary_Top < SpriteStack
     module MemoZTeraMaxPlugin
+      # List of species that have a Gigantamax form
       GIGANTAMAX_SPECIES = %i[
         venusaur charizard blastoise butterfree pikachu meowth machamp
         gengar kingler lapras eevee snorlax garbodor melmetal rillaboom

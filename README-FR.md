@@ -26,7 +26,7 @@ Vous avez peut-être une UI de combat personnalisée pour votre fangame, et si c
 
 #### Capacités Z
 
-Les capacités Z ont été implémentés dans le plugin pour avoir un fonctionnement aussi proche que possible de la manière officielle, pour avoir toutes les informations à leur sujet sur la [page Bulbapedia pour les capacités Z](https://bulbapedia.bulbagarden.net/wiki/Z-Move).
+Les capacités Z ont été implémentées dans le plugin pour avoir un fonctionnement aussi proche que possible de la manière officielle, pour avoir toutes les informations à leur sujet sur la [page Bulbapedia pour les capacités Z](https://bulbapedia.bulbagarden.net/wiki/Z-Move).
 Pour utiliser les capacités Z en combat, voici ce dont vos joueurs ont besoin :
 - Un anneau Z, qui est soit un Bracelet Z, soit un Super Bracelet Z.
 - Des Cristaux Z

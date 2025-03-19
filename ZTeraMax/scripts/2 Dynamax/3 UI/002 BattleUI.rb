@@ -16,7 +16,6 @@ module BattleUI
       end
 
       # Creates the deflating animation after dynamax expires
-      # @return [Yuki::Animation::TimedAnimation]
       def deflate_animation
         ya = Yuki::Animation
         animation = ya.send_command_to(self, :zoom=, 1)

@@ -21,7 +21,7 @@ module Battle
       # List of tools that allow Dynamax
       DYNAMAX_TOOLS = %i[dynamax_band]
 
-      # Type to Max Moves linking
+      # List of Max Moves by type
       MAX_MOVES = {
         normal: :max_strike,
         fighting: :max_knuckle,
@@ -43,6 +43,7 @@ module Battle
         fairy: :max_starfall
       }
 
+      # List of signature Max Moves by species and type
       SIGNATURE_MAX_MOVES = {
         venusaur: { type: :grass, move: :gmax_vine_lach },
         charizard: { type: :fire, move: :gmax_wildfire },
@@ -132,7 +133,7 @@ module Battle
         return Battle::Move[data_move(max_move_symbol).be_method].new(max_move_symbol, @scene, move)
       end
 
-      # Handle the Urshifu exception when finding a corresponding Max Move
+      # Handle the Urshifu exception when finding the corresponding signature Max Move
       # @param pokemon [Pokemon] Urshifu
       # @param move [Move] The move to be replaced with a Max Move.
       # @return [Move] The corresponding Max Move.
