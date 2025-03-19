@@ -31,7 +31,7 @@ Pour utiliser les capacités Z en combat, voici ce dont vos joueurs ont besoin :
 - Un anneau Z, qui est soit un Bracelet Z, soit un Super Bracelet Z.
 - Des Cristaux Z
 
-Lorsque vous donnez un cristaal Z à vos joueurs, assurez-vous de leur en donner un qui contient un '2' à la fin de leur db_symbole (ex: normalium_z2). Dans la base de données, il s'agit des plus gros cristaux. Lorsque le joueur choisit de donner un cristal à son Pokémon, le plugin crée automatiquement le bon cristal, qui sera la version plus petite dans la base de données. Lorsqu'ils essaieront de récupérer le cristal de leur Pokémon, celui-ci ne sera pas remis dans le sac, il sera simplement supprimé. Cela reproduit le fonctionnement de ces objets dans les jeux officiels.
+Lorsque vous donnez un cristal Z à vos joueurs, assurez-vous de leur en donner un qui contient un '2' à la fin de leur db_symbole (ex: normalium_z2). Dans la base de données, il s'agit des plus gros cristaux. Lorsque le joueur choisit de donner un cristal à son Pokémon, le plugin crée automatiquement le bon cristal, qui sera la version plus petite dans la base de données. Lorsqu'ils essaieront de récupérer le cristal de leur Pokémon, celui-ci ne sera pas remis dans le sac, il sera simplement supprimé. Cela reproduit le fonctionnement de ces objets dans les jeux officiels.
 
 #### Dynamax
 

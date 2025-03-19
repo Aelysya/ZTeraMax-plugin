@@ -10,8 +10,9 @@ module PFM
                                          gmax_drum_solo gmax_fireball gmax_hydrosnipe])
 
       # Create a new PokemonBattler
-      # @param viewport [Viewport]
-      # @param scene [Battle::Scene]
+      # @param original [PFM::Pokemon] original Pokemon (protected during the battle)
+      # @param scene [Battle::Scene] current battle scene
+      # @param max_level [Integer] new max level for Online battle
       def initialize(original, scene, max_level = Float::INFINITY)
         super
         @original_moveset = []
