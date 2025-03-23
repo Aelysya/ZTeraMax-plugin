@@ -13,6 +13,7 @@ module PFM
                               icium_z fightinium_z poisonium_z groundium_z flyinium_z
                               psychium_z buginium_z rockium_z ghostium_z dragonium_z
                               steelium_z darkinium_z fairium_z]
+
       # Check if the Pokemon can mega evolve
       # @return [Integer, false] form index if the Pokemon can mega evolve, false otherwise
       # @note itemless Mega Evolution can't Mega if they hold a Z-Crystal (Rayquaza)

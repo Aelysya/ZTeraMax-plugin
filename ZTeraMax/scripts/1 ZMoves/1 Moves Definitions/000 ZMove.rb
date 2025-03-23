@@ -1,6 +1,50 @@
 module Battle
   class Move
-    class ZMove < Basic; end
+    module ZMovesPlugin
+      # if the move is Z-empowered
+      # @return [Boolean]
+      attr_accessor :is_z
+
+      # Create a new move
+      # @param db_symbol [Symbol] db_symbol of the move in the database
+      # @param pp [Integer] number of pp the move currently has
+      # @param ppmax [Integer] maximum number of pp the move currently has
+      # @param scene [Battle::Scene] current battle scene
+      def initialize(db_symbol, pp, ppmax, scene)
+        super
+        @is_z = false
+      end
+
+      # Show the move usage message
+      # @param user [PFM::PokemonBattler] user of the move
+      def usage_message(user)
+        @scene.visual.hide_team_info
+        pre_z_move_message(user) if user.effects.has?(:z_power) && @is_z
+        message = parse_text_with_pokemon(8999 - Studio::Text::CSV_BASE, 12, user, PFM::Text::PKNAME[0] => user.given_name, PFM::Text::MOVE[0] => name)
+        scene.display_message_and_wait(message)
+        PFM::Text.reset_variables
+      end
+
+      # Display messages before using a Z-Move
+      # @return [String]
+      def pre_z_move_message(user)
+        @scene.display_message_and_wait(parse_text(20_000, 0, PFM::Text::PKNICK[0] => user.given_name))
+        @scene.display_message_and_wait(parse_text(20_000, 1, PFM::Text::PKNICK[0] => user.given_name))
+      end
+    end
+    prepend ZMovesPlugin
+
+    class ZMove < Basic
+      # Create a new move
+      # @param db_symbol [Symbol] db_symbol of the move in the database
+      # @param pp [Integer] number of pp the move currently has
+      # @param ppmax [Integer] maximum number of pp the move currently has
+      # @param scene [Battle::Scene] current battle scene
+      def initialize(db_symbol, pp, ppmax, scene)
+        super
+        @is_z = true
+      end
+    end
     Move.register(:s_z_move, ZMove)
 
     # Class managing type-specific Z-Moves
@@ -84,28 +128,5 @@ module Battle
       end
     end
     Move.register(:s_type_z_move, TypeZMove)
-
-    class GuardianOfAlola < ZMove
-      # Deals 3/4 of the target's current HP as fixed damage
-      # @param user [PFM::PokemonBattler] user of the move
-      # @param target [Array<PFM::PokemonBattler>] target that will be affected by the move
-      def damages(user, target)
-        @critical = false
-        @effectiveness = 1
-        log_data("Forced HP Move: #{(target.hp / 4 * 3).clamp(1, Float::INFINITY)} HP")
-        return (target.hp / 4 * 3).clamp(1, Float::INFINITY)
-      end
-    end
-    Move.register(:s_guardian_of_alola, GuardianOfAlola)
-
-    class GenesisSupernova < ZMove
-      # Sets terrain to psychic terrain
-      # @param user [PFM::PokemonBattler] user of the move
-      # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
-      def deal_effect(user, actual_targets)
-        logic.fterrain_change_handler.fterrain_change_with_process(:psychic_terrain, 5)
-      end
-    end
-    Move.register(:s_genesis_supernova, GenesisSupernova)
   end
 end

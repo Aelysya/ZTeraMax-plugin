@@ -1,5 +1,22 @@
 module Battle
   class Move
+    module DynamaxPlugin
+      # if the move is Z-empowered
+      # @return [Boolean]
+      attr_accessor :is_max
+
+      # Create a new move
+      # @param db_symbol [Symbol] db_symbol of the move in the database
+      # @param pp [Integer] number of pp the move currently has
+      # @param ppmax [Integer] maximum number of pp the move currently has
+      # @param scene [Battle::Scene] current battle scene
+      def initialize(db_symbol, pp, ppmax, scene)
+        super
+        @is_max = false
+      end
+    end
+    prepend DynamaxPlugin
+
     class MaxMove < Basic
       # Original move linked to this Max Move
       # @return [Battle::Move]

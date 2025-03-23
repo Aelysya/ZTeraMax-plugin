@@ -143,23 +143,18 @@ module Battle
       def replace_with_type_z_move(pokemon, move)
         return move unless data_type(move.type).db_symbol == TYPE_Z_CRYSTALS[pokemon.item_db_symbol][:type]
 
-        replacement_move = Battle::Move[:s_type_z_move].new(TYPE_Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
-        replacement_move.is_z = true
-
-        return replacement_move
+        return Battle::Move[:s_type_z_move].new(TYPE_Z_CRYSTALS[pokemon.item_db_symbol][data_move(move.db_symbol).category], @scene, move)
       end
 
       # Get the corresponding Z-Move for a given move
       # @param move [Move] The move to get the corresponding Z-Move for.
       # @return [Move] The corresponding Z-Move.
-      def corresponding_z_move(move)
+      # @note Used by moves that call other moves like Assist.
+      def get_corresponding_z_move(move)
         z_crystal = TYPE_Z_CRYSTALS.find { |_k, v| v[:type] == data_type(move.type).db_symbol }&.first
         return log_error("Z crystal for move #{move} not found.") && move unless z_crystal
 
-        replacement_move = Battle::Move[:s_type_z_move].new(TYPE_Z_CRYSTALS[z_crystal][data_move(move.db_symbol).category], @scene, move)
-        replacement_move.is_z = true
-
-        return replacement_move
+        return Battle::Move[:s_type_z_move].new(TYPE_Z_CRYSTALS[z_crystal][data_move(move.db_symbol).category], @scene, move)
       end
 
       # Replaces a Pokémon's status move with its corresponding Z-Move if the Pokémon is holding the correct Z-Crystal.
@@ -185,10 +180,7 @@ module Battle
 
         return move unless move.db_symbol == data[:base_move]
 
-        replacement_move = Battle::Move[data[:be_method]].new(data[:z_move], move.pp, move.ppmax, @scene)
-        replacement_move.is_z = true
-
-        return replacement_move
+        return Battle::Move[data[:be_method]].new(data[:z_move], move.pp, move.ppmax, @scene)
       end
 
       private

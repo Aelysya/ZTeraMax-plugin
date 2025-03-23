@@ -24,7 +24,7 @@ module Battle
 
           skill = data_move(target_move(actual_targets.first))
           move = Battle::Move[skill.be_method].new(skill.db_symbol, 1, 1, @scene)
-          move = logic.z_move.corresponding_z_move(move) unless move.status?
+          move = logic.z_move.get_corresponding_z_move(move) unless move.status?
           def move.calc_mod2(user, target)
             super * 1.5
           end

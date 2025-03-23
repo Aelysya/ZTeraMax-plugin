@@ -11,7 +11,7 @@ module Battle
 
           skill = each_data_move.reject { |i| CANNOT_BE_SELECTED_MOVES.include?(i.db_symbol) }.sample(random: @logic.generic_rng)
           move = Battle::Move[skill.be_method].new(skill.id, 1, 1, @scene)
-          move = logic.z_move.corresponding_z_move(move) unless move.status?
+          move = logic.z_move.get_corresponding_z_move(move) unless move.status?
           def move.usage_message(user)
             @scene.visual.hide_team_info
             scene.display_message_and_wait(parse_text(18, 126, '[VAR MOVE(0000)]' => name))

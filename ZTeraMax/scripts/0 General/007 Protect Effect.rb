@@ -2,7 +2,7 @@ module Battle
   module Effects
     # Implement the Protect effect
     class Protect < PokemonTiedEffectBase
-      module ProtectZTeraMaxPlugin
+      module ZTeraMaxPlugin
         # Function called when we try to check if the target evades the move
         # @param user [PFM::PokemonBattler]
         # @param target [PFM::PokemonBattler] expected target
@@ -40,8 +40,7 @@ module Battle
           return false
         end
       end
-
-      prepend ProtectZTeraMaxPlugin
+      prepend ZTeraMaxPlugin
     end
   end
 end

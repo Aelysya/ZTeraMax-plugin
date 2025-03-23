@@ -22,7 +22,7 @@ module Battle
           Z_STATUS_MOVES_EFFECTS[db_symbol].call(user, @scene) if @is_z
 
           move = last_move(user, actual_targets).dup
-          move = logic.z_move.corresponding_z_move(move) unless move.status?
+          move = logic.z_move.get_corresponding_z_move(move) unless move.status?
 
           def move.move_usable_by_user(user, targets)
             return true

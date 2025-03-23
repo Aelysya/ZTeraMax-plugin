@@ -1,26 +1,3 @@
-module ProjectCompilation
-  module DataBuilder
-    module_function
-
-    def ensure_config_is_built
-      Configs.states
-      Configs.stats
-      Configs.window
-      Configs.scene_title_config
-      Configs.credits_config
-      Configs.save_config
-      Configs.devices
-      Configs.graphic
-      Configs.infos
-      Configs.display
-      Configs.language
-      Configs.settings
-      Configs.texts
-      Configs.z_tera_max
-    end
-  end
-end
-
 module Configs
   KEY_TRANSLATIONS[:useBuiltinMoveNameSlice] = :use_slice_name
   KEY_TRANSLATIONS[:gigantamaxChance] = :gigantamax_chance
@@ -43,7 +20,7 @@ module Configs
   end
 
   # @!method self.z_tera_max
-  #   @return [Project::ZTeraMax]
+  # @return [Project::ZTeraMax]
   register(:z_tera_max, 'z_tera_max_config', :json, false, Project::ZTeraMax)
 end
 

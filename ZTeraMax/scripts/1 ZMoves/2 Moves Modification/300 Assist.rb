@@ -13,7 +13,7 @@ module Battle
 
           skill = usable_moves(user).sample(random: @logic.generic_rng)
           move = Battle::Move[skill.be_method].new(skill.id, 1, 1, @scene)
-          move = logic.z_move.corresponding_z_move(move) unless move.status?
+          move = logic.z_move.get_corresponding_z_move(move) unless move.status?
 
           def move.move_usable_by_user(user, targets)
             return true

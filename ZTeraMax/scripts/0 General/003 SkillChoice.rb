@@ -21,10 +21,9 @@ module BattleUI
       # Cancel the player choice
       def choice_cancel
         super
-        @scene.logic.reset_to_original_moveset(@pokemon) if @pokemon.effects.has?(:z_power)
+        @scene.logic.reset_to_original_moveset(@pokemon) if @pokemon.effects.has?(:z_power) || @pokemon.effects.has?(:dynamaxed)
       end
     end
-
     prepend SkillChoiceZTeraMaxPlugin
 
     class MoveButton < UI::SpriteStack
@@ -51,7 +50,6 @@ module BattleUI
           @background.set_bitmap(mechanic ? 'battle/button_dynamax_activated' : 'battle/button_dynamax', :interface) if @type == :dynamax
         end
       end
-
       prepend SpecialButtonZTeraMaxPlugin
 
       NO_DYNAMAX_POKEMON = %i[zacian zamazenta]
@@ -124,16 +122,14 @@ module BattleUI
 
           $game_system.se_play($data_system.decision_se)
         end
-      end
 
+        def create_special_buttons
+          @z_move_button = add_sprite(2, 183, UI::SpriteStack::NO_INITIAL_IMAGE, @scene, :z_move, type: SpecialButton)
+          @dynamax_button = add_sprite(2, 183, UI::SpriteStack::NO_INITIAL_IMAGE, @scene, :dynamax, type: SpecialButton)
+          super
+        end
+      end
       prepend SubChoiceZTeraMaxPlugin
-
-      alias default_create_special_buttons create_special_buttons
-      def create_special_buttons
-        @z_move_button = add_sprite(2, 183, NO_INITIAL_IMAGE, @scene, :z_move, type: SpecialButton)
-        @dynamax_button = add_sprite(2, 183, NO_INITIAL_IMAGE, @scene, :dynamax, type: SpecialButton)
-        default_create_special_buttons
-      end
     end
   end
 end
