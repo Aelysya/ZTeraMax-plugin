@@ -13,8 +13,8 @@ module UI
       # Set the Pokemon shown
       # @param pokemon [PFM::Pokemon]
       def data=(pokemon)
-        @gigantamax.visible = pokemon.gigantamax_factor && GIGANTAMAX_SPECIES.include?(pokemon.db_symbol)
         super
+        @gigantamax.visible = pokemon.gigantamax_factor && GIGANTAMAX_SPECIES.include?(pokemon.db_symbol)
       end
 
       def init_sprite
@@ -27,7 +27,6 @@ module UI
         push(23, 25, 'gigantamax_icon')
       end
     end
-
     prepend MemoZTeraMaxPlugin
   end
 end

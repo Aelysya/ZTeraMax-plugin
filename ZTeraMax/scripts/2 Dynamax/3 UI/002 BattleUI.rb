@@ -34,7 +34,6 @@ module BattleUI
         animation_handler[:deflate] = animation
       end
     end
-
     prepend DynamaxPlugin
   end
 end

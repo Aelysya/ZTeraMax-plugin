@@ -13,7 +13,6 @@ module Battle
           super
         end
       end
-
       prepend DynamaxPlugin
     end
   end
@@ -34,7 +33,6 @@ module Battle
             super
           end
         end
-
         prepend DynamaxPlugin
       end
     end

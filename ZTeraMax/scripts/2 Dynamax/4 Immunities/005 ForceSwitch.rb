@@ -9,7 +9,6 @@ module Battle
           super(user, actual_targets.reject { |target| target.effects.has?(:dynamaxed) })
         end
       end
-
       prepend DynamaxPlugin
     end
   end

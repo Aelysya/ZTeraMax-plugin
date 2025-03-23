@@ -9,7 +9,6 @@ module Battle
         return target.effects.has?(:dynamaxed) ? power * 2 : power
       end
     end
-
     Move.register(:s_double_damage_on_dynamax, DoubleDamageOnDynamax)
   end
 end

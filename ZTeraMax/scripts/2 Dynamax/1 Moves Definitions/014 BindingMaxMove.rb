@@ -23,7 +23,6 @@ module Battle
         end
       end
     end
-
     Move.register(:s_binding_max_move, BindingMaxMove)
   end
 end

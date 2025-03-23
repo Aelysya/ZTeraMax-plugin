@@ -61,7 +61,6 @@ module PFM
         @gigantamaxed = false
       end
     end
-
     prepend DynamaxPlugin
   end
 end

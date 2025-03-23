@@ -30,7 +30,6 @@ module Battle
         scene.display_message_and_wait(parse_text_with_pokemon(19, 327, user))
       end
     end
-
     Move.register(:s_gmax_cuddle, GMaxCuddle)
   end
 end

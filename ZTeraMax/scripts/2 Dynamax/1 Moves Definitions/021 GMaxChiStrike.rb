@@ -12,7 +12,6 @@ module Battle
         end
       end
     end
-
     Move.register(:s_gmax_chi_strike, GMaxChiStrike)
   end
 end

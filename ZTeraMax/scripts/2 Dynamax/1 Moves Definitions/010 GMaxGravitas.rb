@@ -10,7 +10,6 @@ module Battle
         @logic.terrain_effects.add(Effects::Gravity.new(@logic)) unless @logic.terrain_effects.has?(:gravity)
       end
     end
-
     Move.register(:s_gmax_gravitas, GMaxGravitas)
   end
 end

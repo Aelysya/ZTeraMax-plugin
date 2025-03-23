@@ -21,12 +21,11 @@ module Battle
 
         critical_count = super
         user.effects.each do |effect|
-          critical_count += 1 if effect.name == :chi_strike
+          critical_count += 1 if effect.name == :chi_strike # Chi Strike effect is stackable
         end
         return critical_count
       end
     end
-
     prepend DynamaxPlugin
   end
 end

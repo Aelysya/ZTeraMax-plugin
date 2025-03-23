@@ -14,7 +14,6 @@ module Battle
           super
         end
       end
-
       prepend DynamaxPlugin
     end
   end

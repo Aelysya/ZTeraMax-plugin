@@ -14,7 +14,6 @@ module Battle
         scene.display_message_and_wait(parse_text(18, 128))
       end
     end
-
     Move.register(:s_gmax_gold_rush, GMaxGoldRush)
   end
 end
