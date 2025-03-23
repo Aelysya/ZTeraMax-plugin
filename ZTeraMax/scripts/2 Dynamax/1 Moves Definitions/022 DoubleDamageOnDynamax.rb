@@ -6,7 +6,7 @@ module Battle
       # @param target [PFM::PokemonBattler] target of the move
       # @return [Integer]
       def real_base_power(user, target)
-        return target.effects.has?(:dynamaxed) ? power * 2 : power
+        return target.dynamaxed ? power * 2 : power
       end
     end
     Move.register(:s_double_damage_on_dynamax, DoubleDamageOnDynamax)

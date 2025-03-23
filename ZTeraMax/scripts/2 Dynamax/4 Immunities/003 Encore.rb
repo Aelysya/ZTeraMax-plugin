@@ -8,7 +8,7 @@ module Battle
         # @param target [PFM::PokemonBattler]
         # @return [Boolean]
         def cant_encore_target?(target)
-          return true if target.effects.has?(:dynamaxed)
+          return true if target.dynamaxed
 
           super
         end

@@ -8,7 +8,7 @@ module Battle
         # @param target [PFM::PokemonBattler] expected target
         # @return [Boolean] if the procedure can continue
         def move_usable?(user, target)
-          return false if target.effects.has?(:dynamaxed)
+          return false if target.dynamaxed
 
           super
         end

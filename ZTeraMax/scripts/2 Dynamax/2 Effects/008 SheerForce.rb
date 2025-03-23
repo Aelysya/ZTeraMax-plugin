@@ -9,7 +9,7 @@ module Battle
           # @param move [Battle::Move]
           # @note SheerForce effect stops working when user is dynamaxed
           def specific_proceed_internal(user, targets, move)
-            return if @target.effects.has?(:dynamaxed)
+            return if @target.dynamaxed
 
             super
           end
@@ -21,7 +21,7 @@ module Battle
           # @return [Float, Integer] multiplier
           # @note The stat boost stops working when user is dynamaxed
           def base_power_multiplier(user, target, move)
-            return 1 if @target.effects.has?(:dynamaxed)
+            return 1 if @target.dynamaxed
 
             super
           end

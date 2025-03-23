@@ -7,7 +7,7 @@ module Battle
         # @param target [PFM::PokemonBattler]
         # @return [Boolean]
         def target_immune?(user, target)
-          return true if target.effects.has?(:dynamaxed)
+          return true if target.dynamaxed
 
           super
         end

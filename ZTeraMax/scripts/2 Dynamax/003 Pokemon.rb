@@ -4,10 +4,13 @@ module PFM
       # @return [Integer] Dynamax level of the Pokémon between 0 and 10
       attr_accessor :dynamax_level
 
-      # @return [Boolean] If the Pokémon has the gigantamax factor
+      # @return [Boolean] If the Pokémon has the Gigantamax factor
       attr_accessor :gigantamax_factor
 
-      # @return [Integer] If the Pokémon has the gigantamax factor
+      # @return [Boolean] If the Pokémon is Dynamaxed
+      attr_accessor :dynamaxed
+
+      # @return [Integer, Boolean] Holds the original form of the Pokémon when it is Gigantamaxed, false when not Gigantamaxed
       attr_accessor :gigantamaxed
 
       # Create a new Pokemon with specific parameters
@@ -58,6 +61,7 @@ module PFM
                                opts[:gigantamax_factor] || rand(100) < Configs.z_tera_max.gigantamax_chance # 10% by default
                              end
 
+        @dynamaxed = false
         @gigantamaxed = false
       end
     end

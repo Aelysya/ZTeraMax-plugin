@@ -9,7 +9,7 @@ module Battle
         # @param launcher [PFM::PokemonBattler, nil] Potential launcher of a move
         # @param skill [Battle::Move, nil] Potential move used
         def on_post_damage_death(handler, hp, target, launcher, skill)
-          return if launcher.effects.has?(:dynamaxed)
+          return if launcher.dynamaxed
 
           super
         end

@@ -17,6 +17,8 @@ module Battle
 
       # Function called when the effect has been deleted from the effects handler
       def on_delete
+        return unless @dynamaxed # Handles the effect killing by deactivating the Dynamax button
+
         @pokemon.undynamax
 
         # Don't play deflate animation if battler is dead or being switched

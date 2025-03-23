@@ -101,6 +101,7 @@ module Battle
       # @param dynamax_activated [Boolean] Whether to set the moveset to the Dynamax state or the original state.
       def update_moveset(pokemon, dynamax_activated)
         if dynamax_activated
+          pokemon.effects.add(Effects::Dynamaxed.new(@logic, pokemon))
           pokemon.moveset.each_with_index do |move, i|
             pokemon.original_moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene)
 

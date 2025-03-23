@@ -8,7 +8,7 @@ module Battle
         # @note Thing that prevents the move from being used should be defined by :move_prevention_target Hook.
         # @return [Boolean] if the target evade the move (and is not selected)
         def move_blocked_by_target?(user, target)
-          return failure_message if target.effects.has?(:dynamaxed)
+          return failure_message if target.dynamaxed
 
           super
         end
@@ -28,7 +28,7 @@ module Battle
           # @param launcher [PFM::PokemonBattler, nil] Potential launcher of a move
           # @param skill [Battle::Move, nil] Potential move used
           def on_post_damage(handler, hp, target, launcher, skill)
-            return if target.effects.has?(:dynamaxed)
+            return if target.dynamaxed
 
             super
           end

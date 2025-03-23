@@ -3,8 +3,8 @@ module PFM
     module DynamaxPlugin
       COPIED_PROPERTIES.concat(%i[@dynamax_level @gigantamax_factor])
 
-      # Check if the Pokemon can mega evolve
-      # @return [Integer, false] form index if the Pokemon can mega evolve, false otherwise
+      # Check if the Pokemon can Dynamax
+      # @return [Integer, false] form index if the Pokemon can Dynamax, false otherwise
       def can_gigantamax?
         return false unless @gigantamax_factor
 
@@ -13,12 +13,11 @@ module PFM
         return @form + 40
       end
 
-      # Create a new PokemonBattler
-      # @param viewport [Viewport]
-      # @param scene [Battle::Scene]
+      # Boost Pokemon's HP after Dynamax and change its form to Gigantamax if appliable
       def dynamax
-        effects.add(Battle::Effects::Dynamaxed.new(@scene.logic, self))
+        # effects.add(Battle::Effects::Dynamaxed.new(@scene.logic, self))
         @hp = (@hp * (1.5 + 0.05 * @dynamax_level)).ceil
+        @dynamaxed = true
 
         gigantamax_form = can_gigantamax?
         return unless gigantamax_form
@@ -27,10 +26,11 @@ module PFM
         @form = gigantamax_form
       end
 
-      # Reset the Pokemon to its normal form after mega evolution
+      # Reset the Pokemon to its normal form after Dynamax
       def undynamax
         reset_to_original_moveset
         @hp = (@hp / (1.5 + 0.05 * @dynamax_level)).ceil.clamp(0, max_hp)
+        @dynamaxed = false
 
         if @gigantamaxed
           @form = @gigantamaxed
@@ -64,7 +64,6 @@ module PFM
         super
       end
     end
-
     prepend DynamaxPlugin
   end
 end
