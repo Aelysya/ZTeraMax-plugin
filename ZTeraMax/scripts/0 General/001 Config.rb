@@ -2,7 +2,6 @@ module ProjectCompilation
   module DataBuilder
     module_function
 
-    # alias default_ensure_config_is_built ensure_config_is_built
     def ensure_config_is_built
       Configs.states
       Configs.stats
@@ -24,7 +23,7 @@ end
 
 module Configs
   KEY_TRANSLATIONS[:useBuiltinMoveNameSlice] = :use_slice_name
-  KEY_TRANSLATIONS[:defaultGigantamaxChance] = :default_gigantamax_chance
+  KEY_TRANSLATIONS[:gigantamaxChance] = :gigantamax_chance
   KEY_TRANSLATIONS[:dynamaxEnabledSwitch] = :dynamax_enabled_switch
 
   module Project
@@ -33,9 +32,9 @@ module Configs
       # @return [Boolean]
       attr_accessor :use_slice_name
 
-      # The default chance to generate a Pokémon with the gigantamax factor
+      # The chance to generate a Pokémon with the gigantamax factor
       # @return [Integer] Between 0 and 100
-      attr_accessor :default_gigantamax_chance
+      attr_accessor :gigantamax_chance
 
       # Is the Dynamax enabled in battle ?
       # @return [Boolean]
@@ -54,7 +53,7 @@ module PSDKEditor
 
     data_z_tera_max = { klass: 'Configs::Project::ZTeraMax' }
     data_z_tera_max[:useBuiltinMoveNameSlice] = PSDK_CONFIG.use_slice_name
-    data_z_tera_max[:defaultGigantamaxChance] = PSDK_CONFIG.default_gigantamax_chance
+    data_z_tera_max[:gigantamaxChance] = PSDK_CONFIG.gigantamax_chance
     data_z_tera_max[:dynamaxEnabledSwitch] = PSDK_CONFIG.dynamax_enabled_switch
     File.write(File.join(ROOT_CONFIGS, 'z_tera_max_config.json'), JSON.pretty_generate(data_z_tera_max))
   end

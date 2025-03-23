@@ -39,7 +39,7 @@ Dynamax has been implemented in the plugin to function as close as possible to t
 To use the Dynamax in battle, your players will need to be given a Dynamax Band.
 
 By default **ALL** Pokémon will be generated with a 10% chance to have the Gigantamax factor, not only the ones that do have a Gigantamax Form. The symbol on the summary however, will appear only if a Gigantamax form is available, see the GIGANTAMAX_SPECIES array in `2 Dynamax/3 UI/001 Gigantamax Icon Summary.rb` for official Gigantamax species. You can monkey-patch this array to add your custom Gigantamax Pokémon.
-The 10% value is customizable, you can change the valeu of the `defaultGigantamaxChance` in the config file `Data/configs/z_tera_max_config.json`.
+The 10% value is customizable, you can change the value of the `gigantamaxChance` in the config file `Data/configs/z_tera_max_config.json`.
 
 To give the Gigantamax factor to a Pokémon (or remove it) you will have to script it by yourself. If you want to follow the official way, check this [link](https://bulbapedia.bulbagarden.net/wiki/Master_Dojo#Max_Soup).
 The attribute to modify is `gigantamax_factor`, you can do it by calling `$actors[gv[43]].gigantamax_factor = true|false` (check the Motisma devices in the Demo's laboratory for more information on how to modify a Pokémon's attributes from an event)

@@ -39,7 +39,7 @@ Le Dynamax a été implémenté dans le plugin pour avoir un fonctionnement auss
 Pour utiliser le Dynamax en combat, vos joueurs auront besoin d'un Bandeau Dynamax.
 
 Par défaut, **TOUS** les Pokémon seront générés avec 10% de chances d'avoir le gène Gigamax, pas seulement ceux qui ont une forme Gigamax. Le symbole sur le résumé n'apparaîtra cependant que si une forme Gigamax est disponible, se référer à l'array GIGANTAMAX_SPECIES dans `2 Dynamax/3 UI/001 Gigantamax Icon Summary.rb` pour les espèces Gigamax officielles. Vous pouvez monkey-patch ce tableau pour ajouter vos Pokémon Gigamax custom.
-La valeur de 10% est personnalisable, vous pouvez changer la valeur de `defaultGigantamaxChance` dans le fichier de configuration `Data/configs/z_tera_max_config.json`.
+La valeur de 10% est personnalisable, vous pouvez changer la valeur de `gigantamaxChance` dans le fichier de configuration `Data/configs/z_tera_max_config.json`.
 
 Pour donner le gène Gigamax à un Pokémon (ou l'enlever), vous devrez le faire vous-même. Si vous voulez suivre la méthode officielle, consultez ce [lien](https://bulbapedia.bulbagarden.net/wiki/Master_Dojo#Max_Soup).
 L'attribut à modifier est `gigantamax_factor`, vous pouvez le faire en appelant `$actors[gv[43]].gigantamax_factor = true|false` (consultez les appareils Motisma dans le laboratoire de la Démo pour plus d'informations sur la façon de modifier les attributs d'un Pokémon à partir d'un événement).

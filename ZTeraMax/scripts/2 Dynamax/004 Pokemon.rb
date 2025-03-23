@@ -55,7 +55,7 @@ module PFM
         @gigantamax_factor = if db_symbol == :eternatus
                                true
                              else
-                               opts[:gigantamax_factor] || rand(100) < Configs.z_tera_max.default_gigantamax_chance # 10% by default
+                               opts[:gigantamax_factor] || rand(100) < Configs.z_tera_max.gigantamax_chance # 10% by default
                              end
 
         @gigantamaxed = false

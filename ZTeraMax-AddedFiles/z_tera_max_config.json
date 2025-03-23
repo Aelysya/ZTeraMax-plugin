@@ -1,5 +1,5 @@
 {
   "useBuiltinMoveNameSlice": true,
-  "defaultGigantamaxChance": 10,
+  "gigantamaxChance": 10,
   "dynamaxEnabledSwitch": 113
 }
