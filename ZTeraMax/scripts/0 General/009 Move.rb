@@ -16,6 +16,12 @@ module Battle
 
         return name.slice(0..12) << '...'
       end
+
+      # Checks if the move is trampling and does some damage through protect-like effects
+      # @return [Boolean] If the move is trampling
+      def trampling?
+        return false
+      end
     end
     prepend ZTeraMaxPlugin
   end

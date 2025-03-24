@@ -182,6 +182,15 @@ module Battle
         log_data("power = #{power} # after #{self.class} real_base_power")
         return power
       end
+
+      # Checks if the move is trampling and does some damage through protect-like effects
+      # @return [Boolean] If the move is trampling
+      def trampling?
+        # These two moves completely bypass protect-like effects
+        return false if db_symbol == :gmax_one_blow || db_symbol == :gmax_rapid_flow
+
+        return true
+      end
     end
     Move.register(:s_max_move, MaxMove)
   end

@@ -44,6 +44,12 @@ module Battle
         super
         @is_z = true
       end
+
+      # Checks if the move is trampling and does some damage through protect-like effects
+      # @return [Boolean] If the move is trampling
+      def trampling?
+        return true
+      end
     end
     Move.register(:s_z_move, ZMove)
 

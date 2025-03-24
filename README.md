@@ -42,7 +42,7 @@ By default **ALL** Pokémon will be generated with a 10% chance to have the Giga
 The 10% value is customizable, you can change the value of the `gigantamaxChance` in the config file `Data/configs/z_tera_max_config.json`.
 
 To give the Gigantamax factor to a Pokémon (or remove it) you will have to script it by yourself. If you want to follow the official way, check this [link](https://bulbapedia.bulbagarden.net/wiki/Master_Dojo#Max_Soup).
-The attribute to modify is `gigantamax_factor`, you can do it by calling `$actors[gv[43]].gigantamax_factor = true|false` (check the Motisma devices in the Demo's laboratory for more information on how to modify a Pokémon's attributes from an event)
+The attribute to modify is `gigantamax_factor`, you can do it by calling `$actors[gv[43]].gigantamax_factor = (true|false)` (check the Motisma devices in the Demo's laboratory for more information on how to modify a Pokémon's attributes from an event)
 
 In official games, Dynamax is only allowed in some battles such gym and league challenges. If you want to mimic this, a switch is used to allow or not the use of Dynamax in battle. By default the switch number is 113, this is a completely random choice and may conflict with one your switches, if that's the case, you can change the switch number by going in the config file `Data/configs/z_tera_max_config.json` and modifying the `dynamaxEnabledSwitch` field value.
 

@@ -9,7 +9,7 @@ module Battle
         # @param move [Battle::Move]
         # @return [Boolean] if the target is evading the move
         def on_move_prevention_target(user, target, move)
-          if trampling_move?(move)
+          if move.trampling?
             @logic.scene.display_message_and_wait(parse_text(20_000, 6, PFM::Text::PKNICK[0] => target.given_name))
 
             return false
@@ -25,19 +25,9 @@ module Battle
         # @return [Float, Integer] multiplier
         def mod3_multiplier(_user, target, move)
           return 1 if target != @pokemon
-          return 1 unless trampling_move?(move)
+          return 1 unless move.trampling?
 
           return 0.25
-        end
-
-        # Check if the move is a Z-Move or Max Move
-        # @param move [Battle::Move]
-        # @return [Boolean]
-        def trampling_move?(move)
-          return false if move.db_symbol == :gmax_one_blow || move.db_symbol == :gmax_rapid_flow
-          return true if move.is_a?(Battle::Move::ZMove) || move.is_a?(Battle::Move::MaxMove)
-
-          return false
         end
       end
       prepend ZTeraMaxPlugin
