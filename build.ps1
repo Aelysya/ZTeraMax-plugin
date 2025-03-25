@@ -32,6 +32,9 @@ $newVersionContent = [regex]::Replace($content, $regex, $newVersion)
 Set-Content -Path $yamlFile -Value $newVersionContent -NoNewLine
 Write-Host "Version updated to $major.$minor.$build" -ForegroundColor Green
 
+
+
+
 # -------------- Files replacing --------------
 
 $filesToCopy = @(
@@ -46,12 +49,12 @@ $filesToCopy = @(
 
 $destinationPaths = @(
     "../Data/Text/Dialogs/120000.csv",
-    "../Data/configs/z_tera_max_config.json",
-    "../graphics/interface/battle/button_zmove.png",
-    "../graphics/interface/battle/button_zmove_activated.png",
-    "../graphics/interface/battle/button_dynamax.png",
     "../graphics/interface/battle/button_dynamax_activated.png",
-    "../graphics/interface/gigantamax_icon.png"
+    "../graphics/interface/battle/button_dynamax.png",
+    "../graphics/interface/battle/button_zmove_activated.png",
+    "../graphics/interface/battle/button_zmove.png",
+    "../graphics/interface/gigantamax_icon.png",
+    "../Data/configs/z_tera_max_config.json"
 )
 
 for ($i = 0; $i -lt $filesToCopy.Length; $i++) {
