@@ -41,13 +41,20 @@ module BattleUI
       module SpecialButtonZTeraMaxPlugin
         BUTTON_TEXT = { descr: 'Description', mega: 'Mega evolution', z_move: 'Z-Move', dynamax: 'Dynamax' }
 
+        BUTTON_BACKGROUND = {
+          mega: ['battle/button_mega', 'battle/button_mega_activated'],
+          z_move: ['battle/button_zmove', 'battle/button_zmove_activated'],
+          dynamax: ['battle/button_dynamax', 'battle/button_dynamax_activated']
+        }
+
         # Update the special button content
         # @param mechanic [Boolean]
         def refresh(mechanic = false)
           @text.text = BUTTON_TEXT[@type]
-          @background.set_bitmap(mechanic ? 'battle/button_mega_activated' : 'battle/button_mega', :interface) if @type == :mega
-          @background.set_bitmap(mechanic ? 'battle/button_zmove_activated' : 'battle/button_zmove', :interface) if @type == :z_move
-          @background.set_bitmap(mechanic ? 'battle/button_dynamax_activated' : 'battle/button_dynamax', :interface) if @type == :dynamax
+
+          if (backgrounds = BUTTON_BACKGROUND[@type])
+            @background.set_bitmap(backgrounds[mechanic ? 1 : 0], :interface)
+          end
         end
       end
       prepend SpecialButtonZTeraMaxPlugin

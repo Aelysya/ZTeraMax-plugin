@@ -9,13 +9,10 @@ module Battle
         # @param move [Battle::Move]
         # @return [Boolean] if the target is evading the move
         def on_move_prevention_target(user, target, move)
-          if move.trampling?
-            @logic.scene.display_message_and_wait(parse_text(20_000, 6, PFM::Text::PKNICK[0] => target.given_name))
+          return super unless move.trampling?
 
-            return false
-          end
-
-          super
+          @logic.scene.display_message_and_wait(parse_text_with_pokemon(20_000, 12, target))
+          return false
         end
 
         # Give the move mod3 mutiplier (after everything)

@@ -7,8 +7,8 @@ module Battle
       def damages(user, target)
         @critical = false
         @effectiveness = 1
-        log_data("Forced HP Move: #{(target.hp / 4 * 3).clamp(1, Float::INFINITY)} HP")
-        return (target.hp / 4 * 3).clamp(1, Float::INFINITY)
+        log_data("Forced HP Move: #{(target.hp / 4 * 3).clamp(1, Float::INFINITY).floor} HP")
+        return (target.hp / 4 * 3).clamp(1, Float::INFINITY).floor
       end
     end
     Move.register(:s_guardian_of_alola, GuardianOfAlola)

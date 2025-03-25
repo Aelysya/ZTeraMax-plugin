@@ -13,7 +13,7 @@ module PFM
     define_on_creature_use(:dynamax_candy) do |_item, creature, _scene|
       creature.dynamax_level = creature.dynamax_level.nil? ? 1 : creature.dynamax_level + 1
       Audio.me_play(*LVL_SOUND)
-      $scene.display_message_and_wait(parse_text_with_pokemon(20_000, 3, creature, PFM::Text::NUM3[0] => creature.dynamax_level.to_s))
+      $scene.display_message_and_wait(parse_text_with_pokemon(20_000, 7, creature, PFM::Text::NUM3[0] => creature.dynamax_level.to_s))
     end
   end
 end

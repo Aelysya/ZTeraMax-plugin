@@ -28,8 +28,8 @@ module Battle
       # Display messages before using a Z-Move
       # @return [String]
       def pre_z_move_message(user)
-        @scene.display_message_and_wait(parse_text(20_000, 0, PFM::Text::PKNICK[0] => user.given_name))
-        @scene.display_message_and_wait(parse_text(20_000, 1, PFM::Text::PKNICK[0] => user.given_name))
+        @scene.display_message_and_wait(parse_text_with_pokemon(20_000, 0, user))
+        @scene.display_message_and_wait(parse_text_with_pokemon(20_000, 3, user))
       end
     end
     prepend ZMovesPlugin

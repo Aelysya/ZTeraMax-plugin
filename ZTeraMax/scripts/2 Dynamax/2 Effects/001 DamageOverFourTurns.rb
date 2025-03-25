@@ -21,7 +21,7 @@ module Battle
         return if affected_pokemon.has_ability?(:magic_guard)
         return if affected_pokemon.type1 == @move.type || affected_pokemon.type2 == @move.type || affected_pokemon.type3 == @move.type
 
-        logic.scene.display_message_and_wait(parse_text(20_000, 4, PFM::Text::PKNICK[0] => affected_pokemon.given_name))
+        logic.scene.display_message_and_wait(parse_text_with_pokemon(20_000, 8, affected_pokemon))
         logic.damage_handler.damage_change((affected_pokemon.max_hp / 6).clamp(1, Float::INFINITY), affected_pokemon)
       end
 
@@ -33,7 +33,7 @@ module Battle
 
       # Function called when the effect has been deleted from the effects handler
       def on_delete
-        @logic.scene.display_message_and_wait(parse_text(20_000, 5))
+        @logic.scene.display_message_and_wait(parse_text(20_000, 11))
       end
     end
   end

@@ -4,7 +4,7 @@ module Battle
       # Return the name of the skill
       # @note Add a 'Z' affix if the move is a status Z-Move
       def name
-        return parse_text(20_000, 2, PFM::Text::MOVE[0] => super) if @is_z && status?
+        return parse_text(20_000, 6, PFM::Text::MOVE[0] => data.name) if @is_z && status?
 
         super
       end

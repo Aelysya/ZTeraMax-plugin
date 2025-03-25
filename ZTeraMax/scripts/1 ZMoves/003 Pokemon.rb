@@ -26,7 +26,7 @@ module PFM
       # Check if the Pokémon holds a Z-Crystal item
       # @return [Boolean] If the Pokémon holds a Z-Crystal
       def holds_z_crystal?
-        return Z_CRYSTALS.include?(item_db_symbol)
+        return Z_CRYSTALS.include?(battle_item_db_symbol)
       end
 
       # Change Arceus's form based on its held item
