@@ -4,8 +4,7 @@ module Battle
       # Is the skill physical ?
       # @return [Boolean]
       def physical?
-        best_stat = original_launcher.atk > original_launcher.ats
-        return best_stat
+        return original_launcher.atk > original_launcher.ats
       end
 
       # Is the skill special ?
