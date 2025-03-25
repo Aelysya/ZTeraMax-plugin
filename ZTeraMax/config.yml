@@ -5,8 +5,9 @@ authors:
   - Aelysya
   - Lexio
   - Ota
-version: 0.8.68
+version: 0.8.69
 deps: []
+psdk_compatibility_script: psdk.rb
 retry_psdk_compatibility_after_plugin_load: false
 added_files:
   - Data/Text/Dialogs/120000.csv
