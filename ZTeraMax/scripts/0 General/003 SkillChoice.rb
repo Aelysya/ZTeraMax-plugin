@@ -1,11 +1,12 @@
 module BattleUI
   class SkillChoice < GenericChoice
-    module SkillChoiceZMovePlugin
+    module SkillChoiceZTeraMaxPlugin
       # Create a new SkillChoice UI
       # @param viewport [Viewport]
       # @param scene [Battle::Scene]
       def initialize(viewport, scene)
-        @zmove_enabled = false
+        @z_move_enabled = false
+        @dynamax_enabled = false
         super(viewport, scene)
       end
 
@@ -20,11 +21,11 @@ module BattleUI
       # Cancel the player choice
       def choice_cancel
         super
-        @scene.logic.z_move.reset_to_original_moveset(@pokemon)
+        @pokemon.reset_to_original_moveset if @pokemon.effects.has?(:z_power)
+        @pokemon.reset_to_original_moveset if @pokemon.effects.has?(:dynamaxed) && !@pokemon.dynamaxed
       end
     end
-
-    prepend SkillChoiceZMovePlugin
+    prepend SkillChoiceZTeraMaxPlugin
 
     class MoveButton < UI::SpriteStack
       private
@@ -38,20 +39,28 @@ module BattleUI
     end
 
     class SpecialButton < UI::SpriteStack
-      module SpecialButtonZMovePlugin
-        BUTTON_TEXT = { descr: 'Description', mega: 'Mega evolution', zmove: 'Z-Move' }
+      module SpecialButtonZTeraMaxPlugin
+        BUTTON_TEXT = { descr: 'Description', mega: 'Mega evolution', z_move: 'Z-Move', dynamax: 'Dynamax' }
+
+        BUTTON_BACKGROUND = {
+          mega: ['battle/button_mega', 'battle/button_mega_activated'],
+          z_move: ['battle/button_zmove', 'battle/button_zmove_activated'],
+          dynamax: ['battle/button_dynamax', 'battle/button_dynamax_activated']
+        }
 
         # Update the special button content
         # @param mechanic [Boolean]
         def refresh(mechanic = false)
           @text.text = BUTTON_TEXT[@type]
-          @background.set_bitmap(mechanic ? 'battle/button_mega_activated' : 'battle/button_mega', :interface) if @type == :mega
-          @background.set_bitmap(mechanic ? 'battle/button_zmove_activated' : 'battle/button_zmove', :interface) if @type == :zmove
+
+          if (backgrounds = BUTTON_BACKGROUND[@type])
+            @background.set_bitmap(backgrounds[mechanic ? 1 : 0], :interface)
+          end
         end
       end
+      prepend SpecialButtonZTeraMaxPlugin
 
-      prepend SpecialButtonZMovePlugin
-
+      NO_DYNAMAX_POKEMON = %i[zacian zamazenta]
       alias default_data data=
       # Set the data of the button
       # @param pokemon [PFM::PokemonBattler]
@@ -63,8 +72,11 @@ module BattleUI
             true
           when :mega
             @scene.logic.mega_evolve.can_pokemon_mega_evolve?(pokemon)
-          when :zmove
+          when :z_move
             @scene.logic.z_move.can_pokemon_use_z_move?(pokemon)
+          when :dynamax
+            dynamax_enabled = $game_switches[Configs.z_tera_max.dynamax_enabled_switch]
+            @scene.logic.dynamax.can_pokemon_dynamax?(pokemon) && !NO_DYNAMAX_POKEMON.include?(pokemon.db_symbol) && dynamax_enabled
           end
       end
 
@@ -76,48 +88,56 @@ module BattleUI
           (@type == :descr ||
           (@data &&
             @type == :mega && @scene.logic.mega_evolve.can_pokemon_mega_evolve?(@data) ||
-            @type == :zmove && @scene.logic.z_move.can_pokemon_use_z_move?(@data)
+            @type == :z_move && @scene.logic.z_move.can_pokemon_use_z_move?(@data) ||
+            @type == :dynamax && @scene.logic.dynamax.can_pokemon_dynamax?(@data)
           ))
           )
       end
     end
 
     class SubChoice < UI::SpriteStack
-      module SubChoiceZMovePlugin
+      module SubChoiceZTeraMaxPlugin
         # Reset the sub choice
         def reset
-          @zmove_button.refresh(@choice.zmove_enabled)
+          @z_move_button.refresh(@choice.z_move_enabled)
+          @dynamax_button.refresh(@choice.dynamax_enabled)
           super
         end
 
         private
 
         def action_y
-          return $game_system.se_play($data_system.buzzer_se) unless @mega_button.visible || @zmove_button.visible
+          return $game_system.se_play($data_system.buzzer_se) unless @mega_button.visible || @z_move_button.visible || @dynamax_button.visible
 
           if @mega_button.visible
             @choice.mega_enabled = !@choice.mega_enabled
             @mega_button.refresh(@choice.mega_enabled)
           end
 
-          if @zmove_button.visible
-            @choice.zmove_enabled = !@choice.zmove_enabled
-            @zmove_button.refresh(@choice.zmove_enabled)
-            @scene.logic.z_move.update_moveset(@choice.pokemon, @choice.zmove_enabled)
+          if @z_move_button.visible
+            @choice.z_move_enabled = !@choice.z_move_enabled
+            @z_move_button.refresh(@choice.z_move_enabled)
+            @scene.logic.z_move.update_moveset(@choice.pokemon, @choice.z_move_enabled)
+            @choice.refresh_skill_buttons
+          end
+
+          if @dynamax_button.visible
+            @choice.dynamax_enabled = !@choice.dynamax_enabled
+            @dynamax_button.refresh(@choice.dynamax_enabled)
+            @scene.logic.dynamax.update_moveset(@choice.pokemon, @choice.dynamax_enabled)
             @choice.refresh_skill_buttons
           end
 
           $game_system.se_play($data_system.decision_se)
         end
-      end
 
-      prepend SubChoiceZMovePlugin
-
-      alias default_create_special_buttons create_special_buttons
-      def create_special_buttons
-        @zmove_button = add_sprite(2, 183, NO_INITIAL_IMAGE, @scene, :zmove, type: SpecialButton)
-        default_create_special_buttons
+        def create_special_buttons
+          @z_move_button = add_sprite(2, 183, UI::SpriteStack::NO_INITIAL_IMAGE, @scene, :z_move, type: SpecialButton)
+          @dynamax_button = add_sprite(2, 183, UI::SpriteStack::NO_INITIAL_IMAGE, @scene, :dynamax, type: SpecialButton)
+          super
+        end
       end
+      prepend SubChoiceZTeraMaxPlugin
     end
   end
 end
