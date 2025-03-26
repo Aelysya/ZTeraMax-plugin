@@ -18,8 +18,9 @@ module Battle
         alive_battlers(user.bank).each do |target|
           next unless target.item_consumed
           next if target.consumed_item == :__undef__
+          next unless bchance?(0.5, @logic)
 
-          @scene.logic.item_change_handler.change_item(target.consumed_item, true, target, user, self) if bchance?(0.5, @logic)
+          @scene.logic.item_change_handler.change_item(target.consumed_item, true, target, user, self)
         end
       end
     end

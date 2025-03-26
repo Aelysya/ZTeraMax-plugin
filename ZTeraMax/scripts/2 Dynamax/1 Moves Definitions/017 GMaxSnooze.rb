@@ -17,8 +17,9 @@ module Battle
       def deal_effect(user, actual_targets)
         @logic.foes_of(user).each do |target|
           next unless can_target_get_drowsy?(target)
+          next unless bchance?(0.5, @logic)
 
-          target.effects.add(Effects::Drowsiness.new(@logic, target, 2, user)) if bchance?(0.5, @logic)
+          target.effects.add(Effects::Drowsiness.new(@logic, target, 2, user))
         end
       end
 

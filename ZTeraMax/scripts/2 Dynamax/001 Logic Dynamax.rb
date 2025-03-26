@@ -160,5 +160,9 @@ module Battle
         @scene.player_actions.flatten.any? { |action| action.is_a?(Actions::Dynamax) }
       end
     end
+
+    BattleEndHandler.register('PSDK undynamax') do |_, players_pokemon|
+      players_pokemon.each(&:undynamax)
+    end
   end
 end

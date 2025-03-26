@@ -43,6 +43,8 @@ module PFM
 
       # Reset the Pokemon to its normal form after Dynamax
       def undynamax
+        return unless @dynamaxed
+
         reset_to_original_moveset
         @hp = (@hp / (1.5 + 0.05 * @dynamax_level)).ceil.clamp(0, max_hp)
         @dynamaxed = false
