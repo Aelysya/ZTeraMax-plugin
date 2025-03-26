@@ -21,7 +21,25 @@ Pour utiliser ce plugin avec votre fangame, suivez ces étapes:
 
 **Note sur les animations** : Les capacités Z et capacités Max n'ont pas encore d'animation, vous pouvez soit les faire vous-même si vous le souhaitez, soit attendre que quelqu'un d'autre se porte volontaire pour les faire. Dans tous les cas, il est inutile de se plaindre de leur absence.
 
-#### Configuration
+## Comment mettre à jour le plugin
+
+### Mise à jour du fichier du plugin
+En cas de mise à jour du plugin, voici les étapes à suivre si vous l'avez déjà installé dans votre projet :
+- Allez sur le [repository](https://github.com/Aelysya/ZTeraMax-plugin) github
+- Téléchargez la dernière release
+- Remplacez le fichier ZTeraMax.psdkplug situé dans votre dossier `scripts` par celui que vous avez téléchargé
+- Retournez dans le dossier racine de votre projet et lancez l'exécutable `cmd.bat`, un terminal devrait s'ouvrir
+- Entrez la commande `./psdk --util=plugin load` pour mettre à jour le plugin
+
+### Mise à jour du fichier de configuration
+Dans le cas où le fichier de configuration utilisé par le plugin a été mis à jour, suivez les étapes suivantes pour éviter d'écraser votre configuration préexistante :
+- Allez sur le [repository](https://github.com/Aelysya/ZTeraMax-plugin) github
+- Téléchargez la dernière release
+- Ouvrez le fichier `z_tera_max_config.json` dans un éditeur de texte (comme VS Code) et gardez la fenêtre ouverte
+- Dans le dossier de votre projet, allez dans le dossier `Data/configs` et ouvrez le fichier `z_tera_max_config.json` existant dans votre éditeur de texte
+- Comparez les fichiers, si vous voyez de nouvelles options qui ne sont pas présentes dans votre configuration existante, copiez-les à partir de la version mise à jour
+
+## Configuration
 Vous avez peut-être une UI de combat personnalisée pour votre fangame, et si c'est le cas, vous avez peut-être changé les boutons de sélection des capacités. Par défaut, ce plugin raccourcit les noms des capacités pour qu'ils ne dépassent pas 15 caractères. Ceci afin d'éviter que les noms des capacités Z, qui sont parfois trèèèèèèèèèèès longs, ne sortent de la fenêtre. Si vous avez déjà un moyen de gérer ce genre de problème ou si le raccourcissement n'est pas nécessaire pour votre jeu, vous pouvez aller dans le fichier de configuration `Data/configs/z_tera_max_config.json` et modifier la valeur de `useBuiltinMoveNameSlice` en false.
 
 #### Capacités Z

@@ -21,7 +21,26 @@ To use this plugin with your fangame, follow these steps:
 
 **Note on move animations**: The Z-Moves and Max-Moves have no animation yet, you can either do them by yourself if you want, or you can wait for someone else to volunteer to do them. Either way, it is useless to complain about them being missing.
 
-#### Configuration
+## How to update the plugin
+
+### Plugin file update
+In the event of an update of the plugin, here are the steps to follow if you already have it installed in your project:
+- Go to github [repository](https://github.com/Aelysya/ZTeraMax-plugin)
+- Download the latest release
+- Replace the ZTeraMax.psdkplug file located in your `scripts` folder with the one you downloaded
+- Go back to your project's root folder and run the `cmd.bat` executable, a terminal should open up
+- Enter the command `./psdk --util=plugin load` to update the plugin
+
+### Configuration file update
+In case the configuration file used by the plugin has been updated, follow these steps to avoid overwriting your pre-existing config:
+
+- Go to github [repository](https://github.com/Aelysya/ZTeraMax-plugin)
+- Download the latest release
+- Open the `z_tera_max_config.json` file in a text editor (like VS Code) and keep the window open
+- In your project's folder go in the `Data/configs` folder and open the existing `z_tera_max_config.json` file in your text editor
+- Compare the files, if you see new options that are not present in your existing configuration, copy them from the updated version
+
+## Configuration
 You may have a custom Battle UI for your fangame, and if so, you may have changed the move selection buttons. By default, this plugins shortens the moves names so they span a maximum of 15 characters. This is to prevent the veeeeeery long Z-Moves names from going out of the window. If you already have a way to deal with this kind of problems or if the shortening isn't necessary for your game, you can go to the config file `Data/configs/z_tera_max_config.json` and modify the value of `useBuiltinMoveNameSlice` to false.
 
 #### Z-Moves
