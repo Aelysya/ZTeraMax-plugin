@@ -21,7 +21,8 @@ module BattleUI
       # Cancel the player choice
       def choice_cancel
         super
-        @pokemon.reset_to_original_moveset if @pokemon.effects.has?(:z_power) || @pokemon.effects.has?(:dynamaxed)
+        @pokemon.reset_to_original_moveset if @pokemon.effects.has?(:z_power)
+        @pokemon.reset_to_original_moveset if @pokemon.effects.has?(:dynamaxed) && !@pokemon.dynamaxed
       end
     end
     prepend SkillChoiceZTeraMaxPlugin

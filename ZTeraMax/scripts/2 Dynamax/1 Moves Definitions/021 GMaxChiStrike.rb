@@ -7,7 +7,7 @@ module Battle
       # @param user [PFM::PokemonBattler] user of the move
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       def deal_effect(user, actual_targets)
-        [user].concat(@logic.allies_of(user)).each do |target|
+        @logic.alive_battlers(user.bank).each do |target|
           target.effects.add(Effects::ChiStrike.new(@logic, target))
         end
       end

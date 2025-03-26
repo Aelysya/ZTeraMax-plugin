@@ -187,7 +187,7 @@ module Battle
       # @return [Boolean] If the move is trampling
       def trampling?
         # These two moves completely bypass protect-like effects
-        return false if db_symbol == :gmax_one_blow || db_symbol == :gmax_rapid_flow
+        return false if %i[gmax_one_blow gmax_rapid_flow].include?(db_symbol)
 
         return true
       end

@@ -7,12 +7,6 @@ module PFM
       # @return [Boolean] If the Pokémon has the Gigantamax factor
       attr_accessor :gigantamax_factor
 
-      # @return [Boolean] If the Pokémon is Dynamaxed
-      attr_accessor :dynamaxed
-
-      # @return [Integer, Boolean] Holds the original form of the Pokémon when it is Gigantamaxed, false when not Gigantamaxed
-      attr_accessor :gigantamaxed
-
       # Create a new Pokemon with specific parameters
       # @param id [Integer, Symbol] ID of the Pokemon in the database
       # @param level [Integer] level of the Pokemon
@@ -60,9 +54,6 @@ module PFM
                              else
                                opts[:gigantamax_factor] || rand(100) < Configs.z_tera_max.gigantamax_chance # 10% by default
                              end
-
-        @dynamaxed = false
-        @gigantamaxed = false
       end
     end
     prepend DynamaxPlugin

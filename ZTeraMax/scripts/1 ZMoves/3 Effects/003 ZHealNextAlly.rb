@@ -12,7 +12,7 @@ module Battle
       # @param who [PFM::PokemonBattler] Pokemon that is switched out
       # @param with [PFM::PokemonBattler] Pokemon that is switched in
       def on_switch_event(handler, who, with)
-        handler.logic.damage_handler.heal(with, with.max_hp, false)
+        handler.logic.damage_handler.heal(with, with.max_hp, test_heal_block: false)
       end
     end
   end

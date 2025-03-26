@@ -114,7 +114,7 @@ module Battle
         z_type = TYPE_Z_CRYSTALS.key?(pokemon.item_db_symbol)
 
         if z_crystal_activated
-          pokemon.effects.add(Effects::ZPower.new(@logic, pokemon))
+          pokemon.effects.add(Effects::ZPower.new(@scene.logic, pokemon))
           pokemon.moveset.each_with_index do |move, i|
             pokemon.original_moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene)
 
@@ -150,7 +150,7 @@ module Battle
       # @param move [Move] The move to get the corresponding Z-Move for.
       # @return [Move] The corresponding Z-Move.
       # @note Used by moves that call other moves like Assist.
-      def get_corresponding_z_move(move)
+      def corresponding_z_move(move)
         z_crystal = TYPE_Z_CRYSTALS.find { |_k, v| v[:type] == data_type(move.type).db_symbol }&.first
         return log_error("Z crystal for move #{move} not found.") && move unless z_crystal
 

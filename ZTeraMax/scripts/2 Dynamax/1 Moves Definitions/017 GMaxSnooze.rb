@@ -3,6 +3,14 @@ module Battle
     class GMaxSnooze < MaxMove
       private
 
+      # Test if the effect is working
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
+      # @return [Boolean]
+      def effect_working?(user, actual_targets)
+        return actual_targets.any? { |target| can_target_get_drowsy?(target) }
+      end
+
       # Function that deals the effect to the pokemon
       # @param user [PFM::PokemonBattler] user of the move
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
@@ -10,10 +18,11 @@ module Battle
         @logic.foes_of(user).each do |target|
           next unless can_target_get_drowsy?(target)
 
-          target.effects.add(Effects::Drowsiness.new(@logic, target, 2, user)) if rand(100) < 50
+          target.effects.add(Effects::Drowsiness.new(@logic, target, 2, user)) if bchance?(0.5, @logic)
         end
       end
 
+      # Returns if the target can get the Drowzy effect
       def can_target_get_drowsy?(target)
         return false if target.status?
         return false if %i[drowsiness substitute].any? { |db_symbol| target.effects.has?(db_symbol) } || target.status?

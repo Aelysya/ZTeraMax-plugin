@@ -8,10 +8,8 @@ module Battle
       # @param user [PFM::PokemonBattler] user of the move
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       def deal_effect(user, actual_targets)
-        if $env.current_weather_db_symbol == weather_to_cancel
-          handler.logic.weather_change_handler.weather_change(:none, 0)
-          handler.scene.display_message_and_wait(weather_cancel_text)
-        end
+        remove_weather if $env.current_weather_db_symbol == weather_to_cancel
+
         user.effects.each { |e| e.kill if e.rapid_spin_affected? }
         logic.terrain_effects.each(&:kill)
         logic.bank_effects.each_with_index do |bank_effect, bank_index|
@@ -20,6 +18,12 @@ module Battle
             e.kill if bank_index != user.bank && effects_to_kill.include?(e.name)
           end
         end
+      end
+
+      # Remove the weather cancelled by this move
+      def remove_weather
+        handler.logic.weather_change_handler.weather_change(:none, 0)
+        handler.scene.display_message_and_wait(weather_cancel_text)
       end
 
       # List of the effects to kill on the enemy board

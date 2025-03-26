@@ -7,15 +7,14 @@ module Battle
       # @param move [Battle::Move]
       # @return [Boolean] if the target is evading the move
       def on_move_prevention_target(user, target, move)
-        if move.trampling? # Override the protect effect allowing trampling moves to go through
-          return false if user.has_ability?(:unseen_fist) && move.direct?
-          return false if move.db_symbol == :gmax_one_blow || move.db_symbol == :gmax_rapid_flow
+        super unless move.trampling?
 
-          play_protect_effect(user, target, move)
-          return true
-        end
+        # Override the protect effect allowing trampling moves to go through
+        return false if user.has_ability?(:unseen_fist) && move.direct?
+        return false if %i[gmax_one_blow gmax_rapid_flow].include?(move.db_symbol)
 
-        super
+        play_protect_effect(user, target, move)
+        return true
       end
     end
     Protect.register(:max_guard, MaxGuard)

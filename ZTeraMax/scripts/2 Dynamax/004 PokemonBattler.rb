@@ -1,7 +1,23 @@
 module PFM
   class PokemonBattler < Pokemon
     module DynamaxPlugin
+      # @return [Boolean] If the Pokémon is Dynamaxed
+      attr_accessor :dynamaxed
+
+      # @return [Integer, Boolean] Holds the original form of the Pokémon when it is Gigantamaxed, false when not Gigantamaxed
+      attr_accessor :gigantamaxed
+
       COPIED_PROPERTIES.concat(%i[@dynamax_level @gigantamax_factor])
+
+      # Create a new PokemonBattler
+      # @param original [PFM::Pokemon] original Pokemon (protected during the battle)
+      # @param scene [Battle::Scene] current battle scene
+      # @param max_level [Integer] new max level for Online battle
+      def initialize(original, scene, max_level = Float::INFINITY)
+        super
+        @dynamaxed = false
+        @gigantamaxed = false
+      end
 
       # Check if the Pokemon can Dynamax
       # @return [Integer, false] form index if the Pokemon can Dynamax, false otherwise
@@ -15,7 +31,6 @@ module PFM
 
       # Boost Pokemon's HP after Dynamax and change its form to Gigantamax if appliable
       def dynamax
-        # effects.add(Battle::Effects::Dynamaxed.new(@scene.logic, self))
         @hp = (@hp * (1.5 + 0.05 * @dynamax_level)).ceil
         @dynamaxed = true
 
@@ -55,11 +70,7 @@ module PFM
 
       # Copy all the properties back to the original pokemon
       def copy_properties_back_to_original
-        effects.each do |effect|
-          next unless effect.name == :dynamaxed
-
-          effect.kill
-        end
+        effects.get(:dynamaxed)&.kill
 
         super
       end

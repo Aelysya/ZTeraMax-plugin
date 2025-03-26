@@ -1,9 +1,9 @@
 module SkillChoiceAbstractionZTeraMaxPlugin
-  # Tell if the use of Z Moves is enabled
+  # Tell if the use of Z-Moves is enabled
   # @return [Boolean]
   attr_accessor :z_move_enabled
 
-  # Tell if the use of Z Moves is enabled
+  # Tell if the use of Dynamax is enabled
   # @return [Boolean]
   attr_accessor :dynamax_enabled
 

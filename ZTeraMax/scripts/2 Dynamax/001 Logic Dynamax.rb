@@ -10,7 +10,7 @@ module Battle
       def initialize(scene)
         # Dynamax helper
         @dynamax = Dynamax.new(scene)
-        super(scene)
+        super
       end
     end
 
@@ -100,20 +100,18 @@ module Battle
       # @param pokemon [Pokemon] The Pokémon whose moveset is to be updated.
       # @param dynamax_activated [Boolean] Whether to set the moveset to the Dynamax state or the original state.
       def update_moveset(pokemon, dynamax_activated)
-        if dynamax_activated
-          pokemon.effects.add(Effects::Dynamaxed.new(@logic, pokemon))
-          pokemon.moveset.each_with_index do |move, i|
-            pokemon.original_moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene)
+        return pokemon.reset_to_original_moveset unless dynamax_activated
 
-            if move.status?
-              pokemon.moveset[i] = Battle::Move[:s_max_guard].new(:max_guard, move.pp, move.ppmax, @scene)
-              pokemon.moveset[i].is_max = true
-            else
-              pokemon.moveset[i] = replace_with_max_move(pokemon, move)
-            end
+        pokemon.effects.add(Effects::Dynamaxed.new(@scene.logic, pokemon))
+        pokemon.moveset.each_with_index do |move, i|
+          pokemon.original_moveset[i] = Battle::Move[move.be_method].new(move.db_symbol, move.pp, move.ppmax, @scene)
+
+          if move.status?
+            pokemon.moveset[i] = Battle::Move[:s_max_guard].new(:max_guard, move.pp, move.ppmax, @scene)
+            pokemon.moveset[i].is_max = true
+          else
+            pokemon.moveset[i] = replace_with_max_move(pokemon, move)
           end
-        else
-          pokemon.reset_to_original_moveset
         end
       end
 

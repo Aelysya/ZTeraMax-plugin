@@ -4,9 +4,9 @@ module Battle
       # Create a new Pokemon tied effect
       # @param logic [Battle::Logic]
       # @param pokemon [PFM::PokemonBattler]
-      def initialize(logic, pokemon)
-        super
-        self.counter = 1
+      def initialize(logic, pokemon, counter = 1)
+        super(logic, pokemon)
+        @counter = counter
       end
 
       # Get the name of the effect

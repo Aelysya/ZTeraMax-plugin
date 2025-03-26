@@ -8,7 +8,7 @@ module Battle
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       # @return [Boolean]
       def effect_working?(user, actual_targets)
-        return actual_targets.all? { |target| !target.effects.has?(:cantswitch) }
+        return actual_targets.any? { |target| !target.effects.has?(:cantswitch) }
       end
 
       # Function that deals the status changes to all foes

@@ -50,7 +50,6 @@ module Battle
         return super
       end
     end
-
     prepend ZMovesPlugin
   end
 end

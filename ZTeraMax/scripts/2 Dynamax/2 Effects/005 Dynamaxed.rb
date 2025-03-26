@@ -17,17 +17,17 @@ module Battle
 
       # Function called when the effect has been deleted from the effects handler
       def on_delete
-        return unless @dynamaxed # Handles the effect killing by deactivating the Dynamax button
+        return unless @pokemon.dynamaxed # Prevent rest of the method if the effect was killed by deactivating the Dynamax button
 
         @pokemon.undynamax
 
         # Don't play deflate animation if battler is dead or being switched
-        if @pokemon.alive? && @pokemon.position&.between?(0, $game_temp.vs_type - 1)
-          visual = @logic.scene.visual
-          sprite = visual.battler_sprite(@pokemon.bank, @pokemon.position)
-          sprite.deflate_animation
-          sprite.pokemon = @pokemon
-        end
+        return unless @pokemon.can_fight?
+
+        visual = @logic.scene.visual
+        sprite = visual.battler_sprite(@pokemon.bank, @pokemon.position)
+        sprite.deflate_animation
+        sprite.pokemon = @pokemon
       end
 
       # Function called when a Pokemon has actually switched with another one

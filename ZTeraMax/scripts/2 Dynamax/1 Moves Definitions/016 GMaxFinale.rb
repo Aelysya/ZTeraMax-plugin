@@ -7,7 +7,7 @@ module Battle
       # @param user [PFM::PokemonBattler] user of the move
       # @param targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       def deal_effect(user, targets)
-        [user].concat(@logic.allies_of(user)).each do |target|
+        alive_battlers(user.bank).each do |target|
           hp = target.max_hp / 6
           @logic.damage_handler.heal(target, hp)
         end

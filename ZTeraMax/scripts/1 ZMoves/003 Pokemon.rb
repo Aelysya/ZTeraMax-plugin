@@ -37,7 +37,6 @@ module PFM
         next 0
       end
     end
-
     prepend ZMovesPlugin
   end
 end

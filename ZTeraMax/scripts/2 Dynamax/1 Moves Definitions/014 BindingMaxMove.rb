@@ -8,7 +8,7 @@ module Battle
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       # @return [Boolean]
       def effect_working?(user, actual_targets)
-        !@logic.foes_of(user).all? { |target| target.type_ghost? || target.effects.has?(:bind) }
+        return @logic.foes_of(user).any? { |target| !target.type_ghost? && !target.effects.has?(:bind) }
       end
 
       # Function that deals the effect to the pokemon

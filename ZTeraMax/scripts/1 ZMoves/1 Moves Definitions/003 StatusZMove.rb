@@ -404,7 +404,6 @@ module Battle
         end
       end
     end
-
     prepend ZMovesPlugin
   end
 end

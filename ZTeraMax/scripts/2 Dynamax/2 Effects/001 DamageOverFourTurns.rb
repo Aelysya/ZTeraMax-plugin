@@ -6,10 +6,10 @@ module Battle
       # @param bank [Integer] bank where the effect is tied
       # @param position [Integer] position where the effect is tied
       # @param move [Battle::Move] move responsive of the effect
-      def initialize(logic, bank, position, move)
+      def initialize(logic, bank, position, move, counter = 4)
         super(logic, bank, position)
         @move = move
-        @counter = 4
+        @counter = counter
       end
 
       # Function called at the end of a turn
