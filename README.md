@@ -41,6 +41,17 @@ To use the Dynamax in battle, your players will need to be given a Dynamax Band.
 By default **ALL** Pokémon will be generated with a 10% chance to have the Gigantamax factor, not only the ones that do have a Gigantamax Form. However, the symbol on the summary will only appear if the Pokémon has a Gigantamax form available, see the GIGANTAMAX_SPECIES array in `2 Dynamax/3 UI/001 Gigantamax Icon Summary.rb` for official Gigantamax species. You can monkey-patch this array to add your custom Gigantamax Pokémon.
 The 10% value is customizable, you can change the value of the `gigantamaxChance` in the config file `Data/configs/z_tera_max_config.json`.
 
+To create custom Gigantamax Pokémon, you will have to do a small manipulation of the JSON files. Please note that manipulating the JSON files is a very risky thing to do if you don't **precisely** know what you're doing. So, if you want to add your custom Gigantamax Pokémon, follow exactly these steps:
+- Open Pokémon Studio
+- Open the database page of the Pokémon you want to give a Gigantamax form to
+- Click on "New form" button in the top right corner, edit anything you want
+- Click on "Add the form" and remember the number that is shown beside the form's name you just created
+- Open the folder that contains your project and follow this folder path: `Data/Studio/pokemon`
+- Search for the file that has the name of your Pokémon and open it in a text editor
+- Hit CTRL + F keys and enter this: `"form": X,`, replace X by the number you remembered
+- Once your text editor shows you the place where this text is, change the number to 40
+- **DO NOT TOUCH ANYTHING ELSE IN THE FILE UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING**, you can modify the sprites from Studio though
+
 To give the Gigantamax factor to a Pokémon (or remove it) you will have to script it by yourself. If you want to follow the official way, check this [link](https://bulbapedia.bulbagarden.net/wiki/Master_Dojo#Max_Soup).
 The attribute to modify is `gigantamax_factor`, you can do it by calling `$actors[gv[43]].gigantamax_factor = (true|false)` (check the Motisma devices in the Demo's laboratory for more information on how to modify a Pokémon's attributes from an event)
 

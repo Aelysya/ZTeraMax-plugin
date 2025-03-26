@@ -41,6 +41,17 @@ Pour utiliser le Dynamax en combat, vos joueurs auront besoin d'un Bandeau Dynam
 Par défaut, **TOUS** les Pokémon seront générés avec 10% de chances d'avoir le gène Gigamax, pas seulement ceux qui ont une forme Gigamax. Cependant, le symbole sur le résumé n'apparaîtra que si le Pokémon possède une forme Gigamax est disponible, se référer à l'array GIGANTAMAX_SPECIES dans `2 Dynamax/3 UI/001 Gigantamax Icon Summary.rb` pour les espèces Gigamax officielles. Vous pouvez monkey-patch ce tableau pour ajouter vos Pokémon Gigamax custom.
 La valeur de 10% est personnalisable, vous pouvez changer la valeur de `gigantamaxChance` dans le fichier de configuration `Data/configs/z_tera_max_config.json`.
 
+Pour créer des Pokémon Gigamax personnalisés, vous devrez effectuer une petite manipulation des fichiers JSON. Veuillez noter que la manipulation des fichiers JSON est très risquée si vous ne savez pas **précisément** ce que vous faites. Donc, si vous voulez ajouter votre Pokémon Gigamax personnalisé, suivez exactement les étapes suivantes :
+- Ouvrez Pokémon Studio
+- Ouvrez la page de la base de données du Pokémon auquel vous voulez donner une forme Gigamax
+- Cliquez sur le bouton "Nouvelle forme" dans le coin supérieur droit, éditez ce que vous voulez
+- Cliquez sur "Ajouter la forme" et retenez le numéro qui est affiché à côté du nom de la forme que vous venez de créer
+- Ouvrez le dossier qui contient votre projet et suivez ce chemin de dossier : `Data/Studio/pokemon`
+- Cherchez le fichier qui a le nom de votre Pokémon et ouvrez-le dans un éditeur de texte
+- Appuyez sur les touches CTRL + F et entrez ceci : `"form" : X,`, remplacez X par le nombre dont vous vous êtes souvenu
+- Une fois que votre éditeur de texte vous montre l'endroit où se trouve ce texte, changez le nombre en 40
+- **NE TOUCHEZ A RIEN D'AUTRE DANS LE FICHIER A MOINS DE SAVOIR EXACTEMENT CE QUE VOUS FAITES**, vous pouvez cependant modifier les sprites à partir de Studio
+
 Pour donner le gène Gigamax à un Pokémon (ou l'enlever), vous devrez le faire vous-même. Si vous voulez suivre la méthode officielle, consultez ce [lien](https://bulbapedia.bulbagarden.net/wiki/Master_Dojo#Max_Soup).
 L'attribut à modifier est `gigantamax_factor`, vous pouvez le faire en appelant `$actors[gv[43]].gigantamax_factor = (true|false)` (consultez les appareils Motisma dans le laboratoire de la Démo pour plus d'informations sur la façon de modifier les attributs d'un Pokémon à partir d'un événement).
 
