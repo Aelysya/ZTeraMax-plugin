@@ -1,20 +1,19 @@
 module Battle
   class Logic
-    module LogicZTeraMaxDynPlugin
+    module DynamaxPlugin
       # Get the Dynamax helper
       # @return [Dynamax]
       attr_reader :dynamax
 
       # Create a new Logic instance
-      # @param scene [Scene] scene that hold the logic object
+      # @param scene [Scene] scene that holds the logic object
       def initialize(scene)
         # Dynamax helper
         @dynamax = Dynamax.new(scene)
         super
       end
     end
-
-    prepend LogicZTeraMaxDynPlugin
+    prepend DynamaxPlugin
 
     # Logic for Dynamax
     class Dynamax
