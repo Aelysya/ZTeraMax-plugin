@@ -31,7 +31,7 @@ module PFM
 
       # Boost Pokemon's HP after Dynamax and change its form to Gigantamax if appliable
       def dynamax
-        @hp = (@hp * (1.5 + 0.05 * @dynamax_level)).ceil
+        @hp = (@hp * (1.5 + 0.05 * @dynamax_level.to_i)).ceil
         @dynamaxed = true
 
         gigantamax_form = can_gigantamax?
@@ -46,7 +46,7 @@ module PFM
         return unless @dynamaxed
 
         reset_to_original_moveset
-        @hp = (@hp / (1.5 + 0.05 * @dynamax_level)).ceil.clamp(0, max_hp)
+        @hp = (@hp / (1.5 + 0.05 * @dynamax_level.to_i)).ceil.clamp(0, max_hp)
         @dynamaxed = false
 
         if @gigantamaxed
@@ -61,7 +61,7 @@ module PFM
         if effects.has?(:dynamaxed)
           return 1 if db_symbol == :shedinja
 
-          bonus_hp = 0.5 + 0.05 * @dynamax_level
+          bonus_hp = 0.5 + 0.05 * @dynamax_level.to_i
           hp = super
 
           return (hp + hp * bonus_hp).ceil
