@@ -8,14 +8,6 @@ module Battle
       def calc_stab(user, types)
         super unless user.terastallized
 
-        return calc_tera_stab(user, types)
-      end
-
-      # STAB calculation taking into account the user being terastallized
-      # @param user [PFM::PokemonBattler] user of the move
-      # @param types [Array<Integer>] list of definitive types of the move
-      # @return [Numeric]
-      def calc_tera_stab(user, types)
         has_tera_stab = types.any? { |type| user.tera_type == type }
         has_regular_stab = types.any? { |type| user.type1 == type || user.type2 == type || user.type3 == type }
 
