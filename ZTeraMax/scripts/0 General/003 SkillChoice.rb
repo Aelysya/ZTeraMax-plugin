@@ -7,6 +7,7 @@ module BattleUI
       def initialize(viewport, scene)
         @z_move_enabled = false
         @dynamax_enabled = false
+        @terastal_enabled = false
         super(viewport, scene)
       end
 
@@ -40,12 +41,15 @@ module BattleUI
 
     class SpecialButton < UI::SpriteStack
       module SpecialButtonZTeraMaxPlugin
-        BUTTON_TEXT = { descr: 'Description', mega: 'Mega evolution', z_move: 'Z-Move', dynamax: 'Dynamax' }
+        # Texts of the special buttons
+        BUTTON_TEXT = { descr: 'Description', mega: 'Mega evolution', z_move: 'Z-Move', dynamax: 'Dynamax', terastal: 'Terastal' }
 
+        # Backgrounds of the special buttons
         BUTTON_BACKGROUND = {
           mega: ['battle/button_mega', 'battle/button_mega_activated'],
           z_move: ['battle/button_zmove', 'battle/button_zmove_activated'],
-          dynamax: ['battle/button_dynamax', 'battle/button_dynamax_activated']
+          dynamax: ['battle/button_dynamax', 'battle/button_dynamax_activated'],
+          terastal: ['battle/button_terastal', 'battle/button_terastal_activated']
         }
 
         # Update the special button content
@@ -66,6 +70,10 @@ module BattleUI
       # @param pokemon [PFM::PokemonBattler]
       def data=(pokemon)
         super
+
+        terastal_enabled = $game_switches[Configs.z_tera_max.terastal_enabled_switch]
+        # If Terastal is enabled, Dynamax is disabled
+        dynamax_enabled = $game_switches[Configs.z_tera_max.dynamax_enabled_switch] && !terastal_enabled
         self.visible =
           case @type
           when :descr
@@ -75,8 +83,9 @@ module BattleUI
           when :z_move
             @scene.logic.z_move.can_pokemon_use_z_move?(pokemon)
           when :dynamax
-            dynamax_enabled = $game_switches[Configs.z_tera_max.dynamax_enabled_switch]
             @scene.logic.dynamax.can_pokemon_dynamax?(pokemon) && !NO_DYNAMAX_POKEMON.include?(pokemon.db_symbol) && dynamax_enabled
+          when :terastal
+            @scene.logic.terastal.can_pokemon_terastal?(pokemon) && terastal_enabled
           end
       end
 
@@ -89,7 +98,8 @@ module BattleUI
           (@data &&
             @type == :mega && @scene.logic.mega_evolve.can_pokemon_mega_evolve?(@data) ||
             @type == :z_move && @scene.logic.z_move.can_pokemon_use_z_move?(@data) ||
-            @type == :dynamax && @scene.logic.dynamax.can_pokemon_dynamax?(@data)
+            @type == :dynamax && @scene.logic.dynamax.can_pokemon_dynamax?(@data) ||
+            @type == :terastal && @scene.logic.terastal.can_pokemon_terastal?(@data)
           ))
           )
       end
@@ -101,13 +111,16 @@ module BattleUI
         def reset
           @z_move_button.refresh(@choice.z_move_enabled)
           @dynamax_button.refresh(@choice.dynamax_enabled)
+          @terastal_button.refresh(@choice.terastal_enabled)
           super
         end
 
         private
 
         def action_y
-          return $game_system.se_play($data_system.buzzer_se) unless @mega_button.visible || @z_move_button.visible || @dynamax_button.visible
+          unless @mega_button.visible || @z_move_button.visible || @dynamax_button.visible || @terastal_button.visible
+            return $game_system.se_play($data_system.buzzer_se)
+          end
 
           if @mega_button.visible
             @choice.mega_enabled = !@choice.mega_enabled
@@ -128,12 +141,18 @@ module BattleUI
             @choice.refresh_skill_buttons
           end
 
+          if @terastal_button.visible
+            @choice.terastal_enabled = !@choice.terastal_enabled
+            @terastal_button.refresh(@choice.terastal_enabled)
+          end
+
           $game_system.se_play($data_system.decision_se)
         end
 
         def create_special_buttons
           @z_move_button = add_sprite(2, 183, UI::SpriteStack::NO_INITIAL_IMAGE, @scene, :z_move, type: SpecialButton)
           @dynamax_button = add_sprite(2, 183, UI::SpriteStack::NO_INITIAL_IMAGE, @scene, :dynamax, type: SpecialButton)
+          @terastal_button = add_sprite(2, 183, UI::SpriteStack::NO_INITIAL_IMAGE, @scene, :terastal, type: SpecialButton)
           super
         end
       end

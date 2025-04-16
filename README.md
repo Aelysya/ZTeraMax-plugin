@@ -43,7 +43,7 @@ In case the configuration file used by the plugin has been updated, follow these
 ## Configuration
 You may have a custom Battle UI for your fangame, and if so, you may have changed the move selection buttons. By default, this plugins shortens the moves names so they span a maximum of 15 characters. This is to prevent the veeeeeery long Z-Moves names from going out of the window. If you already have a way to deal with this kind of problems or if the shortening isn't necessary for your game, you can go to the config file `Data/configs/z_tera_max_config.json` and modify the value of `useBuiltinMoveNameSlice` to false.
 
-#### Z-Moves
+### Z-Moves
 
 Z-Moves have been implemented in the plugin to function as close as possible to the official way, you can have a lot of information about them on the [Bulbapedia page for Z-Moves](https://bulbapedia.bulbagarden.net/wiki/Z-Move)
 To use Z-Moves in battle, here's what your players need:
@@ -52,7 +52,7 @@ To use Z-Moves in battle, here's what your players need:
 
 When you give a Z-Crystal to your players, be sure to give them one that contains a '2' at the end of their db_symbol (e.g. normalium_z2). In the database these are the bigger crystals. When your players will give a crystal to their Pokémon, it will automatically create the right crystal, which is the smaller version in the database. When they try to retrieve a crystal from their Pokémon, it will not be put back in the bag, just deleted. This mimics the ways these items work in the official games.
 
-#### Dynamax
+### Dynamax
 
 Dynamax has been implemented in the plugin to function as close as possible to the official way, you can have a lot of information about them on the [Bulbapedia page for Dynamax](https://bulbapedia.bulbagarden.net/wiki/Dynamax)
 To use the Dynamax in battle, your players will need to be given a Dynamax Band.
