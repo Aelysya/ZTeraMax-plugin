@@ -44,7 +44,7 @@ module Battle
       def definitive_types(user, target)
         return super unless user.terastallized
 
-        return user.tera_type
+        return [user.tera_type]
       end
     end
     Move.register(:s_tera_blast, TeraBlast)
