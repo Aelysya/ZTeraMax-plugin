@@ -71,9 +71,9 @@ module BattleUI
       def data=(pokemon)
         super
 
-        terastal_enabled = $game_switches[Configs.z_tera_max.terastal_enabled_switch]
-        # If Terastal is enabled, Dynamax is disabled
-        dynamax_enabled = $game_switches[Configs.z_tera_max.dynamax_enabled_switch] && !terastal_enabled
+        dynamax_enabled = $game_switches[Configs.z_tera_max.dynamax_enabled_switch]
+        # Mechanics can't coexist, if Dynamax is enabled, Terastal is disabled
+        terastal_enabled = $game_switches[Configs.z_tera_max.terastal_enabled_switch] && !dynamax_enabled
         self.visible =
           case @type
           when :descr
