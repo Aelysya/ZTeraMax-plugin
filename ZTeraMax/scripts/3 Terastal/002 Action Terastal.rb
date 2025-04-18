@@ -31,6 +31,7 @@ module Battle
       def execute
         @scene.logic.terastal.mark_as_terastal_used(@user)
         @user.terastallized = true
+        $game_switches[Configs.z_tera_max.dynamax_enabled_switch] = false if $game_switches[Configs.z_tera_max.tera_orb_charge_enabled_switch]
       end
     end
   end
