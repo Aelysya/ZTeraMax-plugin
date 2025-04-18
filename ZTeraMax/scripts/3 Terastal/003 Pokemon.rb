@@ -56,6 +56,12 @@ module PFM
         # Random Tera type between the two base types of the Pokemon
         @tera_type = [type1, type2].sample
       end
+
+      # Change the Tera type of the Pokemon
+      # @param db_symbol [Symbol] db_symbol of the type
+      def change_tera_type(type)
+        @tera_type = data_type(type).id
+      end
     end
     prepend TerastalPlugin
   end
