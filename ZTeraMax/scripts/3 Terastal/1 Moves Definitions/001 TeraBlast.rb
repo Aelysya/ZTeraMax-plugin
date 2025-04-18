@@ -5,9 +5,11 @@ module Battle
       # @param user [PFM::PokemonBattler] The user of the move.
       # @param target [PFM::PokemonBattler] The target of the move.
       # @return [Integer] The base power of Tera Blast.
-      def real_base_power(user, _target)
+      # @note Power is doubled on Terastallized target if the user's Tera type is Stellar
+      def real_base_power(user, target)
         return base_power unless user.terastallized
         return base_power unless user.tera_type == data_type(:stellar).id
+        return 200 if target.terastallized
 
         return 100
       end
