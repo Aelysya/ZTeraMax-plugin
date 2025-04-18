@@ -1,6 +1,17 @@
 module Battle
   class Move
     class TeraBlast < Basic
+      # Get the real base power of Tera Blast depending on the user being terastallized or not
+      # @param user [PFM::PokemonBattler] The user of the move.
+      # @param target [PFM::PokemonBattler] The target of the move.
+      # @return [Integer] The base power of Tera Blast.
+      def real_base_power(user, _target)
+        return base_power unless user.terastallized
+        return base_power unless user.tera_type == data_type(:stellar).id
+
+        return 100
+      end
+
       # Method calculating the damages done by the actual move
       # @note : I used the 4th Gen formula : https://www.smogon.com/dp/articles/damage_formula
       # @param user [PFM::PokemonBattler] user of the move
@@ -45,6 +56,19 @@ module Battle
         return super unless user.terastallized
 
         return [user.tera_type]
+      end
+
+      private
+
+      # Function that deals the effect to the pokemon
+      # @param user [PFM::PokemonBattler] user of the move
+      # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
+      def deal_effect(user, actual_targets)
+        return super unless user.terastallized
+        return super unless user.tera_type == data_type(:stellar).id
+
+        @logic.stat_change_handler.stat_change_with_process(:ats, -1, user, user, self)
+        @logic.stat_change_handler.stat_change_with_process(:atk, -1, user, user, self)
       end
     end
     Move.register(:s_tera_blast, TeraBlast)

@@ -44,16 +44,10 @@ module PFM
       # Method that initialize the Terastal values
       # @param opts [Hash] Hash describing optional value you want to assign to the Pokemon
       def terastal_initialize(opts)
-        # Predefined Tera type
         return @tera_type = data_type(opts[:tera_type]).id if opts[:tera_type]
-
-        # Fully random Tera type if exotic chance activates, may give an base type. 19th type is Stellar type
-        return @tera_type = rand(1..19) if rand(100) < Configs.z_tera_max.exotic_tera_type_chance # 10% by default
-
-        # Tera type is type 1 if the Pokemon only has one type
+        return @tera_type = rand(1..each_data_type.size) if rand(100) < Configs.z_tera_max.exotic_tera_type_chance # 10% by default
         return @tera_type = type1 if type2 == 0
 
-        # Random Tera type between the two base types of the Pokemon
         @tera_type = [type1, type2].sample
       end
 
