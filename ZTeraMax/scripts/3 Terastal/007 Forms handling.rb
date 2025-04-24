@@ -18,7 +18,7 @@ module PFM
       return 0
     end
 
-    FORM_CALIBRATE[:terpagos] = proc { |reason| @form = terapagos_form(reason) }
+    FORM_CALIBRATE[:terapagos] = proc { |reason| @form = terapagos_form(reason) }
     FORM_CALIBRATE[:ogerpon] = proc { |reason| @form = ogerpon_form(reason) }
   end
 end

@@ -42,6 +42,7 @@ module Battle
         return unless TERASTAL_REACTIVE_SPECIES.include?(@user.db_symbol)
 
         @user.form_calibrate(:terastal)
+        @scene.visual.show_switch_form_animation(@user)
       end
     end
   end

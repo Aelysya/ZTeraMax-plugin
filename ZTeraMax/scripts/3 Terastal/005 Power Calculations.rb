@@ -89,6 +89,8 @@ module Battle
 
         base_power = super
         return 60 unless base_power >= 60 || IGNORED_BE_METHODS.include?(be_method)
+
+        return base_power
       end
 
       # Calc Tera type multiplier of the move
