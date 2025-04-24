@@ -32,6 +32,16 @@ module Battle
         @scene.logic.terastal.mark_as_terastal_used(@user)
         @user.terastallized = true
         $game_switches[Configs.z_tera_max.dynamax_enabled_switch] = false if $game_switches[Configs.z_tera_max.tera_orb_charge_enabled_switch]
+        handle_form_change
+      end
+
+      TERASTAL_REACTIVE_SPECIES = %i[ogerpon terapagos]
+
+      # Change the form of Terapagos and Ogerpon
+      def handle_form_change
+        return unless TERASTAL_REACTIVE_SPECIES.include?(@user.db_symbol)
+
+        @user.form_calibrate(:terastal)
       end
     end
   end
