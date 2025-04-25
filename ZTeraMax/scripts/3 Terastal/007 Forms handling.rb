@@ -1,12 +1,17 @@
 module PFM
   class Pokemon
+    # List of items (in the form index order) that change the form of Ogerpon
+    OGERPON_TERA_TYPE = %i[grass water fire rock]
+
     # Determine the form of Ogerpon
     # @param reason [Symbol]
     def ogerpon_form(reason)
-      base_form = OGERPONMASK.index(item_db_symbol).to_i
-      return base_form + 4 if reason == :terastal
+      form = OGERPONMASK.index(item_db_symbol).to_i
+      change_tera_type(OGERPON_TERA_TYPE[form])
 
-      return base_form
+      form += 4 if reason == :terastal
+
+      return form
     end
 
     # Determine the form of Terapagos

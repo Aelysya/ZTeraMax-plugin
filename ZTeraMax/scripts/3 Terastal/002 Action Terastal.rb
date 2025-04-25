@@ -33,6 +33,20 @@ module Battle
         @user.terastallized = true
         $game_switches[Configs.z_tera_max.dynamax_enabled_switch] = false if $game_switches[Configs.z_tera_max.tera_orb_charge_enabled_switch]
         handle_form_change
+
+
+        visual = @scene.visual
+        sprite = visual.battler_sprite(@user.bank, @user.position)
+        sprite.load_shader(@user)
+        sprite.update
+        wait_for(sprite, visual)
+      end
+
+      def wait_for(sprite, visual)
+        until sprite.done?
+          visual.update
+          Graphics.update
+        end
       end
 
       TERASTAL_REACTIVE_SPECIES = %i[ogerpon terapagos]
@@ -43,6 +57,9 @@ module Battle
 
         @user.form_calibrate(:terastal)
         @scene.visual.show_switch_form_animation(@user)
+
+        @user.ability = data_ability(@user.data.abilities.sample).id
+        @user.ability_effect.on_switch_event(@scene.logic.switch_handler, @user, @user)
       end
     end
   end

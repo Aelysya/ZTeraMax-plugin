@@ -9,10 +9,12 @@ module Battle
       #       (((((((Level * 2 / 5) + 2) * BasePower * [Sp]Atk / 50) / [Sp]Def) * Mod1) + 2) *
       #         CH * Mod2 * R / 100) * STAB * Type1 * Type2 * Mod3)
       # @return [Integer]
+      # rubocop:disable Metrics/MethodLength
       def damages(user, target)
         return super unless target.terastallized || user.terastallized
 
         # rubocop:disable Layout/ExtraSpacing
+        # rubocop:disable Layout/LineLength
         # rubocop:disable Style/Semicolon
         # rubocop:disable Style/SpaceBeforeSemicolon
         log_data("# damages(#{user}, #{target}) for #{db_symbol}")
@@ -47,8 +49,10 @@ module Battle
 
         return damage
         # rubocop:enable Layout/ExtraSpacing
+        # rubocop:enable Layout/LineLength
         # rubocop:enable Style/Semicolon
         # rubocop:enable Style/SpaceBeforeSemicolon
+        # rubocop:enable Metrics/MethodLength
       end
 
       # STAB calculation
@@ -112,7 +116,7 @@ module Battle
       # @param types [Array<Integer>] list of types the move has
       # @return [Numeric]
       def calc_stellar_boost_multiplier(user, types)
-        return 1 if types.any? { |type| user.tera_boosted_types.include?(type) }
+        return 1 if types.any? { |type| user.stellar_boosted_types.include?(type) }
 
         add_used_stellar_boosts(user, types)
         boost = types.any? { |type| user.type1 == type || user.type2 == type || user.type3 == type } ? 2 : 1.2

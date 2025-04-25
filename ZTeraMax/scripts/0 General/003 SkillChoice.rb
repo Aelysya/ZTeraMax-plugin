@@ -93,13 +93,16 @@ module BattleUI
       # Set the visibility of the button
       # @param visible [Boolean]
       def visible=(visible)
+        dynamax_enabled = $game_switches[Configs.z_tera_max.dynamax_enabled_switch]
+        terastal_enabled = $game_switches[Configs.z_tera_max.terastal_enabled_switch] && !dynamax_enabled
+
         super(visible &&
           (@type == :descr ||
           (@data &&
             @type == :mega && @scene.logic.mega_evolve.can_pokemon_mega_evolve?(@data) ||
             @type == :z_move && @scene.logic.z_move.can_pokemon_use_z_move?(@data) ||
-            @type == :dynamax && @scene.logic.dynamax.can_pokemon_dynamax?(@data) ||
-            @type == :terastal && @scene.logic.terastal.can_pokemon_terastal?(@data)
+            @type == :dynamax && @scene.logic.dynamax.can_pokemon_dynamax?(@data) && dynamax_enabled ||
+            @type == :terastal && @scene.logic.terastal.can_pokemon_terastal?(@data) && terastal_enabled
           ))
           )
       end

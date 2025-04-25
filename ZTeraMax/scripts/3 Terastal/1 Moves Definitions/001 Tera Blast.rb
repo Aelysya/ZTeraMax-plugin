@@ -37,16 +37,12 @@ module Battle
       # Is the skill physical?
       # @return [Boolean]
       def physical?
-        return false unless user.terastallized
-
         return @physical.nil? ? super : @physical
       end
 
       # Is the skill special?
       # @return [Boolean]
       def special?
-        return true unless user.terastallized
-
         return @special.nil? ? super : @special
       end
 

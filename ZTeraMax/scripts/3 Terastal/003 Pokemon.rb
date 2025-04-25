@@ -41,9 +41,13 @@ module PFM
         terastal_initialize(opts)
       end
 
+      FIXED_TERA_TYPE_SPECIES = %i[ogerpon terapagos]
+
       # Method that initialize the Terastal values
       # @param opts [Hash] Hash describing optional value you want to assign to the Pokemon
       def terastal_initialize(opts)
+        return handle_fixed_tera_type(opts) if FIXED_TERA_TYPE_SPECIES.include?(db_symbol)
+
         return @tera_type = data_type(opts[:tera_type]).id if opts[:tera_type]
         return @tera_type = rand(1..each_data_type.size) if rand(100) < Configs.z_tera_max.exotic_tera_type_chance # 10% by default
         return @tera_type = type1 if type2 == 0
@@ -55,6 +59,25 @@ module PFM
       # @param db_symbol [Symbol] db_symbol of the type
       def change_tera_type(type)
         @tera_type = data_type(type).id
+      end
+
+      # Handle the fixed Tera type of Ogerpon and Terapagos
+      # @param opts [Hash] Hash describing optional value you want to assign to the Pokemon
+      def handle_fixed_tera_type(opts)
+        return @tera_type = data_type(:stellar).id if db_symbol == :terapagos
+
+        return @tera_type = data_type(:grass).id unless opts[:item]
+
+        case opts[:item]
+        when :wellspring_mask
+          @tera_type = data_type(:water).id
+        when :hearthflame_mask
+          @tera_type = data_type(:fire).id
+        when :cornerstone_mask
+          @tera_type = data_type(:rock).id
+        else
+          @tera_type = data_type(:grass).id
+        end
       end
     end
     prepend TerastalPlugin
