@@ -56,6 +56,14 @@ module Battle
         return [user.tera_type]
       end
 
+      # Return the current type of the move
+      # @return [Integer]
+      def type
+        return super unless @user&.terastallized
+
+        data_type(@user.tera_type).id
+      end
+
       private
 
       # Function that deals the effect to the pokemon

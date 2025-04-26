@@ -35,6 +35,14 @@ module Battle
 
         return [user.tera_type]
       end
+
+      # Return the current type of the move
+      # @return [Integer]
+      def type
+        return super unless @user&.terastallized
+
+        data_type(@user.tera_type).id
+      end
     end
     Move.register(:s_tera_starstorm, TeraStarstorm)
   end
