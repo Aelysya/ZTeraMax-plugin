@@ -34,19 +34,8 @@ module Battle
         $game_switches[Configs.z_tera_max.dynamax_enabled_switch] = false if $game_switches[Configs.z_tera_max.tera_orb_charge_enabled_switch]
         handle_form_change
 
-
-        visual = @scene.visual
-        sprite = visual.battler_sprite(@user.bank, @user.position)
-        sprite.load_shader(@user)
-        sprite.update
-        wait_for(sprite, visual)
-      end
-
-      def wait_for(sprite, visual)
-        until sprite.done?
-          visual.update
-          Graphics.update
-        end
+        message = parse_text_with_pokemon(20_000, 15, @user, PFM::Text::PKNAME[0] => @user.given_name, '[VAR 0103(0001)]' => data_type(@user.tera_type).name)
+        @scene.display_message_and_wait(message)
       end
 
       TERASTAL_REACTIVE_SPECIES = %i[ogerpon terapagos]
