@@ -39,6 +39,7 @@ module UI
   # Sprite that show the Tera type of the Pokemon
   class TeraTypeSprite < Type1Sprite
     private
+
     # Retrieve the data source of the type sprite
     # @return [Symbol]
     def data_source

@@ -11,6 +11,7 @@ file_paths = [
   'graphics/interface/battle/button_dynamax_activated.png',
   'graphics/interface/battle/button_terastal.png',
   'graphics/interface/battle/button_terastal_activated.png',
+  'graphics/interface/battle/tera_types.png',
   'graphics/interface/gigantamax_icon.png'
 ]
 

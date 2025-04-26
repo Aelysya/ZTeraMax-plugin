@@ -5,7 +5,7 @@ authors:
   - Aelysya
   - Lexio
   - Ota
-version: 0.9.136
+version: 0.9.148
 deps: []
 psdk_compatibility_script: psdk.rb
 retry_psdk_compatibility_after_plugin_load: false
@@ -19,4 +19,5 @@ added_files:
   - graphics/interface/battle/button_dynamax_activated.png
   - graphics/interface/battle/button_terastal.png
   - graphics/interface/battle/button_terastal_activated.png
+  - graphics/interface/battle/tera_types.png
   - graphics/interface/gigantamax_icon.png
