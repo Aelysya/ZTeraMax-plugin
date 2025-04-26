@@ -71,12 +71,39 @@ Pour créer des Pokémon Gigamax personnalisés, vous devrez effectuer une petit
 - **NE TOUCHEZ A RIEN D'AUTRE DANS LE FICHIER A MOINS DE SAVOIR EXACTEMENT CE QUE VOUS FAITES**, vous pouvez cependant modifier les sprites à partir de Studio
 
 Pour donner le gène Gigamax à un Pokémon (ou l'enlever), vous devrez le faire vous-même. Si vous voulez suivre la méthode officielle, consultez ce [lien](https://bulbapedia.bulbagarden.net/wiki/Master_Dojo#Max_Soup).
-L'attribut à modifier est `gigantamax_factor`, vous pouvez le faire en appelant `$actors[gv[43]].gigantamax_factor = (true|false)` (consultez les appareils Motisma dans le laboratoire de la Démo pour plus d'informations sur la façon de modifier les attributs d'un Pokémon à partir d'un événement).
+L'attribut à modifier est `gigantamax_factor`, vous pouvez le faire en appelant `$actors[gv[43]].gigantamax_factor = (true|false)` (regardez les évènement des appareils Motisma dans le laboratoire de la Démo pour plus d'informations sur la façon de modifier un Pokémon à partir d'un événement).
 
 Dans les jeux officiels, le Dynamax n'est autorisé que dans certains combats comme les arènes ou la ligue. Si vous voulez imiter cela, un interrupteur est utilisé pour autoriser ou non l'utilisation de Dynamax dans les combats. Par défaut le numéro du switch est 113, c'est un choix complètement aléatoire et peut entrer en conflit avec un de vos switchs, si c'est le cas, vous pouvez changer le numéro du switch en allant dans le fichier de configuration `Data/configs/z_tera_max_config.json` et en modifiant la valeur du champ `dynamaxEnabledSwitch`.
 
-#### Terastal
-TODO
+#### Téracristal
+Le Téracristal a été implémenté dans le plugin pour avoir un fonctionnement aussi proche que possible de la manière officielle, obtenir beaucoup d'informations à son sujet sur la [page Bulbapedia pour le Téracristal](https://bulbapedia.bulbagarden.net/wiki/Terastal_phenomenon)
+Pour utiliser le Téracristal en combat, vos joueurs auront besoin d'un Orbe Téracristal.
+
+Pour configurer correctement le Téracristal, vous devrez manipuler quelques fichiers. Ce processus ne peut pas être automatisé car le plugin ajoute un nouveau Type et si vous avez déjà ajouté des types personnalisés à votre projet, il va y avoir des problèmes. Voici les étapes à suivre en fonction de votre situation :
+Si vous **N'AVEZ PAS AJOUTÉ** de nouveaux types à votre projet :
+- Collez le fichier `stellar.json` dans le dossier `Data/Studio/types`
+- Collez les fichiers nommés `types.png`, `types_fr.png`, `types_en.png` et `types_es.png` dans le dossier `graphics/interface`, lorsque vous êtes invité à le faire, choisissez de remplacer tous les fichiers
+- Collez le fichier `types_BATTLE. png` dans le dossier `graphics/interface/battle`, supprimez le fichier nommé `types.png` dans le dossier et renommez le fichier que vous avez copié pour supprimer la partie `_BATTLE`
+- Collez le fichier `100003.csv` dans le dossier `Data/Text/Dialogs`, lorsque vous êtes invité à le faire, choisissez de remplacer le fichier.
+
+Si vous avez **AJOUTÉ** de nouveaux types à votre projet, ouvrez un éditeur de texte, vous en aurez besoin pour modifier certains fichiers :
+- Dans le dossier `Data/Studio/types`, ouvrez le fichier du dernier type que vous avez ajouté à votre projet. Si vous n'êtes pas sûr duquel vous avez créé en dernier, cherchez le fichier qui a la valeur `id` la plus élevée. Une fois que vous l'avez trouvé, ouvrez le fichier `stellar.json` et changez son `id` pour qu'il soit à 1 de plus que le nombre que vous avez trouvé
+- Pour les fichiers nommés `types.png`, `types_fr.png`, `types_en.png` et `types_es.png`, puisque vous avez déjà ajouté de nouveaux types à votre projet, vous devriez normalement savoir comment gérer le cas du nouveau type Stelliare, éditez simplement vos ressources existantes pour ajouter les sprites du type Stellaire 
+- Pour le fichier `types_BATTLE. png`, même principe que l'instruction précédente, il fait juste référence au fichier `types.png` situé dans le dossier `graphics/interface/battle`
+- Un nouveau fichier nommé `tera_types.png` a été ajouté dans le dossier `graphics/interface/battle`, vous devrez l'éditer pour y ajouter les icônes de vos types personnalisés. Si vous n'avez pas encore les sprites, laissez simplement des espaces vides de 16 pixels pour chacun de vos types entre les types Fée et Stellaire
+- Dans le dossier `Data/Text/Dialogs`, ouvrez le fichier `100003.csv`. Ouvrez le même fichier depuis le plugin et collez la ligne contenant les textes Stellar à la fin de votre fichier
+
+Cas particulier du fichier `100027.csv`, dans le cas improbable où vous auriez déjà modifié ce fichier, vous devrez soit modifier vos monkey-patches existants, soit monkey-patch le plugin pour corriger les appels à la ligne nouvellement ajoutée pour la partie du résumé concernant le Téra type. Si vous n'avez pas touché à ce fichier, vous pouvez simplement le coller et remplacer le fichier existant.
+
+Par défaut **TOUS** les Pokémon seront générés avec 10% de chances d'avoir un Téra type exotique. Un Téra type exotique est défini comme étant différent des types naturels du Pokémon. 
+La valeur de 10% est personnalisable, vous pouvez changer la valeur de `exoticTeraTypeChance` dans le fichier de configuration `Data/configs/z_tera_max_config.json`.
+Note : Ogerpon et Terapagos seront toujours générés avec leur Téra type forcé (dépendant du masque pour Ogerpon, type Stellaire pour Terapagos).
+
+Dans les jeux officiels, le Téracristal est autorisé dans chaque combat, mais comme le plugin ajoute aussi la mécanique Dynamax et qu'il n'y a pas de chevauchement entre les deux, vous devez décider quelle mécanique est activée ou non. Le champ `terastalEnabledSwitch` dans le fichier `Data/configs/z_tera_max_config.json` permet de configurer le numéro de switch décidant si le Téracristal est activé ou non. Si le Dynamax et le Téracristal sont activés en même temps, seul le Dynamax sera disponible (parce qu'il est plus limité dans les jeux officiels, de cette façon vous pourriez faire quelque chose comme toujours laisser le Téracristal activé et ne modifier que le switch du Dynamax lorsque vous en avez besoin).
+
+Un autre numéro de switch peut être configuré grâce au champ `teraOrbChargeEnabledSwitch` dans le fichier `Data/configs/z_tera_max_config.json`. Il vous permet de faire en sorte que le Téracristal ne soit pas limité à une seule utilisation par visite au Centre Pokémon. Dans les jeux officiels, l'Orbe Téracristal se recharge automatiquement après les combats lorsque vous êtes dans certains endroits ou lorsque vous avez capturé Terapagos, vous pouvez imiter ces comportements avec cette valeur de switch.
+
+Pour modifier le Téra type d'un Pokémon, vous devrez le faire vous-même. Si vous voulez suivre la méthode officielle, vous devrez créer un NPC demandant 50 Tera Shards d'un certain type. Vous pouvez le faire en appelant `$actors[gv[43]].change_tera_type(:new_type)` (regardez les évènement des appareils Motisma dans le laboratoire de la Démo pour plus d'informations sur la façon de modifier un Pokémon à partir d'un événement).
 
 ## Crédits
 
