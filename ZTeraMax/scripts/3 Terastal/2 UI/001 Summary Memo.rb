@@ -2,6 +2,7 @@ module UI
   class Summary_Memo < SpriteStack
     module TerastalPlugin
       # Initialize the Memo part
+      # @note "Tera Type" text is added, Tera type icon is added, primary types are placed differently, hence the need to re-write the entire method
       def init_memo
         texts = text_file_get(27)
         with_surface(114, 19, 95) do
