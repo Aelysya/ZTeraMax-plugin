@@ -79,7 +79,7 @@ module Battle
 
       private
 
-      # List of methods that should be ignored for base power boosting when Terastallized
+      # List of methods that should be ignored when applying base power boost of Terastallization
       IGNORED_BE_METHODS = %i[s_multi_hit s_2hits s_eruption s_wring_out s_return s_flail s_gyro_ball s_beat_up s_fling
                               s_electro_ball s_frustration s_low_kick s_heavy_slam s_psywave s_hp_eq_level s_hard_press
                               s_magnitude s_trump_card s_stored_power s_split_up s_present s_natural_gift]

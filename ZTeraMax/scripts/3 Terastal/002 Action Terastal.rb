@@ -38,6 +38,7 @@ module Battle
         @scene.display_message_and_wait(message)
       end
 
+      # List of Pokémon species that should change form when Terastallized
       TERASTAL_REACTIVE_SPECIES = %i[ogerpon terapagos]
 
       # Change the form of Terapagos and Ogerpon

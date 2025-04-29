@@ -8,7 +8,7 @@ module Battle
         def condition(target)
           return false if target.terastallized
 
-          return super
+          super
         end
       end
       prepend TerastalPlugin
@@ -23,7 +23,7 @@ module Battle
         def target_immune?(user, target)
           return true if target.terastallized
 
-          return super
+          super
         end
       end
       prepend TerastalPlugin
