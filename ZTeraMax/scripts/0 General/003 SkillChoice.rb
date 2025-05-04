@@ -42,7 +42,7 @@ module BattleUI
     class SpecialButton < UI::SpriteStack
       module SpecialButtonZTeraMaxPlugin
         # Texts of the special buttons
-        BUTTON_TEXT = { descr: 'Description', mega: 'Mega evolution', z_move: 'Z-Move', dynamax: 'Dynamax', terastal: 'Terastal' }
+        BUTTON_TEXT = { descr: 18, mega: 19, z_move: 20, dynamax: 21, terastal: 22 }
 
         # Backgrounds of the special buttons
         BUTTON_BACKGROUND = {
@@ -55,7 +55,7 @@ module BattleUI
         # Update the special button content
         # @param mechanic [Boolean]
         def refresh(mechanic = false)
-          @text.text = BUTTON_TEXT[@type]
+          @text.text = parse_text(20_000, BUTTON_TEXT[@type])
 
           if (backgrounds = BUTTON_BACKGROUND[@type])
             @background.set_bitmap(backgrounds[mechanic ? 1 : 0], :interface)
