@@ -77,12 +77,12 @@ module Util
         $bag.add_item(item, 1) unless Z_CRYSTALS_IDS.value?(item)
         pokemon.item_holding = 0
         yield(pokemon) if block_given?
-        display_message(parse_text(23, 78, ::PFM::Text::PKNICK[0] => pokemon.given_name, ::PFM::Text::ITEM2[1] => data_item(item).name))
+        display_message(parse_text_with_pokemon(23, 78, pokemon, ::PFM::Text::ITEM2[1] => data_item(item).name))
         return unless pokemon.form_calibrate # Form ajustment
 
         pokemon.hp = (pokemon.max_hp * pokemon.hp_rate).round
         yield(pokemon) if block_given?
-        display_message(parse_text(22, 157, ::PFM::Text::PKNAME[0] => pokemon.given_name))
+        display_message(parse_text_with_pokemon(22, 157, pokemon))
       end
     end
     prepend ZMovesPlugin

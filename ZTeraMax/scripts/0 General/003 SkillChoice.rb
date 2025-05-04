@@ -121,7 +121,7 @@ module BattleUI
         private
 
         def action_y
-          unless @mega_button.visible || @z_move_button.visible || @dynamax_button.visible || @terastal_button.visible
+          unless [@mega_button, @z_move_button, @dynamax_button, @terastal_button].any?(&:visible)
             return $game_system.se_play($data_system.buzzer_se)
           end
 
