@@ -43,7 +43,7 @@ In case the configuration file used by the plugin has been updated, follow these
 ## Configuration
 You may have a custom Battle UI for your fangame, and if so, you may have changed the move selection buttons. By default, this plugins shortens the moves names so they span a maximum of 15 characters. This is to prevent the veeeeeery long Z-Moves names from going out of the window. If you already have a way to deal with this kind of problems or if the shortening isn't necessary for your game, you can go to the config file `Data/configs/z_tera_max_config.json` and modify the value of `useBuiltinMoveNameSlice` to false.
 
-#### Z-Moves
+### Z-Moves
 
 Z-Moves have been implemented in the plugin to function as close as possible to the official way, you can have a lot of information about them on the [Bulbapedia page for Z-Moves](https://bulbapedia.bulbagarden.net/wiki/Z-Move)
 To use Z-Moves in battle, here's what your players need:
@@ -52,7 +52,7 @@ To use Z-Moves in battle, here's what your players need:
 
 When you give a Z-Crystal to your players, be sure to give them one that contains a '2' at the end of their db_symbol (e.g. normalium_z2). In the database these are the bigger crystals. When your players will give a crystal to their Pokémon, it will automatically create the right crystal, which is the smaller version in the database. When they try to retrieve a crystal from their Pokémon, it will not be put back in the bag, just deleted. This mimics the ways these items work in the official games.
 
-#### Dynamax
+### Dynamax
 
 Dynamax has been implemented in the plugin to function as close as possible to the official way, you can have a lot of information about them on the [Bulbapedia page for Dynamax](https://bulbapedia.bulbagarden.net/wiki/Dynamax)
 To use the Dynamax in battle, your players will need to be given a Dynamax Band.
@@ -72,12 +72,39 @@ To create custom Gigantamax Pokémon, you will have to do a small manipulation o
 - **DO NOT TOUCH ANYTHING ELSE IN THE FILE UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING**, you can modify the sprites from Studio though
 
 To give the Gigantamax factor to a Pokémon (or remove it) you will have to script it by yourself. If you want to follow the official way, check this [link](https://bulbapedia.bulbagarden.net/wiki/Master_Dojo#Max_Soup).
-The attribute to modify is `gigantamax_factor`, you can do it by calling `$actors[gv[43]].gigantamax_factor = (true|false)` (check the Motisma devices in the Demo's laboratory for more information on how to modify a Pokémon's attributes from an event)
+The attribute to modify is `gigantamax_factor`, you can do it by calling `$actors[gv[43]].gigantamax_factor = (true|false)` (check the Motisma devices in the Demo's laboratory for more information on how to modify a Pokémon from an event)
 
 In official games, Dynamax is only allowed in some battles such gym and league challenges. If you want to mimic this, a switch is used to allow or not the use of Dynamax in battle. By default the switch number is 113, this is a completely random choice and may conflict with one your switches, if that's the case, you can change the switch number by going in the config file `Data/configs/z_tera_max_config.json` and modifying the `dynamaxEnabledSwitch` field value.
 
 #### Terastal
-TODO
+Terastal has been implemented in the plugin to function as close as possible to the official way, you can have a lot of information about them on the [Bulbapedia page for Terastal](https://bulbapedia.bulbagarden.net/wiki/Terastal_phenomenon)
+To use the Terastal in battle, your players will need to be given a Tera Orb.
+
+To setup the Terastal properly, you'll have to manipulate a few files. This process can't be automated because the plugin adds a new Type and if you already added custom ones to your project there will be some problems. Here are the steps you need to follow depending on your situation:
+If you **DID NOT ADD** any new types to your project:
+- Paste the `stellar.json` file in the `Data/Studio/types` folder
+- Paste the files named `types.png`, `types_fr.png`, `types_en.png` and `types_es.png` in the `graphics/interface` folder, when prompted about it, choose to replace all the files
+- Paste the `types_BATTLE.png` file in the `graphics/interface/battle` folder, delete the file named `types.png` in the folder and rename the file you copied to remove the `_BATTLE` part
+- Paste the `100003.csv` file in the `Data/Text/Dialogs` folder, when prompted about it, choose to replace the file
+
+If you **DID ADD** new types to your project, open a text editor, you'll need it to modify some of the files:
+- In the `Data/Studio/types` folder, open the file of the last type you added to your project. If youre unsure, try looking for the file that has the highest `id` value. Once you found it, open the `stellar.json` file and change its `id` to be 1 more than the number you found
+- For the files named `types.png`, `types_fr.png`, `types_en.png` and `types_es.png`, since you already added new types to your project you should know how to handle the case of the new Stellar type, just edit your existing resources to add the Stellar sprites
+- For the `types_BATTLE.png` file, same idea as the previous instruction, it just refers to the `types.png` file located in the `graphics/interface/battle` folder
+- A new file named `tera_types.png` has been added in the `graphics/interface/battle` folder, you will have to edit it to add your custom types icons. If you don't have the sprites yet, just leave blank spaces of 16 pixels for each of your types between the Fairy and Stellar types
+- In the `Data/Text/Dialogs` folder, open the `100003.csv`. Open the same file from the plugin and paste the line containing Stellar texts at the end of your file
+
+Particular case for the `100027.csv` file, in the unlikely event you already modified this file, you'll have to either modify your existing monkey-patches, or monkey-patch the plugin to make up for the newly added line for the Tera type part of the summary. If you did not touch this file, you can just paste it and replace the existing one.
+
+By default **ALL** Pokémon will be generated with a 10% chance to have an exotic Tera type. An exotic Tera type is defined as being different from the Pokémon's natural types. 
+The 10% value is customizable, you can change the value of the `exoticTeraTypeChance` in the config file `Data/configs/z_tera_max_config.json`.
+Note: Ogerpon and Terapagos will always be generated with their Tera type fixed (depends on the mask for Ogerpon, Stellar type for Terapagos).
+
+In official games, Terastal is allowed in every battle, but since the plugin also adds the Dynamax mechanic and there is no overlap between them, you have to decide which mechnic is activated or not. The `terastalEnabledSwitch` field in the `Data/configs/z_tera_max_config.json` file allows you to configure the switch number deciding whether the Terastal is activated or not. If both the Dynamax and the Terastal are activated at the same time, only the Dynamax will be available (because it is more restricted in official games, that way ou could do something like always leaving the Terastal enabled and only modifying the Dynamax switch when you need it).
+
+Another switch number can be configured with the `teraOrbChargeEnabledSwitch` field in the `Data/configs/z_tera_max_config.json` file. It allows you to make it so the Terastal is not limited to one use every Pokémon Center visit. The way it works with the plugin is that after a fight, if the need to recharge is enabled, the switch enabling the Terastal (`terastalEnabledSwitch`) will be set to false. If you want to mimic the way official games work, you can just add a command in your Pokémon Centers to re-set the switch to true when you visit one. In official games the Tera Orb automatically recharges after a battle when you are in some locations or when you capture Terapagos, you can mimic this behaviours with the `teraOrbChargeEnabledSwitch` switch value by setting it to false.
+
+To give modify the Tera type of a Pokémon you will have to script it by yourself. If you want to follow the official way, you 'll need to setup an NPC asking for 50 Tera Shards of a certain type. You can do it by calling `$actors[gv[43]].change_tera_type(:new_type)` (check the Motisma devices in the Demo's laboratory for more information on how to modify a Pokémon from an event)
 
 ## Credits
 

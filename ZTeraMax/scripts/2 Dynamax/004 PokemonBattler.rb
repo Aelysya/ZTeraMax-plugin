@@ -19,8 +19,8 @@ module PFM
         @gigantamaxed = false
       end
 
-      # Check if the Pokemon can Dynamax
-      # @return [Integer, false] form index if the Pokemon can Dynamax, false otherwise
+      # Check if the Pokemon can Gigantamax
+      # @return [Integer, false] form index if the Pokemon can Gigantamax, false otherwise
       def can_gigantamax?
         return false unless @gigantamax_factor
 

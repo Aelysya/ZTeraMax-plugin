@@ -8,7 +8,7 @@ module Battle
       # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
       # @return [Boolean]
       def effect_working?(user, actual_targets)
-        return false if @logic.foes_of(user).all? { @logic.position_effects[target.bank][target.position].has?(:damage_over_four_turns) }
+        return false if @logic.foes_of(user).all? { |target| @logic.position_effects[target.bank][target.position].has?(:damage_over_four_turns) }
 
         return true
       end

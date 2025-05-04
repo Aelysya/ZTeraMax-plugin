@@ -16,7 +16,7 @@ module Battle
         # @param user [PFM::PokemonBattler] user of the move
         # @param actual_targets [Array<PFM::PokemonBattler>] targets that will be affected by the move
         def deal_effect(user, actual_targets)
-          super(user, actual_targets.reject&.dynamaxed)
+          super(user, actual_targets.reject(&:dynamaxed))
         end
       end
       prepend DynamaxPlugin

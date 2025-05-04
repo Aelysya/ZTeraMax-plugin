@@ -24,6 +24,8 @@ module Battle
         arr << @skill_choice_ui.mega_enabled
         arr << @skill_choice_ui.z_move_enabled
         arr << @skill_choice_ui.dynamax_enabled
+        arr << @skill_choice_ui.terastal_enabled
+
         return arr
       end
     end
