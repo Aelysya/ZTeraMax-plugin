@@ -17,7 +17,7 @@ To use this plugin with your fangame, follow these steps:
   - Unzip the archive,  you should find a file called `ZTeraMax.psdkplug`.
   - Put this file in the `scripts` folder at the root of your project
   - Go back to your project's root folder, and run the `cmd.bat` executable, a terminal should open up
-  - Enter the command `./psdk --util=plugin load` to install the plugin
+  - Enter the command `psdk --util=plugin load` to install the plugin
 
 **Note on move animations**: The Z-Moves and Max-Moves have no animation yet, you can either do them by yourself if you want, or you can wait for someone else to volunteer to do them. Either way, it is useless to complain about them being missing.
 
@@ -29,7 +29,7 @@ In the event of an update of the plugin, here are the steps to follow if you alr
 - Download the latest release
 - Replace the ZTeraMax.psdkplug file located in your `scripts` folder with the one you downloaded
 - Go back to your project's root folder and run the `cmd.bat` executable, a terminal should open up
-- Enter the command `./psdk --util=plugin load` to update the plugin
+- Enter the command `psdk --util=plugin load` to update the plugin
 
 ### Configuration file update
 In case the configuration file used by the plugin has been updated, follow these steps to avoid overwriting your pre-existing config:
