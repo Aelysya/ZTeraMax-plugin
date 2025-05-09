@@ -17,7 +17,7 @@ Pour utiliser ce plugin avec votre fangame, suivez ces étapes:
   - En décompressant l'archive, vous devriez trouver un fichier `ZTeraMax.psdkplug`
   - Déposez ce fichier dans le dossier `scripts` à la racine de votre projet
   - Revenez dans le dossier racine de votre projet, et lancez l'exécutable `cmd.bat`, un terminal devrait s'ouvrir
-  - Entrez la commande `./psdk --util=plugin load` afin d'installer le plugin
+  - Entrez la commande `psdk --util=plugin load` afin d'installer le plugin
 
 **Note sur les animations** : Les capacités Z et capacités Max n'ont pas encore d'animation, vous pouvez soit les faire vous-même si vous le souhaitez, soit attendre que quelqu'un d'autre se porte volontaire pour les faire. Dans tous les cas, il est inutile de se plaindre de leur absence.
 
@@ -29,7 +29,7 @@ En cas de mise à jour du plugin, voici les étapes à suivre si vous l'avez dé
 - Téléchargez la dernière release
 - Remplacez le fichier ZTeraMax.psdkplug situé dans votre dossier `scripts` par celui que vous avez téléchargé
 - Retournez dans le dossier racine de votre projet et lancez l'exécutable `cmd.bat`, un terminal devrait s'ouvrir
-- Entrez la commande `./psdk --util=plugin load` pour mettre à jour le plugin
+- Entrez la commande `psdk --util=plugin load` pour mettre à jour le plugin
 
 ### Mise à jour du fichier de configuration
 Dans le cas où le fichier de configuration utilisé par le plugin a été mis à jour, suivez les étapes suivantes pour éviter d'écraser votre configuration préexistante :
