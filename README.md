@@ -16,6 +16,7 @@ To use this plugin with your fangame, follow these steps:
   - Download the latest release from this repository
   - Unzip the archive,  you should find a file called `ZTeraMax.psdkplug`.
   - Put this file in the `scripts` folder at the root of your project
+  - Make sure to read all this file, there are some steps that are specific to some mechanics (namely, the Terastal needs you to do some file management, if you don't follow the instructions, you will have crashes)
   - Go back to your project's root folder, and run the `cmd.bat` executable, a terminal should open up
   - Enter the command `psdk --util=plugin load` to install the plugin
 
