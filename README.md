@@ -82,6 +82,7 @@ Terastal has been implemented in the plugin to function as close as possible to 
 To use the Terastal in battle, your players will need to be given a Tera Orb.
 
 To setup the Terastal properly, you'll have to manipulate a few files. This process can't be automated because the plugin adds a new Type and if you already added custom ones to your project there will be some problems. Here are the steps you need to follow depending on your situation:
+
 If you **DID NOT ADD** any new types to your project:
 - Paste the `stellar.json` file in the `Data/Studio/types` folder
 - Paste the files named `types.png`, `types_fr.png`, `types_en.png` and `types_es.png` in the `graphics/interface` folder, when prompted about it, choose to replace all the files
