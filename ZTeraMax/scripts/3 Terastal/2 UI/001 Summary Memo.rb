@@ -5,6 +5,7 @@ module UI
       # @note "Tera Type" text is added, Tera type icon is added, primary types are placed differently, hence the need to re-write the entire method
       def init_memo
         texts = text_file_get(27)
+        tera_texts = text_file_get(20_000)
         with_surface(114, 19, 95) do
           # --- Static part ---
           add_line(0, texts[2]) # Nom
@@ -13,7 +14,7 @@ module UI
           no_egg add_line(2, texts[3]) # Type
           no_egg add_line(3, texts[8]) # DO
           no_egg add_line(3, texts[9], dx: 1) # Numero id
-          no_egg add_line(2, texts[65], dx: 1)
+          no_egg add_line(2, tera_texts[23], dx: 1)
           no_egg add_line(4, texts[10]) # Pt exp
           no_egg add_line(5, texts[12]) # Next lvl
           no_egg add_line(6, text_get(23, 7)) # Objet

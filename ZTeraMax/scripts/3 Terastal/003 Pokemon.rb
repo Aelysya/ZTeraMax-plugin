@@ -3,7 +3,7 @@ module PFM
     module TerastalPlugin
       # Tera type ID of the Pokemon
       # @return [Integer]
-      attr_accessor :tera_type
+      # attr_accessor :tera_type
 
       # Create a new Pokemon with specific parameters
       # @param id [Integer, Symbol] ID of the Pokemon in the database
@@ -59,6 +59,12 @@ module PFM
       # @param db_symbol [Symbol] db_symbol of the type
       def change_tera_type(type)
         @tera_type = data_type(type).id
+      end
+
+      # Get the Tera type of the Pokemon
+      # @return [Integer]
+      def tera_type
+        return @tera_type || data_type(:normal).id
       end
 
       # Handle the fixed Tera type of Ogerpon and Terapagos

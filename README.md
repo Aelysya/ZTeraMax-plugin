@@ -96,10 +96,6 @@ If you **DID ADD** new types to your project, open a text editor, you'll need it
 - A new file named `tera_types.png` has been added in the `graphics/interface/battle` folder, you will have to edit it to add your custom types icons. If you don't have the sprites yet, just leave blank spaces of 16 pixels for each of your types between the Fairy and Stellar types
 - In the `Data/Text/Dialogs` folder, open the `100003.csv`. Open the same file from the plugin and paste the line containing Stellar texts at the end of your file
 
-#### SPECIAL CASE, DO NOT SKIP:
-
-Particular case for the `100027.csv` file, in the unlikely event you already modified this file, you'll have to either modify your existing monkey-patches, or monkey-patch the plugin to make up for the newly added line for the Tera type part of the summary. If you did not touch this file, you can just paste it and replace the existing one.
-
 By default **ALL** Pokémon will be generated with a 10% chance to have an exotic Tera type. An exotic Tera type is defined as being different from the Pokémon's natural types. 
 The 10% value is customizable, you can change the value of the `exoticTeraTypeChance` in the config file `Data/configs/z_tera_max_config.json`.
 Note: Ogerpon and Terapagos will always be generated with their Tera type fixed (depends on the mask for Ogerpon, Stellar type for Terapagos).
